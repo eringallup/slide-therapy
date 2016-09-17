@@ -1,0 +1,26 @@
+{
+  "name": "slide-therapy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "firebase": "^3.4.0"
+  },
+  "devDependencies": {
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.15.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jimmybyrum/slide-therapy.git"
+  },
+  "author": "James Byrum <me@jimmybyrum.com> (http://jimmybyrum.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jimmybyrum/slide-therapy/issues"
+  },
+  "homepage": "https://github.com/jimmybyrum/slide-therapy"
+}
