@@ -4,9 +4,27 @@ const _ = require('underscore');
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-var stripe = require("stripe")('sk_test_nkbxIavxItEv0Z8snt04O7h1');
+const crypto = require('crypto');
+
+let firebaseAdmin = require('firebase-admin');
+let cert = require('../config/slidetherapy-970be-firebase-adminsdk-82q2i-792b6f01d7.json');
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(cert),
+  databaseURL: 'https://slidetherapy-970be.firebaseio.com'
+});
+
+let stripe = require('stripe')('sk_test_nkbxIavxItEv0Z8snt04O7h1');
 let sigint = require('slidetherapy/sigint');
 let app = express();
+
+let database = firebaseAdmin.database();
+
+let skus = {
+  1: {
+    id: 1,
+    amountInCents: 2900
+  }
+};
 
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -22,8 +40,8 @@ app.use(function(request, reply, next) {
   // log each request
   let start = Date.now();
 
-  reply.header("Access-Control-Allow-Origin", "*");
-  reply.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  reply.header('Access-Control-Allow-Origin', '*');
+  reply.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
   reply.on('finish', function() {
     let duration = Date.now() - start;
@@ -52,22 +70,76 @@ let routes = [{
   path: '/api/charge',
   config: {
     handler: function(request, reply) {
-      let charge = {
-        currency: 'usd',
-        amount: 2900,
-        source: request.body.token,
-        description: 'Slide Therapy',
-        metadata: {
-          oid: request.body.oid,
-          email: request.body.email
+      getOid(function(err, oid) {
+        if (err) {
+          return apiResponse(err, null, request, reply);
         }
-      };
-      stripe.charges.create(charge, function(err, charge) {
-        apiResponse(err, charge, request, reply);
+
+        let token = request.body.token;
+        let uid = request.body.uid;
+        let email = request.body.email;
+        let sku = request.body.sku;
+
+        chargeStripe(token, oid, sku, uid, email).then(function() {
+          apiResponse(null, null, request, reply);
+        }, function(err) {
+          apiResponse(err, err, request, reply);
+        });
       });
     }
   }
 }];
+
+function chargeStripe(token, oid, sku, uid, email) {
+  return new Promise((resolve, reject) => {
+    let skuData = skus[sku];
+    let hash = crypto.createHash('md5').update(oid + email + token).digest('hex')
+    let charge = {
+      currency: 'usd',
+      amount: skuData.amountInCents,
+      source: token,
+      description: 'Slide Therapy',
+      metadata: {
+        oid: oid,
+        sku: skuData.id,
+        uid: uid,
+        email: email
+      }
+    };
+
+    stripe.charges.create(charge, function(err, charge) {
+      if (err) {
+        return reject(err);
+      }
+
+      let date = new Date();
+      let order = {
+        uid: uid,
+        oid: oid,
+        sku: skuData.id,
+        amount: skuData.amountInCents,
+        created: Math.round(date / 1000),
+        created_at: date.toUTCString(),
+        email: email,
+        token: token
+      };
+      database.ref('orders/' + hash).set(order).then(resolve, reject);
+    });
+  });
+}
+
+function getOid(callback) {
+  let oidCounter = database.ref('counters');
+  let oid;
+  oidCounter.transaction(function(counters) {
+    if (counters) {
+      oid = ++counters.oid;
+    }
+    return counters;
+  }, function(err) {
+    callback(err, oid);
+  });
+}
 
 routes.forEach(function(route) {
   // console.log(route.method, route.path, route.auth);
