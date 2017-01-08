@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "firebase": "^3.4.0"
+    "async": "^2.1.4",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "firebase": "^3.6.4",
+    "helmet": "^3.3.0",
+    "stripe": "^4.14.0",
+    "underscore": "^1.8.3"
   },
-  "devDependencies": {
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.15.2"
-  },
+  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/index.js"
   },
   "repository": {
     "type": "git",

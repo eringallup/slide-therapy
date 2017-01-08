@@ -1,0 +1,6 @@
+source: client
+exclude:
+  - Gemfile*
+  - gulp*
+  - README*
+  - node_modules
