@@ -1,0 +1,20 @@
+{
+  "skus": {
+    "1": {
+      "id": 1,
+      "amountInCents": 2900
+    }
+  },
+  "cdn": {
+    "assets": "d380dcsmppijhx.cloudfront.net"
+  },
+  "firebase": {
+    "cert": "/www/slide-therapy/config/slidetherapy-970be-firebase-adminsdk-82q2i-792b6f01d7.json",
+    "project_id": "slidetherapy-970be",
+    "web_api_key": "AIzaSyC5DTdVnNVUB6BVhV-Mt99fl_f5V4unqcg"
+  },
+  "stripe": {
+    "api_key": "pk_test_CK71Laidqlso9O9sZDktqW6a",
+    "secret_key": "sk_test_nkbxIavxItEv0Z8snt04O7h1"
+  }
+}
