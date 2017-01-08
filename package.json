@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "async": "^2.1.4",
+    "aws-sdk": "^2.7.21",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "firebase": "^3.6.4",
@@ -15,7 +16,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node server/index.js"
+    "start": "AWS_PROFILE=slide-therapy node server/index.js",
+    "client": "bundle exec jekyll serve"
   },
   "repository": {
     "type": "git",
