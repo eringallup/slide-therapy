@@ -26,9 +26,7 @@ module.exports = [{
       let email = request.body.email;
       charge(token, sku, uid, email).then(function() {
         api(null, null);
-      }, function(err) {
-        api(err);
-      });
+      }, api);
     }
   }
 }];

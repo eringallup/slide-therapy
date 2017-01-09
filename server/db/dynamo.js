@@ -10,7 +10,8 @@ const db = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
   getOid: getOid,
-  saveOrder: saveOrder
+  saveOrder: saveOrder,
+  completeOrder: completeOrder
 };
 
 function saveOrder(token, oid, sku, uid, email) {
@@ -22,6 +23,7 @@ function saveOrder(token, oid, sku, uid, email) {
       Item: {
         uid: uid,
         oid: oid,
+        order_status: 'processing',
         sku: sku.id,
         amount: sku.amountInCents,
         created: Math.round(date / 1000),
@@ -30,12 +32,35 @@ function saveOrder(token, oid, sku, uid, email) {
         token: token
       }
     };
-    db.put(update, function(err, json) {
+    db.put(update, function(err, data) {
       if (err) {
         return reject(err);
       }
-      console.log('---', json);
-      resolve(json);
+      resolve(data);
+    });
+  });
+}
+
+function completeOrder(oid, charge) {
+  console.info('-- completeOrder --');
+  return new Promise((resolve, reject) => {
+    let query = {
+      TableName: 'orders',
+      Key: {
+        oid: oid
+      },
+      UpdateExpression: 'set order_status = :status, charge = :charge',
+      ExpressionAttributeValues: {
+        ':status': 'complete',
+        ':charge': charge
+      },
+      ReturnValues: 'UPDATED_NEW'
+    };
+    db.update(query, function(err, data) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(data);
     });
   });
 }
@@ -49,7 +74,7 @@ function getOid() {
         id: 'oid'
       }
     };
-    db.get(query, function(err, json) {
+    db.get(query, function(err) {
       if (err) {
         return reject(err);
       }
@@ -61,11 +86,11 @@ function getOid() {
         ReturnValues: 'UPDATED_NEW'
       }, query);
       // console.log('update:', update);
-      db.update(update, function(updateError, json) {
+      db.update(update, function(updateError, data) {
         if (updateError) {
           return reject(updateError);
         }
-        resolve(json && json.Attributes.currentCount);
+        resolve(data && data.Attributes.currentCount);
       });
     });
   });

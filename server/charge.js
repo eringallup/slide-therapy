@@ -24,16 +24,14 @@ function chargeStripe(token, sku, uid, email) {
           email: email
         }
       };
-      // TODO: save to db as processing, then call stripe, then set to processed.
-      stripe.charges.create(charge, function(err, charge) {
-        if (err) {
-          return reject(err);
-        }
-        db.saveOrder(token, oid, skuData, uid, email).then(resolve, function(dbError) {
-          console.error('dbError', dbError);
-          resolve();
+      db.saveOrder(token, oid, skuData, uid, email).then(function(order) {
+        stripe.charges.create(charge, function(err, chargeData) {
+          if (err) {
+            return reject(err);
+          }
+          db.completeOrder(oid, chargeData).then(resolve, reject);
         });
-      });
+      }, reject);
     }, reject);
   });
 }
