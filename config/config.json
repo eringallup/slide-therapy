@@ -6,7 +6,12 @@
     }
   },
   "cdn": {
-    "assets": "d380dcsmppijhx.cloudfront.net"
+    "access_key": "APKAIJFHK6JLPKFGPAGQ",
+    "account_id": "392727187434",
+    "public_key": "/www/slide-therapy/config/rsa-APKAIJFHK6JLPKFGPAGQ.pem",
+    "private_key": "/www/slide-therapy/config/pk-APKAIJFHK6JLPKFGPAGQ.pem",
+    "assets": "d380dcsmppijhx.cloudfront.net",
+    "download": "d1grgydu7tybw.cloudfront.net"
   },
   "firebase": {
     "cert": "/www/slide-therapy/config/slidetherapy-970be-firebase-adminsdk-82q2i-792b6f01d7.json",

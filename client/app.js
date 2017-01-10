@@ -7,6 +7,7 @@
   });
 
   document.getElementById('buyButton').addEventListener('click', initPurchase);
+  document.getElementById('downloadButton').addEventListener('click', download);
   window.addEventListener('popstate', checkout.close);
 
   function initPurchase(e) {
@@ -31,6 +32,17 @@
       },
       success: checkout.close,
       error: onError
+    });
+  }
+
+  function download() {
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:7678/api/download',
+      data: {
+        token: 'tok_19ZwIjAQq9BIBXFnRLPeRGS9',
+        email: 'me@jimmybyrum.com'
+      }
     });
   }
 
