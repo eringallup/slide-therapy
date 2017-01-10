@@ -3,6 +3,7 @@
 const _ = require('underscore');
 const charge = require('./charge');
 const download = require('./download');
+const email = require('./email');
 
 module.exports = [{
   method: 'GET',
@@ -38,7 +39,18 @@ module.exports = [{
       let api = _.bind(apiResponse, this, request, reply);
       let token = request.body.token;
       let email = request.body.email;
-      download(token, email).then(function() {
+      download(token, email).then(function(url) {
+        api(null, url);
+      }, api);
+    }
+  }
+}, {
+  method: 'POST',
+  path: '/api/email',
+  config: {
+    handler: function(request, reply) {
+      let api = _.bind(apiResponse, this, request, reply);
+      email.send().then(function() {
         api(null, null);
       }, api);
     }

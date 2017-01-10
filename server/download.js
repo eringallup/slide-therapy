@@ -1,15 +1,9 @@
 'use strict';
 
 const config = require('../config/config.json');
-const _ = require('underscore');
 const moment = require('moment');
 const crypto = require('crypto');
 const fs = require('fs');
-const AWS = require('aws-sdk');
-AWS.config.update({
-  region: 'us-west-2',
-  endpoint: 'https://dynamodb.us-west-2.amazonaws.com'
-});
 
 module.exports = download;
 

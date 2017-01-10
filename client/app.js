@@ -8,6 +8,7 @@
 
   document.getElementById('buyButton').addEventListener('click', initPurchase);
   document.getElementById('downloadButton').addEventListener('click', download);
+  document.getElementById('emailButton').addEventListener('click', email);
   window.addEventListener('popstate', checkout.close);
 
   function initPurchase(e) {
@@ -43,6 +44,13 @@
         token: 'tok_19ZwIjAQq9BIBXFnRLPeRGS9',
         email: 'me@jimmybyrum.com'
       }
+    });
+  }
+
+  function email() {
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:7678/api/email'
     });
   }
 
