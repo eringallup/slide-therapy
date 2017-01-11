@@ -50,7 +50,10 @@
   function email() {
     $.ajax({
       type: 'POST',
-      url: 'http://localhost:7678/api/email'
+      url: 'http://localhost:7678/api/email',
+      data: {
+        oid: 13
+      }
     });
   }
 

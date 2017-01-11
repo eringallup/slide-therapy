@@ -50,7 +50,7 @@ module.exports = [{
   config: {
     handler: function(request, reply) {
       let api = _.bind(apiResponse, this, request, reply);
-      email.send().then(function() {
+      email.sendFile(request.body.oid).then(function() {
         api(null, null);
       }, api);
     }

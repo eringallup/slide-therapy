@@ -10,9 +10,28 @@ const db = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
   getOid: getOid,
+  getOrder: getOrder,
   saveOrder: saveOrder,
   completeOrder: completeOrder
 };
+
+function getOrder(oid) {
+  console.info('-- getOrder --', oid);
+  return new Promise((resolve, reject) => {
+    let query = {
+      TableName: 'orders',
+      Key: {
+        oid: oid
+      }
+    };
+    db.get(query, function(err, order) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(order);
+    });
+  });
+}
 
 function saveOrder(token, oid, sku, uid, email) {
   console.info('-- saveOrder --');

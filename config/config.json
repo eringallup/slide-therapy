@@ -13,6 +13,15 @@
     "assets": "d380dcsmppijhx.cloudfront.net",
     "download": "d1grgydu7tybw.cloudfront.net"
   },
+  "email": {
+    "smtp": {
+      "username": "AKIAJE3DQFDI4ICLOK7Q",
+      "password": "AjoELjOKRcJdbF3GjEi2afTR6VI2h8SW4mQBPhqpbjQW"
+    },
+    "from": {
+      "support": "\"Slide Therapy\" <hello@slidetherapy.com>"
+    }
+  },
   "firebase": {
     "cert": "/www/slide-therapy/config/slidetherapy-970be-firebase-adminsdk-82q2i-792b6f01d7.json",
     "project_id": "slidetherapy-970be",
