@@ -15,26 +15,33 @@ module.exports = {
   completeOrder: completeOrder
 };
 
-function getOrder(oid) {
-  console.info('-- getOrder --', oid);
+function orderQuery(query) {
+  // console.info('-- orderQuery --', query);
   return new Promise((resolve, reject) => {
-    let query = {
-      TableName: 'orders',
-      Key: {
-        oid: oid
-      }
-    };
     db.get(query, function(err, order) {
       if (err) {
         return reject(err);
       }
-      resolve(order);
+      resolve(order && order.Item);
     });
   });
 }
 
+function getOrder(oid) {
+  // console.info('-- getOrder --', oid);
+  return new Promise((resolve, reject) => {
+    let query = {
+      TableName: 'orders',
+      Key: {
+        oid: parseInt(oid, 10)
+      }
+    };
+    orderQuery(query).then(resolve, reject);
+  });
+}
+
 function saveOrder(token, oid, sku, uid, email) {
-  console.info('-- saveOrder --');
+  // console.info('-- saveOrder --');
   return new Promise((resolve, reject) => {
     let date = new Date();
     let update = {
@@ -61,7 +68,7 @@ function saveOrder(token, oid, sku, uid, email) {
 }
 
 function completeOrder(oid, charge) {
-  console.info('-- completeOrder --');
+  // console.info('-- completeOrder --');
   return new Promise((resolve, reject) => {
     let query = {
       TableName: 'orders',
@@ -85,7 +92,7 @@ function completeOrder(oid, charge) {
 }
 
 function getOid() {
-  console.info('-- getOid --');
+  // console.info('-- getOid --');
   return new Promise((resolve, reject) => {
     let query = {
       TableName: 'counters',

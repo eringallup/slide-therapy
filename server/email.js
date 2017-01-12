@@ -25,16 +25,16 @@ module.exports = {
 };
 
 function sendFile(oid) {
+  // console.log('-- sendFile --', oid);
   return new Promise((resolve, reject) => {
     db.getOrder(oid).then(function(order) {
-      let link = 'http://slidetherapy.com/download?token=' + order.token.replace('tok_', '') + '&ts=' + order.created;
+      let link = config.web.api + '/download?o=' + oid + '&t=' + order.token.replace('tok_', '') + '&c=' + order.created;
       let html = `
         Thanks for purchasing Slide Therapy 2017!
         <br>
         <a href="${link}">Click here to download your deck</a>
       `;
-      console.log(html);
-      // send(order.email, 'Thank you!', html);
+      send(order.email, 'Thank you!', html),then(resolve, reject);
     }, reject);
   });
 }
@@ -57,12 +57,12 @@ function send(to, subject, body, textBody) {
       text: textBody,
       html: body
     };
-    // console.log(mailOptions);
-    transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-        return console.log(error);
+    console.log(mailOptions);
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        return reject(error);
       }
-      console.log('Message sent: ' + info.response);
+      resolve(info && info.response);
     });
   });
 }

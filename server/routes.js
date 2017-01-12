@@ -32,16 +32,19 @@ module.exports = [{
     }
   }
 }, {
-  method: 'POST',
+  method: 'GET',
   path: '/api/download',
   config: {
     handler: function(request, reply) {
-      let api = _.bind(apiResponse, this, request, reply);
-      let token = request.body.token;
-      let email = request.body.email;
-      download(token, email).then(function(url) {
-        api(null, url);
-      }, api);
+      let oid = request.query.o;
+      let token = request.query.t;
+      let created = request.query.c;
+      download(oid, token, created).then(function(url) {
+        reply.redirect(url);
+      }, function(downloadError) {
+        console.error('Download Error', downloadError);
+        reply.redirect('/');
+      });
     }
   }
 }, {
@@ -51,7 +54,7 @@ module.exports = [{
     handler: function(request, reply) {
       let api = _.bind(apiResponse, this, request, reply);
       email.sendFile(request.body.oid).then(function() {
-        api(null, null);
+        api();
       }, api);
     }
   }
