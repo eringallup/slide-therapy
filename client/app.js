@@ -6,9 +6,9 @@
     token: onToken
   });
 
-  document.getElementById('buyButton').addEventListener('click', initPurchase);
-  document.getElementById('emailButton').addEventListener('click', email);
-  window.addEventListener('popstate', checkout.close);
+  $('.buy').on('click', initPurchase);
+  $('.email').on('click', email);
+  $(window).on('popstate', checkout.close);
 
   function initPurchase(e) {
     checkout.open({
