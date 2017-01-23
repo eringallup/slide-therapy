@@ -34,7 +34,7 @@ function sendFile(oid) {
         <br>
         <a href="${link}">Click here to download your deck</a>
       `;
-      send(order.email, 'Thank you!', html),then(resolve, reject);
+      send(order.email, 'Thank you!', html).then(resolve, reject);
     }, reject);
   });
 }
