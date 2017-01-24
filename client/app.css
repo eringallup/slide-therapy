@@ -1,9 +1,51 @@
+html,
+body {
+  color: #333;
+  font-family: 'Lato', Helvetica, Arial, Verdana, Sans-serif;
+  font-size: 15px;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+}
+
 footer {
   display: block;
   border-top: 1px solid #ccc;
 }
 
-.btn-primary {
+.main-nav .nav-link {
+  color: #000;
+  text-transform: uppercase;
+}
+@media (min-width: 992px) {
+  .main-nav .nav-link {
+    padding-bottom: 1em;
+  }
+}
+.main-nav .nav-link.active {
+  border-bottom: 2px solid #000;
+}
+
+.btn {
+  border-radius: 0;
+}
+
+a.btn.btn-primary,
+.btn.btn-primary {
   color: #fff;
   background-color: #000;
+  border-color: #000;
+  font-style: italic;
+}
+a.btn.btn-primary:focus,
+.btn.btn-primary:focus {
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, .5);
+}
+
+.hero-layer {
+  min-height: 425px;
+  background-image: url(//d380dcsmppijhx.cloudfront.net/images/homebgdarker.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
 }
