@@ -1,34 +1,30 @@
 (function() {
   var baseTitle = 'Slide Therapy 2017';
 
-  Crosshatch.route({
-    url: '/',
-    pattern: /^#?\!?\/?$/,
-    controller: function(self, url) {
-      Crosshatch.setTitle(baseTitle);
-    }
+  Router.route({
+    url: '/'
   });
 
-  Crosshatch.route({
+  Router.route({
     url: '/templates',
-    pattern: /^\/templates/,
+    title: ' Templates',
     controller: function(self, url) {
-      Crosshatch.setTitle(baseTitle + ' Templates');
       scrollTo('#templates');
     }
   });
 
-  Crosshatch.route({
-    url: '/buy',
-    pattern: /^\/buy\/([\d\w\s+_\-%,"']*)/,
+  Router.route({
+    url: '/buy/:deck',
+    title: function(self, url) {
+      return ': Buy ' + self.params.deck;
+    },
     controller: function(self, url) {
-      var deck = url.replace(self.pattern, '$1');
-      Crosshatch.setTitle(baseTitle + ': Buy ' + deck);
       scrollTo('#templates');
     }
   });
 
-  Crosshatch.ready();
+  Router.setBaseTitle('Slide Therapy 2017');
+  Router.ready();
 
   var checkout = StripeCheckout.configure({
     key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
@@ -48,7 +44,7 @@
       description: '2016 Deck',
       amount: 2900
     });
-    e.preventDefault();
+    e && e.preventDefault();
   }
 
   function onToken(token) {
