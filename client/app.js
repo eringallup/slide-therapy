@@ -2,28 +2,28 @@
   var baseTitle = 'Slide Therapy 2017';
 
   Router.route({
-    url: '/'
+    url: '/',
+    controller: function(self, url) {
+      document.title = baseTitle;
+    }
   });
 
   Router.route({
     url: '/templates',
-    title: ' Templates',
     controller: function(self, url) {
+      document.title = baseTitle + ' Templates';
       scrollTo('#templates');
     }
   });
 
   Router.route({
     url: '/buy/:deck',
-    title: function(self, url) {
-      return ': Buy ' + self.params.deck;
-    },
     controller: function(self, url) {
+      document.title = baseTitle + ': Buy ' + self.params.deck;
       scrollTo('#templates');
     }
   });
 
-  Router.setBaseTitle('Slide Therapy 2017');
   Router.ready();
 
   var checkout = StripeCheckout.configure({
