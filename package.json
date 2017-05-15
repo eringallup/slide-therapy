@@ -8,15 +8,17 @@
     "aws-sdk": "^2.7.21",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "firebase": "^3.6.4",
-    "firebase-admin": "^4.0.4",
     "helmet": "^3.3.0",
     "moment": "^2.17.1",
     "nodemailer": "^2.7.0",
     "stripe": "^4.14.0",
     "underscore": "^1.8.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "html-webpack-plugin": "^2.28.0",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^1.16.2"
+  },
   "scripts": {
     "start": "AWS_PROFILE=slide-therapy node server/index.js",
     "client": "bundle exec jekyll serve"
