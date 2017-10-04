@@ -4,6 +4,7 @@ const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const Database = require('slidetherapy/db');
+const OrderService = require('slidetherapy/services/order');
 const sigint = require('slidetherapy/sigint');
 const app = express();
 
@@ -48,14 +49,14 @@ require('./routes').forEach(route => {
   }
 });
 
-const db = new Database(config.database.name, () => {
-  console.log(`Database connection established to ${db.database}`);
-  startWebServer(db, {
+const dbConnection = new Database(config.database.name, () => {
+  console.log(`Database connection established to ${dbConnection.database}`);
+  startWebServer(dbConnection, {
     id: 1
   });
 });
 
-function startWebServer(db, worker) {
+function startWebServer(dbConnection, worker) {
   console.info('startWebServer', worker);
   let server = app.listen(7678, 'localhost', () => {
     console.info('Node server %s started at http://%s:%s',
@@ -64,7 +65,8 @@ function startWebServer(db, worker) {
       server.address().port
     );
   });
-  server.db = db;
+  server.db = dbConnection;
+  server.orderService = new OrderService(dbConnection.db);
   sigint.addTask(next => {
     server.close(() => {
       console.info('Closed out remaining connections (id: %s).', worker.id);
