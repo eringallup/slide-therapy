@@ -1,41 +1,61 @@
-'use strict';
+const config = require('../config');
+const token = require('./token');
 
-const config = require('../config/config.json');
-const nodemailer = require('nodemailer');
-const transporter = nodemailer.createTransport([
-  'smtps://',
-  config.email.smtp.username,
-  ':',
-  config.email.smtp.password,
-  '@email-smtp.us-west-2.amazonaws.com'
-].join(''));
-const db = require('./db');
-
-// setTimeout(function() {
-//   send('james.m.byrum@gmail.com', 'testing', '<strong>html<br>body</strong><br><a href="http://slidetherapy.com">website</a>').then(function() {
-//     console.info('success');
-//   }, function(err) {
-//     console.error(err);
-//   });
-// }, 500);
+const aws = require('aws-sdk');
+const ses = new aws.SES({
+  region: 'us-west-2',
+  apiVersion: '2010-12-01'
+});
 
 module.exports = {
   send: send,
-  sendFile: sendFile
+  sendFile: sendFile,
+  getIdentityPolicy: getIdentityPolicy
 };
 
-function sendFile(oid) {
-  // console.log('-- sendFile --', oid);
+function getIdentityPolicy() {
   return new Promise((resolve, reject) => {
-    db.getOrder(oid).then(function(order) {
-      let link = config.web.api + '/download?o=' + oid + '&t=' + order.token.replace('tok_', '') + '&c=' + order.created;
+    ses.listIdentityPolicies({
+      Identity: config.email.from.support.arn
+    }, (listError, listData) => {
+      if (listError) {
+        return reject(listError);
+      }
+      ses.getIdentityPolicies({
+        Identity: config.email.from.support.arn,
+        PolicyNames: listData.PolicyNames
+      }, (getError, getData) => {
+        if (getError) {
+          return reject(getError);
+        }
+        try {
+          let policyData = JSON.parse(getData.Policies[listData.PolicyNames[0]]).Statement[0];
+          resolve(policyData);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+  });
+}
+
+function sendFile(db, oid) {
+  // console.log('-- sendFile --', oid);
+  return db.getOrder(oid).then(order => {
+    let text = oid + order.token + order.created.valueOf();
+    return token.encrypt({
+      oid: oid,
+      token: order.token,
+      created: order.created.valueOf()
+    }).then(jwt => {
+      let url = config.web.api + '/download?t=' + jwt;
       let html = `
         Thanks for purchasing Slide Therapy 2017!
         <br>
-        <a href="${link}">Click here to download your deck</a>
+        <a href="${url}">Click here to download your deck</a>
       `;
-      send(order.email, 'Thank you!', html).then(resolve, reject);
-    }, reject);
+      return send(order.email, 'Thank you!', html);
+    });
   });
 }
 
@@ -50,19 +70,38 @@ function send(to, subject, body, textBody) {
       textBody = textBody.replace(/(<br\ \/>)/ig,' ');
       textBody = textBody.replace(/(<([^>]+)>)/ig,'');
     }
-    let mailOptions = {
-      from: config.email.from.support,
-      to: to,
-      subject: subject,
-      text: textBody,
-      html: body
+
+    let params = {
+      Destination: {
+        ToAddresses: [
+          to,
+        ]
+      },
+      Message: {
+        Body: {
+          Html: {
+            Data: body,
+            Charset: 'UTF-8'
+          },
+          Text: {
+            Data: textBody,
+            Charset: 'UTF-8'
+          }
+        },
+        Subject: {
+          Data: subject,
+          Charset: 'UTF-8'
+        }
+      },
+      Source: config.email.from.support.email,
+      SourceArn: config.email.from.support.arn
     };
-    console.log(mailOptions);
-    transporter.sendMail(mailOptions, function(error, info) {
-      if (error) {
-        return reject(error);
+    // console.log(params);
+    ses.sendEmail(params, (err, data) =>{
+      if (err) {
+        return reject(err, err.stack);
       }
-      resolve(info && info.response);
+      resolve(data);
     });
   });
 }

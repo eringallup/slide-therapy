@@ -1,19 +1,29 @@
-'use strict';
-
-const _ = require('underscore');
+const _ = require('lodash');
 const AWS = require('aws-sdk');
-AWS.config.update({
+const db = new AWS.DynamoDB({
   region: 'us-west-2',
-  endpoint: 'https://dynamodb.us-west-2.amazonaws.com'
+  apiVersion: '2012-08-10'
 });
-const db = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
+  listTables: listTables,
   getOid: getOid,
   getOrder: getOrder,
   saveOrder: saveOrder,
   completeOrder: completeOrder
 };
+
+function listTables() {
+  return new Promise((resolve, reject) => {
+    db.listTables({}, (err, data) => {
+      console.log(err, data);
+      if (err) {
+        return reject(err);
+      }
+      resolve(data);
+    });
+  });
+}
 
 function orderQuery(query) {
   // console.info('-- orderQuery --', query);

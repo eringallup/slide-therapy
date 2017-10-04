@@ -1,6 +1,4 @@
-'use strict';
-
-const config = require('../config/config.json');
+const config = require('../config');
 const moment = require('moment');
 const crypto = require('crypto');
 const db = require('./db');
@@ -8,17 +6,15 @@ const fs = require('fs');
 
 module.exports = download;
 
-function download(oid, token, created) {
+function download(db, oid, token, created) {
   // console.info('-- download --', oid, token, created);
-  return new Promise((resolve, reject) => {
-    db.getOrder(oid).then(function(order) {
-      if (order.token === 'tok_' + token && order.created === parseInt(created, 10)) {
-        let url = getSignedUrl();
-        resolve(url);
-      } else {
-        reject();
-      }
-    }, reject);
+  return db.getOrder(oid).then(order => {
+    let unixOrderCreated = Math.round(order.created / 1000);
+    let unixCreated = Math.round(created / 1000);
+    if (order.token !== token || unixOrderCreated !== unixCreated) {
+      throw new Error('bad request. toke or date does not match.');
+    }
+    return getSignedUrl();
   });
 }
 

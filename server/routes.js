@@ -1,6 +1,4 @@
-'use strict';
-
-const _ = require('underscore');
+const _ = require('lodash');
 const charge = require('./charge');
 const download = require('./download');
 const email = require('./email');
@@ -9,7 +7,7 @@ module.exports = [{
   method: 'GET',
   path: '/api/status',
   config: {
-    handler: function(request, reply) {
+    handler: (request, reply) => {
       let api = _.bind(apiResponse, this, request, reply);
       api(null, {
         ok: true
@@ -20,28 +18,30 @@ module.exports = [{
   method: 'POST',
   path: '/api/charge',
   config: {
-    handler: function(request, reply) {
+    handler: (request, reply) => {
       let api = _.bind(apiResponse, this, request, reply);
       let token = request.body.token;
+      let oid = request.body.oid;
       let sku = request.body.sku;
-      let uid = request.body.uid;
       let email = request.body.email;
-      charge(token, sku, uid, email).then(function() {
+      let db = request.connection.server.db;
+      charge(db, token, oid, sku, email).then(() => {
         api(null, null);
-      }, api);
+      }).catch(api);
     }
   }
 }, {
   method: 'GET',
   path: '/api/download',
   config: {
-    handler: function(request, reply) {
+    handler: (request, reply) => {
       let oid = request.query.o;
       let token = request.query.t;
       let created = request.query.c;
-      download(oid, token, created).then(function(url) {
+      let db = request.connection.server.db;
+      download(db, oid, token, created).then(url => {
         reply.redirect(url);
-      }, function(downloadError) {
+      }).catch(downloadError => {
         console.error('Download Error', downloadError);
         reply.redirect('/');
       });
@@ -51,11 +51,12 @@ module.exports = [{
   method: 'POST',
   path: '/api/email',
   config: {
-    handler: function(request, reply) {
+    handler: (request, reply) => {
       let api = _.bind(apiResponse, this, request, reply);
-      email.sendFile(request.body.oid).then(function() {
+      let db = request.connection.server.db;
+      email.sendFile(db, request.body.oid).then(() => {
         api();
-      }, api);
+      }).catch(api);
     }
   }
 }];

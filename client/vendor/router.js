@@ -1,1 +1,151 @@
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var n;"undefined"!=typeof window?n=window:"undefined"!=typeof global?n=global:"undefined"!=typeof self&&(n=self),n.Router=e()}}(function(){return function e(n,o,t){function r(f,a){if(!o[f]){if(!n[f]){var u="function"==typeof require&&require;if(!a&&u)return u(f,!0);if(i)return i(f,!0);throw new Error("Cannot find module '"+f+"'")}var c=o[f]={exports:{}};n[f][0].call(c.exports,function(e){var o=n[f][1][e];return r(o?o:e)},c,c.exports,e,n,o,t)}return o[f].exports}for(var i="function"==typeof require&&require,f=0;f<t.length;f++)r(t[f]);return r}({1:[function(e,n,o){"use strict";function t(){}function r(){}function i(e){"object"!=typeof e||e[0]||(e=[e]);for(var n=0;n<e.length;n++){var o=e[n];o.controller||(o.controller=function(){}),d[o.url]=o}}function f(e,n){if(!(n>v)){if(n||(n=0),"A"===e.tagName)return e;var o=e.parentNode;if(o)return n++,f(o,n)}}function a(e){if(!s)return!1;var n,n,o=location.pathname;if(e&&e instanceof MouseEvent&&(n=f(e.target)),n&&(o=n.href,"string"!=typeof o))return!1;o=o.replace(p,"");var i=!1;if(o===l)return!1;for(var a in d){var u,v=a.split(":");if(v.length>1){var w=v.shift();w=w.replace(/\/$/,""),u=new RegExp("^"+w)}else u=new RegExp("^"+a+"/?$");if(o.match(u)){i=!0,c=d[a],void 0!==c&&(l=o),c.params={};var y=o.split("/");y.splice(0,2),v.forEach(function(e,n){e=e.replace(/\/$/,""),c.params[e]=y[n]}),c.controller(c,o);break}}i&&(e&&e.preventDefault(),t(o,l),n&&setTimeout(function(){window.history.pushState({},document.title,o)}),r(o,l))}function u(e){return!1 in window.history?(console.warn("Router:canManageHistory:",canManageHistory),!1):(s=!0,a(),void("function"==typeof e&&e()))}var c,l,s=!1,d={},p=document.location.protocol+"//"+document.location.host,v=5;n.exports={version:",",urls:d,route:i,ready:u,load:a,baseUrl:p,online:s,maxNodes:v,setMaxNodes:function(e){v=e},reload:function(){a(null,!0)},beforeLoad:t,afterLoad:r,beforeLoad:function(e){t=e},afterLoad:function(e){r=e}},document.onclick=a,window.onpopstate=a},{}]},{},[1])(1)});
+var online = false;
+var urls = {};
+var baseUrl = document.location.protocol + '//' + document.location.host;
+var maxNodes = 5;
+var view, previous;
+
+window.Router = {
+  version: 'PACKAGE_VERSION',
+  urls: urls,
+  route: router,
+  ready: ready,
+  load: loader,
+  baseUrl: baseUrl,
+  online: online,
+  maxNodes: maxNodes,
+  setMaxNodes: function(nodes) { maxNodes = nodes; },
+  reload: function() { loader(null, true); },
+  beforeLoad: beforeLoad,
+  afterLoad: afterLoad,
+  beforeLoad: function(fn) { beforeLoad = fn; },
+  afterLoad: function(fn) { afterLoad = fn; }
+};
+
+function beforeLoad() {}
+function afterLoad() {}
+
+function router(routes) {
+  // console.info('Router.router()', routes);
+  // if only 1 route was passed in (as opposed to an array or routes)
+  // put that single route into a 1 item array.
+  if (typeof routes === 'object' && !routes[0]) {
+    routes = [routes];
+  }
+  for (var i = 0; i < routes.length; i++) {
+    var route = routes[i];
+    if (!route.controller) {
+      route.controller = function() {};
+    }
+    urls[route.url] = route;
+  }
+}
+
+function getLink(node, level) {
+  if (level > maxNodes) {
+    return undefined;
+  }
+  if (!level) {
+    level = 0;
+  }
+  // console.info('getLink', node && node.tagName);
+  if (node.tagName === 'A') {
+    return node;
+  }
+  var parentNode = node.parentNode;
+  if (!parentNode) {
+    return undefined;
+  }
+  level++;
+  return getLink(parentNode, level);
+}
+
+// figures out which view we're on and calls that view's controller
+function loader(e) {
+  if (!online) {
+    return false;
+  }
+
+  var url = location.pathname;
+
+  var target;
+
+  var target;
+  if (e && e instanceof MouseEvent) {
+    target = getLink(e.target);
+  }
+
+  if (target) {
+    url = target.href;
+    if (typeof url !== 'string') {
+      return false;
+    }
+  }
+
+  url = url.replace(baseUrl, '');
+
+  var shouldAct = false;
+  // console.debug('previous: ' + previous);
+  // console.debug('url:      ' + url);
+  // console.debug(url === previous);
+  if (url === previous) {
+    return false;
+  }
+
+  for (var path in urls) {
+    var regex;
+    var pathSplit = path.split(':');
+    if (pathSplit.length > 1) {
+      var basePath = pathSplit.shift();
+      basePath = basePath.replace(/\/$/, '');
+      regex = new RegExp('^' + basePath);
+    } else {
+      regex = new RegExp('^' + path + '\/?$');
+    }
+    // console.info(url, regex);
+    if (url.match(regex)) {
+      // console.log('match', path, regex);
+      shouldAct = true;
+      view = urls[path];
+      if (view !== undefined) {
+        previous = url;
+      }
+      view.params = {};
+      var urlParts = url.split('/');
+      urlParts.splice(0, 2);
+      pathSplit.forEach(function(part, idx) {
+        part = part.replace(/\/$/, '');
+        view.params[part] = urlParts[idx];
+      });
+      view.controller(view, url);
+      break;
+    }
+  }
+
+  // console.log('shouldAct', shouldAct, view);
+  if (shouldAct) {
+    e && e.preventDefault();
+    beforeLoad(url, previous);
+    if (target) {
+      setTimeout(function() {
+        window.history.pushState({}, document.title, url);
+      });
+    }
+    afterLoad(url, previous);
+  }
+}
+
+function ready(callback) {
+  if (!'pushState' in window.history) {
+    console.warn('Router:canManageHistory:', canManageHistory);
+    return false;
+  }
+  online = true;
+  loader();
+  if (typeof callback === 'function') {
+    callback();
+  }
+}
+
+// set up Router navigation listener
+document.onclick = loader;
+window.onpopstate = loader;

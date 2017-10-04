@@ -9,18 +9,23 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "helmet": "^3.3.0",
+    "jsonwebtoken": "^8.0.1",
+    "lodash": "^4.17.4",
     "moment": "^2.17.1",
-    "nodemailer": "^2.7.0",
+    "mongodb": "^2.2.31",
     "stripe": "^4.14.0",
-    "underscore": "^1.8.3"
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^2.28.0",
-    "webpack": "^2.2.0",
-    "webpack-dev-server": "^1.16.2"
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3"
   },
   "scripts": {
-    "start": "AWS_PROFILE=slide-therapy node server/index.js",
+    "test": "AWS_PROFILE=slide-therapy mocha",
+    "test-charge": "AWS_PROFILE=slide-therapy mocha ./test/charge.js",
+    "test-download": "AWS_PROFILE=slide-therapy mocha ./test/download.js",
+    "test-email": "AWS_PROFILE=slide-therapy mocha ./test/email.js",
+    "server": "AWS_PROFILE=slide-therapy node server/index.js",
     "client": "bundle exec jekyll serve"
   },
   "repository": {

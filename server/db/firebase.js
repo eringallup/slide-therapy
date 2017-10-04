@@ -1,13 +1,10 @@
-'use strict';
-
-const config = require('../../config/config.json');
+const config = require('../../config/firebase.json');
 const firebaseAdmin = require('firebase-admin');
 firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(require(config.firebase.cert)),
-  databaseURL: 'https://' + config.firebase.project_id + '.firebaseio.com'
+  credential: firebaseAdmin.credential.cert(config),
+  databaseURL: 'https://' + config.project_id + '.firebaseio.com'
 });
 const db = firebaseAdmin.database();
-const charge = require('./charge');
 
 module.exports = {
   getOid: getOid,

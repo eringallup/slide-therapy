@@ -1,5 +1,3 @@
-'use strict';
-
 const async = require('async');
 
 let tasks = [];
@@ -12,12 +10,12 @@ module.exports = {
   addTask: addTask
 };
 
-process.on('SIGINT', function(sig) {
-  async.parallel(tasks, function(err) {
+process.on('SIGINT', sig => {
+  async.series(tasks, err => {
     if (err) {
       console.error(err);
     }
-    var shutdownType = err ? 1 : 0;
+    let shutdownType = err ? 1 : 0;
     console.info('SIGINT Shutdown', shutdownType);
     process.exit(shutdownType);
   });

@@ -1,6 +1,3 @@
-'use strict';
-
-// var Router = require('router.js');
 var baseTitle = 'Slide Therapy 2017';
 
 Router.route({
@@ -28,7 +25,7 @@ Router.route({
 
 Router.ready();
 
-let checkout = StripeCheckout.configure({
+var checkout = StripeCheckout.configure({
   key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
   image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
   locale: 'auto',
@@ -37,7 +34,6 @@ let checkout = StripeCheckout.configure({
 
 $(document).on('click', '.buy', initPurchase);
 $(document).on('click', '.email', email);
-$(document).on('click', '.scroll-to', onScrollToClick);
 $(window).on('popstate', checkout.close);
 onPageLoad();
 
@@ -58,7 +54,6 @@ function onToken(token) {
     data: {
       token: token.id,
       sku: 1,
-      // uid: firebase.auth().currentUser.uid,
       email: token.email
     },
     success: checkout.close,
@@ -76,12 +71,8 @@ function email() {
   });
 }
 
-function onScrollToClick(e) {
-  let href = $(e.target).attr('href');
-  scrollTo(href.replace('#!/', '#'));
-}
-
 function scrollTo(id) {
+  // console.info('scrollTo', id);
   $(window).scrollTo(id, 250, 'easeInOut');
 }
 

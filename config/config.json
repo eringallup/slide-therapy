@@ -3,6 +3,9 @@
     "host": "http://127.0.0.1:4000",
     "api": "http://127.0.0.1:7678/api"
   },
+  "database": {
+    "name": "slidetherapy"
+  },
   "skus": {
     "1": {
       "id": 1,
@@ -19,12 +22,20 @@
   },
   "email": {
     "smtp": {
-      "username": "AKIAJE3DQFDI4ICLOK7Q",
-      "password": "AjoELjOKRcJdbF3GjEi2afTR6VI2h8SW4mQBPhqpbjQW"
+      "username": "AKIAJKNW3VK5XIUNV3QA",
+      "password": "At+6WwtfhPWaWp0DvZuo+mJ1Ej65s2cu8ovIlMVWiMZU"
     },
     "from": {
-      "support": "\"Slide Therapy\" <hello@slidetherapy.com>"
+      "support": {
+        "arn": "arn:aws:ses:us-west-2:392727187434:identity/hello@slidetherapy.com",
+        "name": "Slide Therapy",
+        "email": "hello@slidetherapy.com",
+        "address": "\"Slide Therapy\" <hello@slidetherapy.com>"
+      }
     }
+  },
+  "jwt": {
+    "secret": "E=WfGGMmHCuPh4fqMJmGUQYZE8oXQnuQ9T;MQRo4N9ENBqCHoGEs((3c/bJtmUdU"
   },
   "stripe": {
     "api_key": "pk_test_CK71Laidqlso9O9sZDktqW6a",
