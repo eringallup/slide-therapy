@@ -1,8 +1,7 @@
 const config = require('../config');
-const Database = require('../server/db');
-const charge = require('../server/charge');
-const download = require('../server/download');
-const { Order } = require('../server/schema/order');
+const Database = require('slidetherapy/db');
+const download = require('slidetherapy/download');
+const OrderService = require('slidetherapy/services/order');
 
 const OID = 1;
 const SKU = 1;
@@ -10,12 +9,13 @@ const EMAIL = 'test-slide-therapy@jimmybyrum.com';
 const TOKEN = 'tok_visa';
 
 describe('Download', () => {
-  let db, testOrder;
+  let orderService, dbConnection, testOrder;
 
   before(done => {
-    db = new Database('slidetherapytest', () => {
+    dbConnection = new Database('slidetherapytestdownload', () => {
+      orderService = new OrderService(dbConnection.db);
       let skuData = config.skus[SKU];
-      db.saveOrder(TOKEN, OID, skuData, EMAIL).then(order => {
+      orderService.saveOrder(TOKEN, OID, skuData, EMAIL).then(order => {
         testOrder = order;
         done();
       }).catch(done);
@@ -23,8 +23,8 @@ describe('Download', () => {
   });
 
   after(done => {
-    db.drop().then(() => {
-      return db.close().then(() => {
+    dbConnection.drop().then(() => {
+      return dbConnection.close().then(() => {
         done();
       });
     }).catch(done);
@@ -32,7 +32,7 @@ describe('Download', () => {
 
   describe('Signed URL', () => {
     it('should get signed url', done => {
-      download(db, testOrder.oid, testOrder.token, testOrder.created).then(url => {
+      download(orderService, testOrder.oid, testOrder.token, testOrder.created).then(url => {
         // console.log(url);
         done();
       }).catch(done);

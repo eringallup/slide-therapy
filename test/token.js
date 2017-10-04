@@ -1,6 +1,6 @@
 const config = require('../config');
 const chai = require('chai');
-const token = require('../server/token');
+const token = require('slidetherapy/token');
 
 const OID = 1;
 const TOKEN = 'tok_12385';

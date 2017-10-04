@@ -3,8 +3,7 @@ const _ = require('lodash');
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-const Database = require('../server/db');
-
+const Database = require('slidetherapy/db');
 const sigint = require('slidetherapy/sigint');
 const app = express();
 

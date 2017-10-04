@@ -1,14 +1,13 @@
 const config = require('../config');
 const moment = require('moment');
 const crypto = require('crypto');
-const db = require('./db');
 const fs = require('fs');
 
 module.exports = download;
 
-function download(db, oid, token, created) {
-  // console.info('-- download --', oid, token, created);
-  return db.getOrder(oid).then(order => {
+function download(orderService, oid, token, created) {
+  // console.info('download', oid, token, created);
+  return orderService.getOrder(oid).then(order => {
     let unixOrderCreated = Math.round(order.created / 1000);
     let unixCreated = Math.round(created / 1000);
     if (order.token !== token || unixOrderCreated !== unixCreated) {

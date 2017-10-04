@@ -1,7 +1,8 @@
 const config = require('../config');
 const chai = require('chai');
-const Database = require('../server/db');
-const charge = require('../server/charge');
+const Database = require('slidetherapy/db');
+const OrderService = require('slidetherapy/services/order');
+const charge = require('slidetherapy/charge');
 
 const SKU = 1;
 const UID = null;
@@ -10,15 +11,18 @@ const TOKEN = 'tok_visa';
 
 describe('Database', () => {
   let testOid, testOrder;
-  let db;
+  let orderService, dbConnection;
 
   before(done => {
-    db = new Database('slidetherapytest', done);
+    dbConnection = new Database('slidetherapytestdb', () => {
+      orderService = new OrderService(dbConnection.db);
+      done();
+    });
   });
 
   after(done => {
-    db.drop().then(() => {
-      return db.close().then(() => {
+    dbConnection.drop().then(() => {
+      return dbConnection.close().then(() => {
         done();
       });
     }).catch(done);
@@ -26,7 +30,7 @@ describe('Database', () => {
 
   describe('OID', () => {
     it('should return an oid', done => {
-      db.getOid().then(oid => {
+      orderService.getOid().then(oid => {
         try {
           testOid = oid;
           chai.expect(testOid).to.be.a('number');
@@ -37,7 +41,7 @@ describe('Database', () => {
       }, done);
     });
     it('should not be an existing order', done => {
-      db.getOrder(testOid).then(order => {
+      orderService.getOrder(testOid).then(order => {
         if (order && order.oid) {
           return done(new Error(`order exists with oid: ${testOid}`));
         }
@@ -49,14 +53,14 @@ describe('Database', () => {
   describe('Order', () => {
     it('should return a new order', done => {
       let skuData = config.skus[SKU];
-      db.saveOrder(TOKEN, testOid, skuData, EMAIL).then(order => {
+      orderService.saveOrder(TOKEN, testOid, skuData, EMAIL).then(order => {
         testOrder = order;
         done();
       }).catch(done);
     });
 
     it('should complete the order', done => {
-      db.completeOrder(testOrder.oid, 'chargeDone1234567890').then(completedOrder => {
+      orderService.completeOrder(testOrder.oid, 'chargeDone1234567890').then(completedOrder => {
         if (!completedOrder || completedOrder.status !== 'complete') {
           return done(new Error('order not marked as complete', completedOrder));
         }

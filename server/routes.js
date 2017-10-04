@@ -1,7 +1,8 @@
 const _ = require('lodash');
-const charge = require('./charge');
-const download = require('./download');
-const email = require('./email');
+const charge = require('slidetherapy/charge');
+const token = require('slidetherapy/token');
+const download = require('slidetherapy/download');
+const email = require('slidetherapy/email');
 
 module.exports = [{
   method: 'GET',
@@ -20,11 +21,10 @@ module.exports = [{
   config: {
     handler: (request, reply) => {
       let api = _.bind(apiResponse, this, request, reply);
+      let db = request.connection.server.db;
       let token = request.body.token;
-      let oid = request.body.oid;
       let sku = request.body.sku;
       let email = request.body.email;
-      let db = request.connection.server.db;
       charge(db, token, oid, sku, email).then(() => {
         api(null, null);
       }).catch(api);
@@ -35,16 +35,15 @@ module.exports = [{
   path: '/api/download',
   config: {
     handler: (request, reply) => {
-      let oid = request.query.o;
-      let token = request.query.t;
-      let created = request.query.c;
-      let db = request.connection.server.db;
-      download(db, oid, token, created).then(url => {
-        reply.redirect(url);
-      }).catch(downloadError => {
-        console.error('Download Error', downloadError);
-        reply.redirect('/');
-      });
+      token.decrypt(request.query.t).then(jwt => {
+        let db = request.connection.server.db;
+        download(db, jwt.oid, jwt.token, jwt.created).then(url => {
+          reply.redirect(url);
+        }).catch(downloadError => {
+          console.error('Download Error', downloadError);
+          reply.redirect('/');
+        });
+      }).catch(api);
     }
   }
 }, {

@@ -1,5 +1,5 @@
 const config = require('../config');
-const token = require('./token');
+const token = require('slidetherapy/token');
 
 const aws = require('aws-sdk');
 const ses = new aws.SES({

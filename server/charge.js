@@ -1,12 +1,11 @@
 const config = require('../config');
 const stripe = require('stripe')(config.stripe.secret_key);
-const crypto = require('crypto');
 
 module.exports = chargeStripe;
 
-function chargeStripe(db, token, sku, email) {
+function chargeStripe(orderService, token, sku, email) {
   // console.info('chargeStripe', token, sku, email);
-  return db.getOid().then((oid) => {
+  return orderService.getOid().then(oid => {
     let skuData = config.skus[sku];
     let charge = {
       currency: 'usd',
@@ -19,9 +18,9 @@ function chargeStripe(db, token, sku, email) {
         email: email
       }
     };
-    return db.saveOrder(token, oid, skuData, email).then(order => {
+    return orderService.saveOrder(token, oid, skuData, email).then(order => {
       return stripe.charges.create(charge).then(chargeData => {
-        return db.completeOrder(oid, chargeData);
+        return orderService.completeOrder(oid, chargeData);
       });
     });
   });
