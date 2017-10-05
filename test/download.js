@@ -32,7 +32,7 @@ describe('Download', () => {
 
   describe('Signed URL', () => {
     it('should get signed url', done => {
-      download(orderService, testOrder.oid, testOrder.token, testOrder.created).then(url => {
+      download(orderService, testOrder.oid, testOrder.token, testOrder.created.valueOf()).then(url => {
         // console.log(url);
         done();
       }).catch(done);
