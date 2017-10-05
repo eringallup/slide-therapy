@@ -157,6 +157,17 @@ $(document).ready(() => {
     });
   }
 
+  let templatesRegex = new RegExp(/\/templates/);
+  function onClose() {
+    if (!isDismiss) {
+      isDismiss = true;
+      return;
+    }
+    if (!templatesRegex.test(location.pathname)) {
+      document.location.href = '/templates';
+    }
+  }
+
   function download(token) {
     $.ajax({
       type: 'GET',
@@ -169,17 +180,6 @@ $(document).ready(() => {
       },
       error: onError
     });
-  }
-
-  let templatesRegex = new RegExp(/\/templates/);
-  function onClose() {
-    if (!isDismiss) {
-      isDismiss = true;
-      return;
-    }
-    if (!templatesRegex.test(location.pathname)) {
-      // document.location.href = '/templates';
-    }
   }
 
   function scrollTo(id) {

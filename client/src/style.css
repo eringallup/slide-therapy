@@ -6,10 +6,16 @@ body {
   background: #fff;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+}
+
+#content {
+  flex-grow: 1;
 }
 
 footer {
   display: block;
+  padding: 30px;
   border-top: 1px solid #ccc;
 }
 
