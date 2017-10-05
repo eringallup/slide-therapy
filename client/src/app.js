@@ -5,6 +5,7 @@ $(document).ready(() => {
     url: '/',
     controller: (self, url) => {
       document.title = baseTitle;
+      scrollTo('body');
     }
   });
 
