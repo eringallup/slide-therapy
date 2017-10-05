@@ -13,6 +13,34 @@ footer {
   border-top: 1px solid #ccc;
 }
 
+body.view-loading #content {
+  opacity: 0;
+}
+
+body.view-templates #view-templates,
+body.view-tips #view-tips,
+body.view-about #view-about,
+body.view-thanks #view-thanks,
+body.view-download #view-download {
+  display: block;
+}
+
+body.view-templates .nav-templates,
+body.view-tips .nav-tips,
+body.view-about .nav-about,
+body.view-thanks .nav-thanks,
+body.view-download .nav-download {
+  border-bottom: 2px solid #000;
+}
+
+body:not(.view-templates) #view-templates,
+body:not(.view-tips) #view-tips,
+body:not(.view-about) #view-about,
+body:not(.view-thanks) #view-thanks,
+body:not(.view-download) #view-download {
+  display: none;
+}
+
 .main-nav .nav-link {
   color: #000;
   text-transform: uppercase;
@@ -21,9 +49,6 @@ footer {
   .main-nav .nav-link {
     padding-bottom: 1em;
   }
-}
-.main-nav .nav-link.active {
-  border-bottom: 2px solid #000;
 }
 
 .btn {

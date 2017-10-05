@@ -3,7 +3,8 @@ const config = require('../../config');
 module.exports = OrderService;
 
 class Model {
-  constructor(data = {}) {
+  constructor(data) {
+    data = data || {};
     this.created = data.created || new Date();
     this.modified = data.modified || new Date();
     return this;
@@ -12,13 +13,14 @@ class Model {
 
 class Order extends Model {
   constructor(data) {
-    super();
+    super(data);
     data = data || {};
     this.oid = data.oid;
     this.status = data.status || 'processing';
     this.sku = data.sku;
     this.email = data.email;
     this.token = data.token;
+    this.downloads = data.downloads || 0;
   }
 }
 
@@ -28,6 +30,7 @@ function OrderService(db) {
   this.getOrder = getOrder;
   this.saveOrder = saveOrder;
   this.completeOrder = completeOrder;
+  this.getDownload = getDownload;
 }
 
 function getOid() {
@@ -51,6 +54,21 @@ function getOrder(oid) {
     oid: oid
   }).then(doc => {
     return new Order(doc);
+  });
+}
+
+function getDownload(oid) {
+  let collection = this.db.collection('orders');
+  return collection.findOneAndUpdate({
+    oid: oid
+  }, {
+    $inc: {
+      downloads: 1
+    }
+  }, {
+    returnOriginal: false
+  }).then(doc => {
+    return new Order(doc.value);
   });
 }
 

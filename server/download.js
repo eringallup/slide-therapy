@@ -7,17 +7,21 @@ module.exports = download;
 
 function download(orderService, oid, token, created) {
   // console.info('download', oid, token, created);
-  return orderService.getOrder(oid).then(order => {
-    let unixOrderCreated = Math.round(order.created / 1000);
-    let unixCreated = Math.round(created / 1000);
-    if (order.token !== token || unixOrderCreated !== unixCreated) {
-      throw new Error('bad request. toke or date does not match.');
+  return orderService.getDownload(oid).then(order => {
+    let createdValue = order.created.valueOf();
+    // console.log(order.token);
+    // console.log(token);
+    // console.log(createdValue);
+    // console.log(created);
+    if (order.token !== token || createdValue !== created) {
+      throw new Error('bad request. token or date does not match.');
     }
-    return getSignedUrl();
+    return getSignedUrl(config.skus[order.sku.sku]);
   });
 }
 
-function getSignedUrl() {
+function getSignedUrl(deck) {
+  // console.log('getSignedUrl', deck);
   let baseUrl = 'https://' + config.cdn.download + '/test.txt';
   let expiresUtc = moment().add(1, 'minute').unix();
   let expires = '?Expires=' + expiresUtc;

@@ -38,16 +38,35 @@ app.use((request, reply, next) => {
 });
 
 require('./routes').forEach(route => {
+  let method = route.method.toLowerCase();
   // console.log(route.method, route.path, route.auth);
   if (route.middleware) {
-    app[route.method.toLowerCase()](route.path, route.middleware, route.config.handler);
-  } else if (route.auth) {
-    let authMiddleware = _.partial(middleware.verifyUser, route.auth);
-    app[route.method.toLowerCase()](route.path, authMiddleware, route.config.handler);
+    app[method](route.path, route.middleware, route.config.handler);
+  } else if (route.validate) {
+    app[method](route.path, _.bind(routeValidation, this, route), route.config.handler);
   } else {
-    app[route.method.toLowerCase()](route.path, route.config.handler);
+    app[method](route.path, route.config.handler);
   }
 });
+
+function routeValidation(route, request, reply, next) {
+  let hasRequiredData = true;
+  _.each([
+    'query',
+    'body'
+  ], type => {
+    _.each(route.validate[type], (val, key) => {
+      let requestValue = request[type] && request[type][key];
+      if (!requestValue) {
+        hasRequiredData = false;
+      }
+    });
+  });
+  if (!hasRequiredData) {
+    return reply.status(400).end('Bad Request');
+  }
+  next();
+}
 
 const dbConnection = new Database(config.database.name, () => {
   console.log(`Database connection established to ${dbConnection.database}`);

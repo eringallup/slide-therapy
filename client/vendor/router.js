@@ -6,6 +6,7 @@ var view, previous;
 
 window.Router = {
   version: 'PACKAGE_VERSION',
+  go: go,
   urls: urls,
   route: router,
   ready: ready,
@@ -116,6 +117,15 @@ function loader(e) {
         part = part.replace(/\/$/, '');
         view.params[part] = urlParts[idx];
       });
+      view.query = {};
+      if (location.search) {
+        var queryString = location.search.substring(1);
+        var queryPairs = queryString.split('&');
+        for (var i = 0; i < queryPairs.length; i++) {
+          var queryKeyValue = queryPairs[i].split('=');
+          view.query[queryKeyValue[0]] = queryKeyValue[1];
+        }
+      }
       view.controller(view, url);
       break;
     }
@@ -127,11 +137,15 @@ function loader(e) {
     beforeLoad(url, previous);
     if (target) {
       setTimeout(function() {
-        window.history.pushState({}, document.title, url);
+        go(url, document.title);
       });
     }
     afterLoad(url, previous);
   }
+}
+
+function go(path, title, context) {
+  window.history.pushState(context || {}, title, path);
 }
 
 function ready(callback) {

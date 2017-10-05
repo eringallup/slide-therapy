@@ -11,10 +11,10 @@ function chargeStripe(orderService, token, sku, email) {
       currency: 'usd',
       amount: skuData.amountInCents,
       source: token,
-      description: 'Slide Therapy',
+      description: 'Slide Therapy: ' + skuData.title,
       metadata: {
         oid: oid,
-        sku: skuData.id,
+        sku: skuData.sku,
         email: email
       }
     };

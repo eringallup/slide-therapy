@@ -39,16 +39,15 @@ function getIdentityPolicy() {
   });
 }
 
-function sendFile(db, oid) {
-  // console.log('-- sendFile --', oid);
-  return db.getOrder(oid).then(order => {
-    let text = oid + order.token + order.created.valueOf();
+function sendFile(orderService, oid) {
+  // console.log('sendFile', oid);
+  return orderService.getOrder(oid).then(order => {
     return token.encrypt({
       oid: oid,
       token: order.token,
       created: order.created.valueOf()
     }).then(jwt => {
-      let url = config.web.api + '/download?t=' + jwt;
+      let url = config.web.host + '/download?t=' + jwt;
       let html = `
         Thanks for purchasing Slide Therapy 2017!
         <br>
