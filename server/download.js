@@ -1,5 +1,4 @@
 const config = require('../config');
-const moment = require('moment');
 const crypto = require('crypto');
 const fs = require('fs');
 
@@ -23,7 +22,7 @@ function download(orderService, oid, token, created) {
 function getSignedUrl(deck) {
   // console.log('getSignedUrl', deck);
   let baseUrl = 'https://' + config.cdn.download + '/test.txt';
-  let expiresUtc = moment().add(1, 'minute').unix();
+  let expiresUtc = Math.round(new Date() / 1000) + (1000 * 60);
   let expires = '?Expires=' + expiresUtc;
 
   let policyStatementJson = JSON.stringify({

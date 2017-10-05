@@ -77,7 +77,7 @@ const dbConnection = new Database(config.database.name, () => {
 
 function startWebServer(dbConnection, worker) {
   console.info('startWebServer', worker);
-  let server = app.listen(7678, 'localhost', () => {
+  let server = app.listen(7678, '0.0.0.0', () => {
     console.info('Node server %s started at http://%s:%s',
       worker.id,
       server.address().address,
