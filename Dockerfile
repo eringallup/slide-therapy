@@ -8,7 +8,7 @@ WORKDIR /
 ADD . /
 
 # Install any needed packages specified in requirements.txt
-RUN npm i
+RUN yarn install
 
 # Make port available to the world outside this container
 EXPOSE 7678
