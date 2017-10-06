@@ -22,7 +22,8 @@ function download(orderService, oid, token, created) {
 function getSignedUrl(deck) {
   // console.log('getSignedUrl', deck);
   let baseUrl = 'https://' + config.cdn.download + '/test.txt';
-  let expiresUtc = Math.round(new Date() / 1000) + (1000 * 60);
+  let now = new Date();
+  let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 60)) / 1000);
   let expires = '?Expires=' + expiresUtc;
 
   let policyStatementJson = JSON.stringify({
