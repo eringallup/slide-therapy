@@ -34,73 +34,35 @@ function OrderService(db) {
 }
 
 function getOid() {
-  let collection = this.db.collection('counters');
-  return collection.findOneAndUpdate({
-    type: 'oid'
-  }, {
-    $inc: {
-      count: 1
-    }
-  }, {
-    returnOriginal: false
-  }).then(doc => {
-    return doc.value.count;
-  });
+  return this.db.getOid();
 }
 
 function getOrder(oid) {
-  let collection = this.db.collection('orders');
-  return collection.findOne({
-    oid: oid
-  }).then(doc => {
-    return new Order(doc);
-  });
-}
-
-function getDownload(oid) {
-  let collection = this.db.collection('orders');
-  return collection.findOneAndUpdate({
-    oid: oid
-  }, {
-    $inc: {
-      downloads: 1
-    }
-  }, {
-    returnOriginal: false
-  }).then(doc => {
-    return new Order(doc.value);
+  return this.db.getOrder(oid).then(orderDoc => {
+    return new Order(orderDoc);
   });
 }
 
 function saveOrder(token, oid, sku, email) {
-  // console.info('saveOrder', token, oid, sku, email);
-  let collection = this.db.collection('orders');
   let order = new Order({
     oid: oid,
     email: email,
     sku: sku,
     token: token
   });
-  // console.log(order);
-  return collection.insertOne(order).then(result => {
+  return this.db.saveOrder(order).then(() => {
     return this.getOrder(oid);
   });
 }
 
 function completeOrder(oid, charge) {
-  // console.info('completeOrder', oid, charge);
-  let collection = this.db.collection('orders');
-  return collection.findOneAndUpdate({
-    oid: oid
-  }, {
-    $set: {
-      status: 'complete',
-      charge: charge,
-      modified: new Date()
-    }
-  }, {
-    returnOriginal: false
-  }).then(doc => {
-    return new Order(doc.value);
+  return this.db.completeOrder(oid, charge).then(() => {
+    return this.getOrder(oid);
+  });
+}
+
+function getDownload(oid) {
+  return this.db.getDownload(oid).then(orderDoc => {
+    return new Order(orderDoc);
   });
 }

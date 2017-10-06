@@ -1,34 +1,27 @@
-const Database = require('slidetherapy/db');
-const OrderService = require('slidetherapy/services/order');
+const skus = require('../skus.json');
 const charge = require('slidetherapy/charge');
 
+const OID = 1;
 const SKU = 1;
 const EMAIL = 'test-slide-therapy@jimmybyrum.com';
 const TOKEN = 'tok_visa';
 
 describe('Charge', () => {
-  let orderService, dbConnection;
-
-  before(done => {
-    dbConnection = new Database('slidetherapytestcharge', () => {
-      orderService = new OrderService(dbConnection.db);
+  it('should charge successfully', done => {
+    let skuData = skus[SKU];
+    let transaction = {
+      currency: 'usd',
+      amount: skuData.amountInCents,
+      source: TOKEN,
+      description: 'Slide Therapy: ' + skuData.title,
+      metadata: {
+        oid: OID,
+        sku: skuData.sku,
+        email: EMAIL
+      }
+    };
+    charge.processTransaction(transaction).then(chargeData => {
       done();
-    });
-  });
-
-  after(done => {
-    dbConnection.drop().then(() => {
-      return dbConnection.close().then(() => {
-        done();
-      });
     }).catch(done);
-  });
-
-  describe('Payment', () => {
-    it('should charge successfully', done => {
-      charge(orderService, TOKEN, SKU, EMAIL).then(order => {
-        done();
-      }).catch(done);
-    });
   });
 });

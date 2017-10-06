@@ -136,7 +136,8 @@ $(document).ready(() => {
 
   let isDismiss = true;
   function onToken(token, sku) {
-    // console.warn(token);
+    // console.info(token, sku);
+    isDismiss = false;
     $.ajax({
       type: 'POST',
       url: '/api/charge',
@@ -146,8 +147,6 @@ $(document).ready(() => {
         email: token.email
       },
       success: () => {
-        isDismiss = false;
-        checkout.close();
         document.location.href = '/thanks';
       },
       error: err => {

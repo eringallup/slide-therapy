@@ -1,28 +1,28 @@
 const config = require('../config');
+const skus = require('../skus.json');
 const chai = require('chai');
 const Database = require('slidetherapy/db');
 const OrderService = require('slidetherapy/services/order');
 const charge = require('slidetherapy/charge');
 
 const SKU = 1;
-const UID = null;
 const EMAIL = 'test-slide-therapy@jimmybyrum.com';
 const TOKEN = 'tok_visa';
 
 describe('Database', () => {
   let testOid, testOrder;
-  let orderService, dbConnection;
+  let orderService, db;
 
   before(done => {
-    dbConnection = new Database('slidetherapytestdb', () => {
-      orderService = new OrderService(dbConnection.db);
+    db = new Database('slidetherapytestdb', () => {
+      orderService = new OrderService(db);
       done();
     });
   });
 
   after(done => {
-    dbConnection.drop().then(() => {
-      return dbConnection.close().then(() => {
+    db.drop().then(() => {
+      return db.close().then(() => {
         done();
       });
     }).catch(done);
@@ -52,7 +52,7 @@ describe('Database', () => {
 
   describe('Order', () => {
     it('should return a new order', done => {
-      let skuData = config.skus[SKU];
+      let skuData = skus[SKU];
       orderService.saveOrder(TOKEN, testOid, skuData, EMAIL).then(order => {
         testOrder = order;
         done();
@@ -61,7 +61,8 @@ describe('Database', () => {
 
     it('should complete the order', done => {
       orderService.completeOrder(testOrder.oid, 'chargeDone1234567890').then(completedOrder => {
-        if (!completedOrder || completedOrder.status !== 'complete') {
+        let status = completedOrder && (completedOrder.status || completedOrder.order_status);
+        if (status !== 'complete') {
           return done(new Error('order not marked as complete', completedOrder));
         }
         done();

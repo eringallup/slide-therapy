@@ -1,13 +1,15 @@
 const config = require('../config');
+const skus = require('../skus.json');
 const crypto = require('crypto');
 const fs = require('fs');
 
 module.exports = download;
+module.exports.getSignedUrl = getSignedUrl;
 
 function download(orderService, oid, token, created) {
   // console.info('download', oid, token, created);
   return orderService.getDownload(oid).then(order => {
-    let createdValue = order.created.valueOf();
+    let createdValue = new Date(order.created).valueOf();
     // console.log(order.token);
     // console.log(token);
     // console.log(createdValue);
@@ -15,7 +17,7 @@ function download(orderService, oid, token, created) {
     if (order.token !== token || createdValue !== created) {
       throw new Error('bad request. token or date does not match.');
     }
-    return getSignedUrl(config.skus[order.sku.sku]);
+    return getSignedUrl(skus[order.sku.sku]);
   });
 }
 
@@ -23,7 +25,7 @@ function getSignedUrl(deck) {
   // console.log('getSignedUrl', deck);
   let baseUrl = 'https://' + config.cdn.download + '/test.txt';
   let now = new Date();
-  let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 60)) / 1000);
+  let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 15)) / 1000);
   let expires = '?Expires=' + expiresUtc;
 
   let policyStatementJson = JSON.stringify({

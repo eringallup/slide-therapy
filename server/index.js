@@ -68,24 +68,23 @@ function routeValidation(route, request, reply, next) {
   next();
 }
 
-const dbConnection = new Database(config.database.name, () => {
-  console.log(`Database connection established to ${dbConnection.database}`);
-  startWebServer(dbConnection, {
+const db = new Database(config.database.name, () => {
+  startWebServer({
     id: 1
   });
 });
 
-function startWebServer(dbConnection, worker) {
+function startWebServer(worker) {
   console.info('startWebServer', worker);
-  let server = app.listen(7678, '0.0.0.0', () => {
+  let server = app.listen(7678, config.web.domain, () => {
     console.info('Node server %s started at http://%s:%s',
       worker.id,
       server.address().address,
       server.address().port
     );
   });
-  server.db = dbConnection;
-  server.orderService = new OrderService(dbConnection.db);
+  server.db = db;
+  server.orderService = new OrderService(db);
   sigint.addTask(next => {
     server.close(() => {
       console.info('Closed out remaining connections (id: %s).', worker.id);
