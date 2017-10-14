@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "async": "^2.1.4",
+    "async": "^2.5.0",
     "aws-sdk": "^2.7.21",
     "body-parser": "^1.15.2",
     "bootstrap": "^4.0.0-beta",
@@ -37,6 +37,7 @@
     "setup": "rm ./node_modules/slidetherapy && ln -s ../server ./node_modules/slidetherapy",
     "server": "AWS_PROFILE=slide-therapy node server/index.js",
     "jekyll": "bundle exec jekyll serve",
+    "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js",
     "watch": "webpack --config webpack.dev.js --watch",
     "client": "webpack-dev-server --config webpack.dev.js --open",
     "build": "webpack --config webpack.dev.js",
