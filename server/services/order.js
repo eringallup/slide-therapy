@@ -1,5 +1,3 @@
-const config = require('../../config');
-
 module.exports = OrderService;
 
 class Model {
@@ -16,7 +14,7 @@ class Order extends Model {
     super(data);
     data = data || {};
     this.oid = data.oid;
-    this.status = data.status || 'processing';
+    this.orderStatus = data.orderStatus || 'processing';
     this.sku = data.sku;
     this.email = data.email;
     this.token = data.token;

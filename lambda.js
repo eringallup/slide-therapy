@@ -12,11 +12,15 @@ fs.readdir(LAMBDA_DIR, 'utf8', (dirError, files) => {
   async.each(files, zipFile, _exit);
 });
 
-function zipFile(file, callback) {
-  let zipFilePath = path.join('/tmp', file.replace('.js', '.zip'));
-  let lambdaFunction = file.replace('.js', '');
-  let zipCommand = `cd ${LAMBDA_DIR} && zip -X -r ${zipFilePath} ${file} && aws lambda update-function-code --publish --function-name ${lambdaFunction} --zip-file fileb://${zipFilePath}`;
+function zipFile(lambdaFunction, callback) {
+  let zipFilePath = path.join('/tmp', lambdaFunction + '.zip');
+  let zipCommand = [
+    `cd ${LAMBDA_DIR}/${lambdaFunction}`,
+    `zip -X -r ${zipFilePath} ./*`,
+    `aws lambda update-function-code --publish --function-name ${lambdaFunction} --zip-file fileb://${zipFilePath}`
+  ].join(' && ');
   console.log(zipCommand);
+  // return callback();
   exec(zipCommand, (error, stdout, stderr) => {
     if (error) {
       return _exit(error);
