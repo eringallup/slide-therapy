@@ -74,6 +74,7 @@ function loader(e) {
   if (e && e instanceof MouseEvent) {
     target = getLink(e.target);
   }
+  // console.info('loader', target);
 
   if (target) {
     url = target.href;
