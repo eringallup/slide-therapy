@@ -1,7 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const crypto = require('crypto');
-const skus = require('./skus.json');
 
 exports.handler = (event, context, callback) => {
   const update = {
