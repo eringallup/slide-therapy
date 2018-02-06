@@ -47,19 +47,20 @@ function initPurchase(deck) {
 function onToken(token, sku) {
   // console.info(token, sku);
   hasToken = true;
+  const data = {
+    token: token.id,
+    sku: currentDeck.sku,
+    email: token.email
+  };
   $.ajax({
     type: 'POST',
     url: 'https://8m0auawiog.execute-api.us-west-2.amazonaws.com/prod/charge',
-    data: {
-      token: token.id,
-      sku: currentDeck.sku,
-      email: token.email
-    },
+    data: data,
     success: () => {
       Router.go('/thanks');
     },
     error: err => {
-      console.error(error);
+      console.error(err);
       onClose();
     }
   });
