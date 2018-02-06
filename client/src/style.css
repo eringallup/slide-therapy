@@ -73,6 +73,15 @@ a.btn.btn-primary:focus,
   box-shadow: 0 0 0 2px rgba(0, 0, 0, .5);
 }
 
+.buy {
+  visibility: hidden;
+  pointer-events: none;
+}
+.has-ecom .buy {
+  visibility: visible;
+  pointer-events: auto;
+}
+
 .hero-layer {
   min-height: 425px;
   background-image: url(//d380dcsmppijhx.cloudfront.net/images/homebgdarker2.jpg);

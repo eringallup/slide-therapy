@@ -6,7 +6,7 @@ const skus = require('./skus.json');
 const stripe = require('stripe')('sk_test_nkbxIavxItEv0Z8snt04O7h1');
 
 exports.handler = (event, context, callback) => {
-  // console.info('chargeStripe', event);
+  console.info('chargeStripe', event);
   _lambda('getOid', (oidError, oid) => {
     if (oidError) {
       return callback(oidError);

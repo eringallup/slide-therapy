@@ -77,6 +77,7 @@ function loader(e) {
   // console.info('loader', target);
 
   if (target) {
+    // console.log(url, target.href);
     url = target.href;
     if (typeof url !== 'string') {
       return false;
