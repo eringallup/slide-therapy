@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, callback) => {
-  let query = {
+  const query = {
     TableName: 'counters',
     Key: {
       type: 'oid'
@@ -12,7 +12,7 @@ exports.handler = (event, context, callback) => {
     if (err) {
       return callback(err);
     }
-    let update = {
+    const update = {
         TableName: 'counters',
         Key: {
           type: 'oid'

@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, callback) => {
-  let query = {
+  const query = {
     TableName: 'orders',
     Key: {
       oid: event.oid

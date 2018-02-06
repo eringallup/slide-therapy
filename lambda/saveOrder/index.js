@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, callback) => {
-  let orderDoc = new Order({
+  const orderDoc = new Order({
     oid: event.oid,
     email: event.email,
     sku: event.sku,

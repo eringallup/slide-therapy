@@ -11,8 +11,8 @@ exports.handler = (event, context, callback) => {
     if (oidError) {
       return callback(oidError);
     }
-    let skuData = skus[event.sku];
-    let charge = {
+    const skuData = skus[event.sku];
+    const charge = {
       currency: 'usd',
       amount: skuData.amountInCents,
       source: event.token,
