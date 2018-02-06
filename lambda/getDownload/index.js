@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const crypto = require('crypto');
+const fs = require('fs');
 
 exports.handler = (event, context, callback) => {
   const update = {
@@ -46,8 +47,8 @@ function getSignedUrl(deck) {
   let sign = crypto.createSign('RSA-SHA1');
   let verify = crypto.createVerify('RSA-SHA1');
 
-  let privateKey = fs.readFileSync(process.env.private_key);
-  let publicKey = fs.readFileSync(process.env.public_key);
+  let publicKey = fs.readFileSync(`./rsa-${process.env.access_key}.pem`);
+  let privateKey = fs.readFileSync(`./pk-${process.env.access_key}.pem`);
 
   sign.update(policyStatementJson, 'utf8');
   verify.update(policyStatementJson, 'utf8');
