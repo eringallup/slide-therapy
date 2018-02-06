@@ -3,7 +3,7 @@ var lambda = new AWS.Lambda({
   region: 'us-west-2'
 });
 const skus = require('./skus.json');
-const stripe = require('stripe')('sk_test_nkbxIavxItEv0Z8snt04O7h1');
+const stripe = require('stripe')(process.env.stripe_key);
 
 exports.handler = (event, context, callback) => {
   console.info('chargeStripe', event);
