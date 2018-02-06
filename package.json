@@ -5,22 +5,14 @@
   "main": "index.js",
   "dependencies": {
     "async": "^2.5.0",
-    "aws-sdk": "^2.7.21",
-    "body-parser": "^1.15.2",
     "bootstrap": "^4.0.0-beta",
-    "express": "^4.14.0",
-    "helmet": "^3.3.0",
     "jquery": "^3.2.1",
     "jquery.scrollto": "^2.1.2",
-    "jsonwebtoken": "^8.0.1",
-    "lodash": "^4.17.4",
-    "mongodb": "^2.2.31",
     "popper.js": "^1.12.5",
     "stripe": "^4.14.0"
   },
   "devDependencies": {
     "babel-minify-webpack-plugin": "^0.2.0",
-    "chai": "^4.1.2",
     "clean-webpack-plugin": "^0.1.17",
     "css-loader": "^0.28.7",
     "mocha": "^3.5.3",
@@ -30,13 +22,7 @@
     "webpack-merge": "^4.1.0"
   },
   "scripts": {
-    "test": "AWS_PROFILE=slide-therapy mocha",
-    "test-charge": "AWS_PROFILE=slide-therapy mocha ./test/charge.js",
-    "test-download": "AWS_PROFILE=slide-therapy mocha ./test/download.js",
-    "test-email": "AWS_PROFILE=slide-therapy mocha ./test/email.js",
     "setup": "rm ./node_modules/slidetherapy && ln -s ../server ./node_modules/slidetherapy",
-    "server": "AWS_PROFILE=slide-therapy node server/index.js",
-    "jekyll": "bundle exec jekyll serve",
     "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js",
     "watch": "webpack --config webpack.dev.js --watch",
     "client": "webpack-dev-server --config webpack.dev.js --open",
