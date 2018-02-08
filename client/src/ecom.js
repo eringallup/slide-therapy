@@ -12,14 +12,14 @@ let cognitoUser;
 let hasToken = false;
 let stripeCheckout, currentDeck;
 
-const oidApiUrl = 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid';
-const orderApiUrl = 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order';
-const chargeApiUrl = 'https://8m0auawiog.execute-api.us-west-2.amazonaws.com/prod/charge';
+const processPaymentUrl = 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid';
 
 initEcom(50);
 
 module.exports = {
-  initPurchase: initPurchase
+  initPurchase: initPurchase,
+  getUser: getUser,
+  logout: logout
 };
 
 function initEcom(delay) {
@@ -43,12 +43,7 @@ function initEcom(delay) {
   });
   $(window).on('popstate', stripeCheckout.close);
   $('html').addClass('has-ecom');
-  getUser(() => {
-    if (!cognitoUser) {
-      authenticateUser('stwclient2', 'P1mpfl4t^JFB', 'P1mpfl4t^JFB');
-      // createUser('Me', 'me+cog@jimmybyrum.com', '230rij2iojf');
-    }
-  });
+  getUser();
 }
 
 function initPurchase(deck) {
@@ -60,7 +55,7 @@ function initPurchase(deck) {
   stripeCheckout.open({
     name: 'Slide Therapy',
     description: currentDeck.title,
-    email: cognitoUser && cognitoUser.signInUserSession.idToken.payload.email,
+    email: getEmail(),
     amount: 2900
   });
 }
@@ -71,89 +66,33 @@ function apiHeaders() {
   };
 }
 
-function onToken(token, sku) {
-  // console.info(token, sku);
+function getEmail() {
+  return cognitoUser && cognitoUser.signInUserSession.idToken.payload.email;
+}
+
+function onToken(token) {
+  // console.info(token);
   hasToken = true;
-  getOid().then(oid => {
-    return createOrder(oid, token).then(orderData => {
-      return charge(oid, token).then(chargeData => {
-        return completeOrder(oid, chargeData).then(() => {
-          Router.go('/thanks');
-        });
-      });
-    })
-  }).catch(error => {
-    throw error;
-  });
-}
 
-function getOid() {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      type: 'GET',
-      headers: apiHeaders(),
-      url: oidApiUrl,
-      success: resolve,
-      error: reject
-    });
-  });
-}
+  const data = {
+    email: getEmail(),
+    sku: currentDeck.sku,
+    token: token.id
+  };
 
-function completeOrder(oid, chargeData) {
-  console.info('completeOrder', oid, chargeData);
-  return new Promise((resolve, reject) => {
-    const data = {
-      oid: oid,
-      charge: chargeData
-    };
-    $.ajax({
-      type: 'PUT',
-      headers: apiHeaders(),
-      url: orderApiUrl,
-      data: data,
-      success: resolve,
-      error: reject
-    });
-  });
-}
-
-function createOrder(oid, token) {
-  console.info('createOrder', oid, token);
-  return new Promise((resolve, reject) => {
-    const data = {
-      oid: oid,
-      token: token.id,
-      sku: currentDeck.sku,
-      email: token.email
-    };
-    $.ajax({
-      type: 'POST',
-      headers: apiHeaders(),
-      url: orderApiUrl,
-      data: data,
-      success: resolve,
-      error: reject
-    });
-  });
-}
-
-function charge(oid, token) {
-  console.info('charge', token);
-  return new Promise((resolve, reject) => {
-    const data = {
-      oid: oid,
-      token: token.id,
-      sku: currentDeck.sku,
-      email: token.email
-    };
-    $.ajax({
-      type: 'POST',
-      headers: apiHeaders(),
-      url: chargeApiUrl,
-      data: data,
-      success: resolve,
-      error: reject
-    });
+  // console.info('onToken', data, processPaymentUrl);
+  $.ajax({
+    type: 'GET',
+    headers: apiHeaders(),
+    contentType: 'application/json',
+    url: processPaymentUrl,
+    data: data,
+    success: function() {
+      Router.go('/thanks');
+    },
+    error: function(err) {
+      throw err;
+    }
   });
 }
 
@@ -215,6 +154,7 @@ function authenticateUser(email, password, newPassword) {
 }
 
 function getUser(callback) {
+  callback = callback || function() {};
   cognitoUser = userPool.getCurrentUser();
   if (!cognitoUser) {
     return callback();
@@ -229,8 +169,21 @@ function getUser(callback) {
       cognitoUser = undefined;
     } else {
       window.cognitoUser = cognitoUser;
+      onUser();
     }
-    console.log('Cognito session valid:', session.isValid());
-    callback();
+    // console.log('Cognito session valid:', session.isValid());
+    callback(cognitoUser);
   });
+}
+
+function onUser() {
+  $('html').addClass('logged-in');
+  $('.nav-user').text(cognitoUser.username);
+}
+
+function logout() {
+  cognitoUser.signOut();
+  $('html').removeClass('logged-in');
+  $('.nav-user').text('Login');
+  Router.go('/');
 }

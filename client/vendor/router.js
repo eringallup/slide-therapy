@@ -148,6 +148,9 @@ function loader(e) {
 
 function go(path, title, context) {
   window.history.pushState(context || {}, title, path);
+  setTimeout(function() {
+    loader();
+  });
 }
 
 function ready(callback) {

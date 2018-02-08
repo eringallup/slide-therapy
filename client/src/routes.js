@@ -71,4 +71,9 @@ module.exports = [{
     download(self.query.t);
     scrollTo('body');
   }
+}, {
+  url: '/account',
+  controller: (self, url) => {
+    ecom.logout();
+  }
 }];

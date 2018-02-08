@@ -9,6 +9,11 @@ body {
   min-height: 100vh;
 }
 
+[hidden] {
+  visibility: collapse;
+  pointer-events: none;
+}
+
 #content {
   flex-grow: 1;
 }
