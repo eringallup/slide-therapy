@@ -13,5 +13,21 @@ exports.handler = (event, context, callback) => {
     TableName: 'orders',
     Item: orderDoc
   };
-  dynamo.put(update, callback);
+  dynamo.put(update, putError => {
+    if (putError) {
+      return callback(putError);
+    }
+    const get = {
+      TableName: 'orders',
+      Key: {
+        'oid': event.oid
+      }
+    };
+    dynamo.get(get, (getError, data) => {
+      if (getError) {
+        return callback(getError);
+      }
+      callback(null, data.Item);
+    });
+  });
 };

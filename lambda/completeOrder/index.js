@@ -15,5 +15,10 @@ exports.handler = (event, context, callback) => {
     },
     ReturnValues: 'UPDATED_NEW'
   };
-  dynamo.update(query, callback);
+  dynamo.update(query, (updateError, data) => {
+    if (updateError) {
+      return callback(updateError);
+    }
+    callback(null, data.Item);
+  });
 };
