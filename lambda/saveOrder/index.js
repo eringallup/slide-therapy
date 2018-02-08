@@ -27,7 +27,10 @@ exports.handler = (event, context, callback) => {
       if (getError) {
         return callback(getError);
       }
-      callback(null, data.Item);
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(data.Item)
+      });
     });
   });
 };

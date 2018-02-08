@@ -14,5 +14,13 @@ exports.handler = (event, context, callback) => {
       email: event.email
     }
   };
-  stripe.charges.create(charge, callback);
+  stripe.charges.create(charge, (chargeError, chargeData) => {
+    if (chargeError) {
+      return callback(chargeError);
+    }
+    callback(null, {
+      statusCode: 200,
+      body: JSON.stringify(chargeData)
+    });
+  });
 };

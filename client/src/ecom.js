@@ -11,6 +11,11 @@ let cognitoUser;
 
 let hasToken = false;
 let stripeCheckout, currentDeck;
+
+const oidApiUrl = 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid';
+const orderApiUrl = 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order';
+const chargeApiUrl = 'https://8m0auawiog.execute-api.us-west-2.amazonaws.com/prod/charge';
+
 initEcom(50);
 
 module.exports = {
@@ -60,28 +65,95 @@ function initPurchase(deck) {
   });
 }
 
+function apiHeaders() {
+  return {
+    Authorization: cognitoUser.getSignInUserSession().getIdToken().jwtToken
+  };
+}
+
 function onToken(token, sku) {
   // console.info(token, sku);
   hasToken = true;
-  const data = {
-    token: token.id,
-    sku: currentDeck.sku,
-    email: token.email
-  };
-  $.ajax({
-    type: 'POST',
-    headers: {
-      Authorization: cognitoUser.getSignInUserSession().getIdToken().jwtToken
-    },
-    url: 'https://8m0auawiog.execute-api.us-west-2.amazonaws.com/prod/charge',
-    data: data,
-    success: () => {
-      Router.go('/thanks');
-    },
-    error: err => {
-      console.error(err);
-      onClose();
-    }
+  getOid().then(oid => {
+    return createOrder(oid, token).then(orderData => {
+      return charge(oid, token).then(chargeData => {
+        return completeOrder(oid, chargeData).then(() => {
+          Router.go('/thanks');
+        });
+      });
+    })
+  }).catch(error => {
+    throw error;
+  });
+}
+
+function getOid() {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'GET',
+      headers: apiHeaders(),
+      url: oidApiUrl,
+      success: resolve,
+      error: reject
+    });
+  });
+}
+
+function completeOrder(oid, chargeData) {
+  console.info('completeOrder', oid, chargeData);
+  return new Promise((resolve, reject) => {
+    const data = {
+      oid: oid,
+      charge: chargeData
+    };
+    $.ajax({
+      type: 'PUT',
+      headers: apiHeaders(),
+      url: orderApiUrl,
+      data: data,
+      success: resolve,
+      error: reject
+    });
+  });
+}
+
+function createOrder(oid, token) {
+  console.info('createOrder', oid, token);
+  return new Promise((resolve, reject) => {
+    const data = {
+      oid: oid,
+      token: token.id,
+      sku: currentDeck.sku,
+      email: token.email
+    };
+    $.ajax({
+      type: 'POST',
+      headers: apiHeaders(),
+      url: orderApiUrl,
+      data: data,
+      success: resolve,
+      error: reject
+    });
+  });
+}
+
+function charge(oid, token) {
+  console.info('charge', token);
+  return new Promise((resolve, reject) => {
+    const data = {
+      oid: oid,
+      token: token.id,
+      sku: currentDeck.sku,
+      email: token.email
+    };
+    $.ajax({
+      type: 'POST',
+      headers: apiHeaders(),
+      url: chargeApiUrl,
+      data: data,
+      success: resolve,
+      error: reject
+    });
   });
 }
 

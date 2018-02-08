@@ -20,6 +20,9 @@ exports.handler = (event, context, callback) => {
     if (updateError) {
       return callback(updateError);
     }
-    callback(null, _.omit(data.Attributes, 'charge'));
+    callback(null, {
+      statusCode: 200,
+      body: JSON.stringify(_.omit(data.Attributes, 'charge'))
+    });
   });
 };
