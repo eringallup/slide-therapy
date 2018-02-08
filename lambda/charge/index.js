@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-var lambda = new AWS.Lambda({
+const lambda = new AWS.Lambda({
   region: 'us-west-2'
 });
 const skus = require('./skus.json');
@@ -49,6 +49,15 @@ exports.handler = (event, context, callback) => {
     });
   });
 };
+
+function onError(error) {
+  const response = {
+    statusCode: 500,
+    body: JSON.stringify(error),
+    isBase64Encoded: false
+  };
+  callback(null, response);
+}
 
 function _lambda(fn, payload, callback) {
   let lambdaConfig = {
