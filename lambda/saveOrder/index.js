@@ -13,10 +13,5 @@ exports.handler = (event, context, callback) => {
     TableName: 'orders',
     Item: orderDoc
   };
-  dynamo.put(update, (err, data) => {
-    if (err) {
-      return callback(err);
-    }
-    callback(null, data);
-  });
+  dynamo.put(update, callback);
 };
