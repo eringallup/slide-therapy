@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
@@ -19,6 +20,6 @@ exports.handler = (event, context, callback) => {
     if (updateError) {
       return callback(updateError);
     }
-    callback(null, data.Item);
+    callback(null, _.omit(data.Attributes, 'charge'));
   });
 };
