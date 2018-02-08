@@ -1,13 +1,15 @@
 const Order = require('./order');
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
+const sns = new AWS.SNS();
 
 exports.handler = (event, context, callback) => {
+  let eventJson = JSON.parse(event.Records[0].Sns.Message);
   const orderDoc = new Order({
-    oid: event.oid,
-    email: event.email,
-    sku: event.sku,
-    token: event.token
+    oid: eventJson.oid,
+    email: eventJson.email,
+    sku: eventJson.sku,
+    token: eventJson.token
   });
   let update = {
     TableName: 'orders',
@@ -20,16 +22,32 @@ exports.handler = (event, context, callback) => {
     const get = {
       TableName: 'orders',
       Key: {
-        'oid': event.oid
+        'oid': eventJson.oid
       }
     };
     dynamo.get(get, (getError, data) => {
       if (getError) {
         return callback(getError);
       }
-      callback(null, {
-        statusCode: 200,
-        body: JSON.stringify(data.Item)
+
+      const message = {
+        oid: eventJson.oid,
+        email: eventJson.email,
+        sku: eventJson.sku,
+        token: eventJson.token
+      };
+
+      sns.publish({
+        Message: JSON.stringify(message),
+        TopicArn: process.env.snsArn
+      }, (snsError, snsData) => {
+        if (snsError) {
+          return callback(snsError);
+        }
+        callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(data.Item)
+        });
       });
     });
   });

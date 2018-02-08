@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
+const sns = new AWS.SNS();
 
 exports.handler = (event, context, callback) => {
   const query = {
@@ -32,7 +33,26 @@ exports.handler = (event, context, callback) => {
       if (!isNaN(currentCount)) {
         currentCount = parseInt(currentCount, 10);
       }
-      callback(null, currentCount);
+
+      const message = {
+        oid: currentCount,
+        email: event.email,
+        sku: event.sku,
+        token: event.token
+      };
+
+      sns.publish({
+        Message: JSON.stringify(message),
+        TopicArn: process.env.snsArn
+      }, (snsError, snsData) => {
+        if (snsError) {
+          return callback(snsError);
+        }
+        callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(message)
+        });
+      });
     });
   });
 };
