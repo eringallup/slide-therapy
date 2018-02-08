@@ -21,7 +21,10 @@ exports.handler = (event, context, callback) => {
       return callback(err);
     }
     const downloadUrl = getSignedUrl(order.sku);
-    callback(null, downloadUrl);
+    callback(null, {
+      statusCode: 200,
+      body: downloadUrl
+    });
   });
 };
 
