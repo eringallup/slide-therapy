@@ -34,7 +34,7 @@
       <div class="row">
           <div class="col text-center">
             <form id="account-form" method="POST" action="/account">
-              <fieldset>
+              <fieldset disabled="disabled>
                 <label for="email">Email</label>
                 <input
                   type="email"
@@ -49,15 +49,16 @@
                   id="password"
                   name="password"
                   value="Testing123!1"
+                  pattern="(?=^.{8,}$)(?![.\n])(?=.*\d)(?=.*\W+)(?=.*[A-Z])(?=.*[a-z]).*$"
                   autocomplete="password"
                 >
+                <input
+                  value="Login"
+                  class="btn btn-primary btn-sm"
+                  type="submit"
+                  accesskey="s"
+                >
               </fieldset>
-              <input
-                value="Login"
-                class="btn btn-primary btn-sm"
-                type="submit"
-                accesskey="s"
-              >
             </form>
             <div id="account-error" class="alert alert-danger" hidden></div>
           </div>

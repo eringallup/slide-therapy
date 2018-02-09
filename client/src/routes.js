@@ -78,11 +78,13 @@ module.exports = [{
       if (user) {
         ecom.logout();
       } else {
-        $('#account').removeAttr('hidden');
+        ecom.showAuth();
+        ecom.enableUserForm();
       }
     });
   },
   onUnload: (self, url) => {
-    $('#account').attr('hidden', 'hidden');
+    ecom.hideAuth();
+    ecom.disableUserForm();
   }
 }];

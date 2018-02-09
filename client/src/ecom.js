@@ -24,7 +24,11 @@ module.exports = {
   getUser: getUser,
   register: register,
   login: login,
-  logout: logout
+  logout: logout,
+  showAuth: showAuth,
+  hideAuth: hideAuth,
+  enableUserForm: enableUserForm,
+  disableUserForm: disableUserForm
 };
 
 function initEcom(delay) {
@@ -116,16 +120,17 @@ function initAccount() {
   $(document).on('submit', '#account-form', e => {
     e.preventDefault();
     let data = getFormData($accountForm);
+    disableUserForm();
     login(data.email, data.password, data.password+''+1).then(onUser).catch(userError => {
-      console.log('userError', userError.code);
+      // console.log('userError', userError);
       if (userError.code === 'UserNotFoundException') {
-        console.log(data.email, data.password);
         register(data.email, data.password).then(onUser);
       } else if (userError.code === 'NotAuthorizedException') {
-        $('#account-error').removeAttr('hidden').text('Incorrect Password.');
+        onUserError('Incorrect Password.');
+      } else {
+        onUserError(userError.message);
       }
     });
-    console.log(data);
   });
 }
 
@@ -146,10 +151,10 @@ function register(email, password) {
   return new Promise((resolve, reject) => {
     // console.log('register', email, password);
     if (!email) {
-      return reject(new Error('email is required'));
+      return reject(new Error('Email is required'));
     }
     if (!password) {
-      return reject(new Error('password is required'));
+      return reject(new Error('Password is required'));
     }
     let name = email.split('@')[0];
     let attributeList = [];
@@ -172,10 +177,10 @@ function register(email, password) {
 function login(email, password, newPassword) {
   return new Promise((resolve, reject) => {
     if (!email) {
-      return reject(new Error('email is required'));
+      return reject(new Error('Email is required'));
     }
     if (!password) {
-      return reject(new Error('password is required'));
+      return reject(new Error('Password is required'));
     }
     const authenticationData = {
       Username: email,
@@ -232,6 +237,27 @@ function onUser(user) {
       Router.go('/');
     }
   }
+}
+
+function showAuth() {
+  $('#account').removeAttr('hidden');
+}
+
+function hideAuth() {
+  $('#account').attr('hidden', 'hidden');
+}
+
+function enableUserForm() {
+  $('#account-form fieldset').removeAttr('disabled');
+}
+
+function disableUserForm() {
+  $('#account-form fieldset').attr('disabled', 'disabled');
+}
+
+function onUserError(message) {
+  $('#account-error').removeAttr('hidden').text(message);
+  enableUserForm();
 }
 
 function logout() {
