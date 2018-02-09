@@ -6,6 +6,9 @@ var view, previous;
 
 window.Router = {
   version: 'PACKAGE_VERSION',
+  currentView: function() {
+    return view;
+  },
   go: go,
   urls: urls,
   route: router,
@@ -110,6 +113,10 @@ function loader(e) {
       shouldAct = true;
       view = urls[path];
       if (view !== undefined) {
+        let previousUnload = previous && urls[previous] && urls[previous].onUnload;
+        if (previousUnload) {
+          previousUnload(urls[previous], previous);
+        }
         previous = url;
       }
       view.params = {};
@@ -166,5 +173,5 @@ function ready(callback) {
 }
 
 // set up Router navigation listener
-document.onclick = loader;
-window.onpopstate = loader;
+document.addEventListener('click', loader);
+window.addEventListener('popstate', loader);

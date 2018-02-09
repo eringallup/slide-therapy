@@ -14,11 +14,16 @@ let stripeCheckout, currentDeck;
 
 const processPaymentUrl = 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid';
 
-initEcom(50);
+$(document).ready(() => {
+  initAccount();
+  initEcom(50);
+});
 
 module.exports = {
   initPurchase: initPurchase,
   getUser: getUser,
+  register: register,
+  login: login,
   logout: logout
 };
 
@@ -43,7 +48,6 @@ function initEcom(delay) {
   });
   $(window).on('popstate', stripeCheckout.close);
   $('html').addClass('has-ecom');
-  getUser();
 }
 
 function initPurchase(deck) {
@@ -87,10 +91,10 @@ function onToken(token) {
     contentType: 'application/json',
     url: processPaymentUrl,
     data: data,
-    success: function() {
+    success: () => {
       Router.go('/thanks');
     },
-    error: function(err) {
+    error: err => {
       throw err;
     }
   });
@@ -106,83 +110,133 @@ function onClose() {
   }
 }
 
-function createUser(name, email, password) {
-  // console.log('createUser', name, email, password);
-  let attributeList = [];
-  var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute({
-    Name: name,
-    Value: email
-  });
-  attributeList.push(attributeEmail);
-
-  userPool.signUp(email, password, attributeList, null, (err, result) => {
-    if (err) {
-      throw err;
-      return;
-    }
-    cognitoUser = result.user;
-    console.log('User name is ' + cognitoUser.getUsername());
-  });
-}
-
-function authenticateUser(email, password, newPassword) {
-  const authenticationData = {
-    Username: email,
-    Password: password
-  };
-  const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-  const userData = {
-    Username: email,
-    Pool: userPool
-  };
-  let _cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-  _cognitoUser.authenticateUser(authenticationDetails, {
-    newPasswordRequired: function(userAttributes, requiredAttributes) {
-      _cognitoUser.completeNewPasswordChallenge(newPassword, null, this);
-    },
-    onSuccess: function(result) {
-      cognitoUser = _cognitoUser;
-      window.cognitoUser = cognitoUser;
-      // console.log('access token + ' + result.getAccessToken().getJwtToken());
-      /*Use the idToken for Logins Map when Federating User Pools with Cognito Identity or when passing through an Authorization Header to an API Gateway Authorizer*/
-      // console.log('idToken + ' + result.idToken.jwtToken);
-    },
-    onFailure: function(err) {
-      console.error(err);
-    }
+function initAccount() {
+  getUser().then(onUser);
+  let $accountForm = $('#account-form');
+  $(document).on('submit', '#account-form', e => {
+    e.preventDefault();
+    let data = getFormData($accountForm);
+    login(data.email, data.password, data.password+''+1).then(onUser).catch(userError => {
+      console.log('userError', userError.code);
+      if (userError.code === 'UserNotFoundException') {
+        console.log(data.email, data.password);
+        register(data.email, data.password).then(onUser);
+      } else if (userError.code === 'NotAuthorizedException') {
+        $('#account-error').removeAttr('hidden').text('Incorrect Password.');
+      }
+    });
+    console.log(data);
   });
 }
 
-function getUser(callback) {
-  callback = callback || function() {};
-  cognitoUser = userPool.getCurrentUser();
-  if (!cognitoUser) {
-    return callback();
-  }
-  // console.log(cognitoUser);
-  cognitoUser.getSession((err, session) => {
-    if (err) {
-      throw err;
-      return;
-    }
-    if (!session.isValid()) {
-      cognitoUser = undefined;
+function getFormData($form) {
+  var data = {};
+  $.each($form.serializeArray(), (_, kv) => {
+    if (data.hasOwnProperty(kv.name)) {
+      data[kv.name] = $.makeArray(data[kv.name]);
+      data[kv.name].push(kv.value);
     } else {
-      window.cognitoUser = cognitoUser;
-      onUser();
+      data[kv.name] = kv.value;
     }
-    // console.log('Cognito session valid:', session.isValid());
-    callback(cognitoUser);
+  });
+  return data;
+}
+
+function register(email, password) {
+  return new Promise((resolve, reject) => {
+    // console.log('register', email, password);
+    if (!email) {
+      return reject(new Error('email is required'));
+    }
+    if (!password) {
+      return reject(new Error('password is required'));
+    }
+    let name = email.split('@')[0];
+    let attributeList = [];
+    var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute({
+      Name: name,
+      Value: email
+    });
+    attributeList.push(attributeEmail);
+
+    userPool.signUp(email, password, attributeList, null, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      console.log('User name is ' + result.user.getUsername());
+      resolve(result.user);
+    });
   });
 }
 
-function onUser() {
+function login(email, password, newPassword) {
+  return new Promise((resolve, reject) => {
+    if (!email) {
+      return reject(new Error('email is required'));
+    }
+    if (!password) {
+      return reject(new Error('password is required'));
+    }
+    const authenticationData = {
+      Username: email,
+      Password: password
+    };
+    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+    const userData = {
+      Username: email,
+      Pool: userPool
+    };
+    let _cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    _cognitoUser.authenticateUser(authenticationDetails, {
+      newPasswordRequired: (userAttributes, requiredAttributes) => {
+        _cognitoUser.completeNewPasswordChallenge(newPassword, null, this);
+      },
+      onSuccess: (result) => {
+        resolve(_cognitoUser);
+      },
+      onFailure: reject
+    });
+  });
+}
+
+function getUser() {
+  return new Promise((resolve, reject) => {
+    let currentUser = userPool.getCurrentUser();
+    if (!currentUser) {
+      return resolve();
+    }
+    currentUser.getSession((err, session) => {
+      if (err) {
+        return reject(err);
+      }
+      if (!session.isValid()) {
+        currentUser = undefined;
+      }
+      // console.log('Cognito session valid:', session.isValid());
+      resolve(currentUser);
+    });
+  });
+}
+
+function onUser(user) {
+  if (!user) {
+    return;
+  }
+  cognitoUser = user;
   $('html').addClass('logged-in');
   $('.nav-user').text(cognitoUser.username);
+  if (Router.currentView().url === '/account') {
+    if (window.history.length > 2) {
+      window.history.go(-1);
+    } else {
+      Router.go('/');
+    }
+  }
 }
 
 function logout() {
   cognitoUser.signOut();
+  cognitoUser = undefined;
   $('html').removeClass('logged-in');
   $('.nav-user').text('Login');
   Router.go('/');

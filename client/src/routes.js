@@ -74,6 +74,15 @@ module.exports = [{
 }, {
   url: '/account',
   controller: (self, url) => {
-    ecom.logout();
+    ecom.getUser().then(user => {
+      if (user) {
+        ecom.logout();
+      } else {
+        $('#account').removeAttr('hidden');
+      }
+    });
+  },
+  onUnload: (self, url) => {
+    $('#account').attr('hidden', 'hidden');
   }
 }];
