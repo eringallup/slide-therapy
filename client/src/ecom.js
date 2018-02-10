@@ -122,9 +122,12 @@ function initAccount() {
     let data = getFormData($accountForm);
     disableUserForm();
     login(data.email, data.password, data.password+''+1).then(onUser).catch(userError => {
-      // console.log('userError', userError);
+      // console.error('userError', userError);
       if (userError.code === 'UserNotFoundException') {
-        register(data.email, data.password).then(onUser);
+        register(data.email, data.password).then(onUser).catch(registerError => {
+          // console.error(registerError);
+          enableUserForm();
+        });
       } else if (userError.code === 'NotAuthorizedException') {
         onUserError('Incorrect Password.');
       } else {
@@ -156,13 +159,13 @@ function register(email, password) {
     if (!password) {
       return reject(new Error('Password is required'));
     }
-    let name = email.split('@')[0];
     let attributeList = [];
     var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute({
-      Name: name,
+      Name: 'email',
       Value: email
     });
     attributeList.push(attributeEmail);
+    // console.log('attributeList', attributeList);
 
     userPool.signUp(email, password, attributeList, null, (err, result) => {
       if (err) {
