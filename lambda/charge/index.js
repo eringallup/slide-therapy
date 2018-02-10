@@ -3,6 +3,7 @@ const skus = require('./skus.json');
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const stripe = require('stripe')(process.env.stripe_key);
+const sns = new AWS.SNS();
 
 exports.handler = (event, context, callback) => {
   let eventJson = JSON.parse(event.Records[0].Sns.Message);
@@ -40,9 +41,25 @@ exports.handler = (event, context, callback) => {
       if (updateError) {
         return callback(updateError);
       }
-      callback(null, {
-        statusCode: 200,
-        body: JSON.stringify(_.omit(data.Attributes, 'charge'))
+
+      const message = {
+        oid: eventJson.oid,
+        email: eventJson.email,
+        sku: eventJson.sku,
+        token: eventJson.token
+      };
+
+      sns.publish({
+        Message: JSON.stringify(message),
+        TopicArn: process.env.snsArn
+      }, (snsError, snsData) => {
+        if (snsError) {
+          return callback(snsError);
+        }
+        callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(_.omit(data.Attributes, 'charge'))
+        });
       });
     });
   });
