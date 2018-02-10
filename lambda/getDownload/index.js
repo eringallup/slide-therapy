@@ -2,31 +2,57 @@ const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const crypto = require('crypto');
 const fs = require('fs');
+const _ = require('lodash');
+const jwt = require('jsonwebtoken');
 
 exports.handler = (event, context, callback) => {
-  const update = {
-    TableName: 'orders',
-    Key: {
-      oid: parseInt(event.oid, 10)
-    },
-    UpdateExpression: 'set downloads = downloads + :val',
-    ExpressionAttributeValues: {
-      ':val': 1
-    },
-    ReturnValues: 'UPDATED_NEW'
-  };
-  // console.log('update:', update);
-  dynamo.update(update, (err, order) => {
-    if (err) {
-      return callback(err);
-    }
-    const downloadUrl = getSignedUrl(order.sku);
-    callback(null, {
-      statusCode: 200,
-      body: downloadUrl
+  // console.log('event:', event);
+  // return callback(null, {
+  //   isBase64Encoded: false,
+  //   statusCode: 200,
+  //   body: JSON.stringify(event)
+  // });
+  decrypt(event.t).then(jsonToken => {
+    // console.log('jsonToken', jsonToken);
+    const update = {
+      TableName: 'orders',
+      Key: {
+        oid: parseInt(jsonToken.oid, 10)
+      },
+      UpdateExpression: 'set downloads = downloads + :val',
+      ExpressionAttributeValues: {
+        ':val': 1
+      },
+      ReturnValues: 'ALL_NEW'
+    };
+    // console.log('update:', update);
+    dynamo.update(update, (err, order) => {
+      if (err) {
+        return callback(err);
+      }
+      if (jsonToken.token !== order.Attributes.token) {
+        return callback(new Error('tokens do not match. ' + jsonToken.token + ' != ' + order.Attributes.token));
+      }
+      const downloadUrl = getSignedUrl(order.Attributes.sku);
+      callback(null, {
+        statusCode: 200,
+        body: downloadUrl
+      });
+    });
+  }).catch(callback);
+};
+
+function decrypt(token, password) {
+  console.log('decrypt', token, password);
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, (password || process.env.jwtSecret), (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(data);
     });
   });
-};
+}
 
 function getSignedUrl(deck) {
   // console.log('getSignedUrl', deck);

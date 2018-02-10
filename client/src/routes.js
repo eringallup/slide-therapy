@@ -68,7 +68,9 @@ module.exports = [{
   controller: (self, url) => {
     setView('view-download');
     document.title = baseTitle + ': Download';
-    download(self.query.t);
+    ecom.getUser().then(user => {
+      download(self.query.t, user);
+    });
     scrollTo('body');
   }
 }, {

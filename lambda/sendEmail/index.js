@@ -50,18 +50,6 @@ function encrypt(json, password, expiresIn) {
   });
 }
 
-function decrypt(token, password) {
-  console.log('decrypt', token, password);
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, (password || process.env.jwtSecret), (err, data) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(data);
-    });
-  });
-}
-
 function sendFile(order) {
   console.log('sendFile', _.omit(order, 'charge'));
   return encrypt({
