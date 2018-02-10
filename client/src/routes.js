@@ -69,7 +69,7 @@ module.exports = [{
     setView('view-download');
     document.title = baseTitle + ': Download';
     ecom.getUser().then(user => {
-      download(self.query.t, user);
+      download(self.query.t, user, self.query.download === 'true');
     });
     scrollTo('body');
   }
@@ -78,7 +78,8 @@ module.exports = [{
   controller: (self, url) => {
     ecom.getUser().then(user => {
       if (user) {
-        ecom.logout();
+        setView('view-account');
+        // ecom.logout();
       } else {
         ecom.showAuth();
         ecom.enableUserForm();

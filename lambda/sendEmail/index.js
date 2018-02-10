@@ -35,7 +35,7 @@ exports.handler = (event, context, callback) => {
 };
 
 function encrypt(json, password, expiresIn) {
-  console.log('encrypt', json, password, expiresIn);
+  // console.log('encrypt', json, password, expiresIn);
   return new Promise((resolve, reject) => {
     let tokenConfig = {};
     if (expiresIn) {
@@ -51,7 +51,7 @@ function encrypt(json, password, expiresIn) {
 }
 
 function sendFile(order) {
-  console.log('sendFile', _.omit(order, 'charge'));
+  // console.log('sendFile', _.omit(order, 'charge'));
   return encrypt({
     oid: order.oid,
     token: order.token,

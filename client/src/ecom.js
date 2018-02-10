@@ -116,8 +116,8 @@ function onClose() {
 
 function initAccount() {
   getUser().then(onUser);
-  let $accountForm = $('#account-form');
-  $(document).on('submit', '#account-form', e => {
+  let $accountForm = $('#auth-form');
+  $(document).on('submit', '#auth-form', e => {
     e.preventDefault();
     let data = getFormData($accountForm);
     disableUserForm();
@@ -243,23 +243,23 @@ function onUser(user) {
 }
 
 function showAuth() {
-  $('#account').removeAttr('hidden');
+  $('#auth').removeAttr('hidden');
 }
 
 function hideAuth() {
-  $('#account').attr('hidden', 'hidden');
+  $('#auth').attr('hidden', 'hidden');
 }
 
 function enableUserForm() {
-  $('#account-form fieldset').removeAttr('disabled');
+  $('#auth-form fieldset').removeAttr('disabled');
 }
 
 function disableUserForm() {
-  $('#account-form fieldset').attr('disabled', 'disabled');
+  $('#auth-form fieldset').attr('disabled', 'disabled');
 }
 
 function onUserError(message) {
-  $('#account-error').removeAttr('hidden').text(message);
+  $('#auth-error').removeAttr('hidden').text(message);
   enableUserForm();
 }
 

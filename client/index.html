@@ -29,11 +29,11 @@
 
 <div id="content">
 
-  <section id="account" hidden>
+  <section id="auth" hidden>
     <div class="container">
       <div class="row">
           <div class="col text-center">
-            <form id="account-form" method="POST" action="/account">
+            <form id="auth-form" method="POST" action="/auth">
               <fieldset disabled="disabled>
                 <label for="email">Email</label>
                 <input
@@ -58,7 +58,7 @@
                 >
               </fieldset>
             </form>
-            <div id="account-error" class="alert alert-danger" hidden></div>
+            <div id="auth-error" class="alert alert-danger" hidden></div>
           </div>
       </div>
     </div>
@@ -204,6 +204,19 @@
         <div class="col-sm-12">
           <h2>Download</h2>
           <p class="lead">Your deck should start downloading in a moment.</p>
+          <a id="download-link" hidden></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-account" class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <h2>Account</h2>
+          <h3>Your decks</h3>
+          <ul id="account-decks" class="list-unstyled"></ul>
         </div>
       </div>
     </div>

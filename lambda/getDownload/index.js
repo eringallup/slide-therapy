@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
+const skus = require('./skus.json');
 
 exports.handler = (event, context, callback) => {
   // console.log('event:', event);
@@ -36,14 +37,17 @@ exports.handler = (event, context, callback) => {
       const downloadUrl = getSignedUrl(order.Attributes.sku);
       callback(null, {
         statusCode: 200,
-        body: downloadUrl
+        body: {
+          deck: skus[order.Attributes.sku],
+          downloadUrl: downloadUrl
+        }
       });
     });
   }).catch(callback);
 };
 
 function decrypt(token, password) {
-  console.log('decrypt', token, password);
+  // console.log('decrypt', token, password);
   return new Promise((resolve, reject) => {
     jwt.verify(token, (password || process.env.jwtSecret), (err, data) => {
       if (err) {
