@@ -62,7 +62,7 @@ function initPurchase(deck) {
   stripeCheckout.open({
     name: 'Slide Therapy',
     description: currentDeck.title,
-    email: getEmail(),
+    email: cognitoUser && cognitoUser.signInUserSession.idToken.payload.email,
     amount: 2900
   });
 }
@@ -73,16 +73,11 @@ function apiHeaders() {
   };
 }
 
-function getEmail() {
-  return cognitoUser && cognitoUser.signInUserSession.idToken.payload.email;
-}
-
 function onToken(token) {
   // console.info(token);
   hasToken = true;
 
   const data = {
-    email: getEmail(),
     sku: currentDeck.sku,
     token: token.id
   };
