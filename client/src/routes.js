@@ -1,3 +1,4 @@
+const account = require('./account');
 const ecom = require('./ecom');
 const download = require('./download');
 const baseTitle = 'Slide Therapy 2017';
@@ -68,13 +69,11 @@ module.exports = [{
   controller: (self, url) => {
     setView('view-download');
     document.title = baseTitle + ': Download';
-    ecom.getUser().then(user => {
+    account.getUser().then(user => {
       if (self.query.t) {
         download.withToken(self.query.t, user, self.query.download === 'true');
       } else if (self.query.o) {
-        ecom.getUser().then(user => {
-          download.ownedDeck(user, self.query.o);
-        });
+        download.ownedDeck(user, self.query.o);
       }
     });
     scrollTo('body');
@@ -82,23 +81,23 @@ module.exports = [{
 }, {
   url: '/account',
   controller: (self, url) => {
-    ecom.getUser().then(user => {
+    account.getUser().then(user => {
       if (user) {
         setView('view-account');
       } else {
         setView('view-auth');
-        ecom.enableUserForm();
+        account.enableUserForm();
       }
     });
   },
   onUnload: (self, url) => {
-    ecom.disableUserForm();
+    account.disableUserForm();
   }
 }, {
   url: '/logout',
   controller: (self, url) => {
-    ecom.getUser().then(user => {
-      ecom.logout(user)
+    account.getUser().then(user => {
+      account.logout(user)
     });
   }
 }];

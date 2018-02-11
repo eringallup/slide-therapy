@@ -6,6 +6,9 @@ module.exports = {
 };
 
 function ownedDeck(user, oid) {
+  if (!user) {
+    return location.href = '/';
+  }
   $.ajax({
     type: 'PATCH',
     contentType: 'application/json',
@@ -23,6 +26,9 @@ function ownedDeck(user, oid) {
 }
 
 function withToken(token, user, autoDownload) {
+  if (!user) {
+    return location.href = '/';
+  }
   $.ajax({
     type: 'PATCH',
     contentType: 'application/json',
