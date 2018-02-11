@@ -7,44 +7,102 @@ const jwt = require('jsonwebtoken');
 const skus = require('./skus.json');
 
 exports.handler = (event, context, callback) => {
-  // console.log('event:', event);
-  // return callback(null, {
-  //   isBase64Encoded: false,
-  //   statusCode: 200,
-  //   body: JSON.stringify(event)
-  // });
-  decrypt(event.t).then(jsonToken => {
-    // console.log('jsonToken', jsonToken);
-    const update = {
-      TableName: 'orders',
-      Key: {
-        oid: parseInt(jsonToken.oid, 10)
-      },
-      UpdateExpression: 'set downloads = downloads + :val',
-      ExpressionAttributeValues: {
-        ':val': 1
-      },
-      ReturnValues: 'ALL_NEW'
-    };
-    // console.log('update:', update);
-    dynamo.update(update, (err, order) => {
-      if (err) {
-        return callback(err);
-      }
-      if (jsonToken.token !== order.Attributes.token) {
-        return callback(new Error('tokens do not match. ' + jsonToken.token + ' != ' + order.Attributes.token));
-      }
-      const downloadUrl = getSignedUrl(order.Attributes.sku);
+  if (event.o) {
+    downloadOwned(parseInt(event.o, 10), event.email).then(data => {
       callback(null, {
         statusCode: 200,
-        body: {
+        body: data
+      });
+    }).catch(callback);
+  } else if (event.t) {
+    downloadWithToken(event.t).then(data => {
+      callback(null, {
+        statusCode: 200,
+        body: data
+      });
+    }).catch(callback);
+  } else {
+    callback(new Error('invalid data'));
+  }
+};
+
+function downloadOwned(oid, email) {
+  return new Promise((resolve, reject) => {
+    const query = {
+      TableName: 'orders',
+      FilterExpression : 'oid = :oid and email = :email',
+      ExpressionAttributeValues : {
+        ':oid': oid,
+        ':email' : email
+      }
+    };
+    dynamo.scan(query, (scanError, data) => {
+      if (scanError) {
+        return reject(scanError);
+      }
+      let order = data && data.Items && data.Items[0];
+      if (!order) {
+        return reject(new Error('order not found for user'));
+      }
+
+      const update = {
+        TableName: 'orders',
+        Key: {
+          oid: oid
+        },
+        UpdateExpression: 'set downloads = downloads + :val',
+        ExpressionAttributeValues: {
+          ':val': 1
+        },
+        ReturnValues: 'ALL_NEW'
+      };
+      // console.log('update:', update);
+      dynamo.update(update, (err, order) => {
+        if (err) {
+          return reject(err);
+        }
+        const downloadUrl = getSignedUrl(order.Attributes.sku);
+        resolve({
           deck: skus[order.Attributes.sku],
           downloadUrl: downloadUrl
-        }
+        });
       });
     });
-  }).catch(callback);
-};
+  });
+}
+
+function downloadWithToken(token) {
+  return new Promise((resolve, reject) => {
+    decrypt(token).then(jsonToken => {
+      // console.log('jsonToken', jsonToken);
+      const update = {
+        TableName: 'orders',
+        Key: {
+          oid: parseInt(jsonToken.oid, 10)
+        },
+        UpdateExpression: 'set downloads = downloads + :val',
+        ExpressionAttributeValues: {
+          ':val': 1
+        },
+        ReturnValues: 'ALL_NEW'
+      };
+      // console.log('update:', update);
+      dynamo.update(update, (err, order) => {
+        if (err) {
+          return reject(err);
+        }
+        if (jsonToken.token !== order.Attributes.token) {
+          return reject(new Error('tokens do not match. ' + jsonToken.token + ' != ' + order.Attributes.token));
+        }
+        const downloadUrl = getSignedUrl(order.Attributes.sku);
+        resolve({
+          deck: skus[order.Attributes.sku],
+          downloadUrl: downloadUrl
+        });
+      });
+    }).catch(reject);
+  });
+}
 
 function decrypt(token, password) {
   // console.log('decrypt', token, password);

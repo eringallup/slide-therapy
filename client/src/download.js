@@ -1,8 +1,28 @@
 const _ = require('lodash');
 
-module.exports = download;
+module.exports = {
+  ownedDeck: ownedDeck,
+  withToken: withToken
+};
 
-function download(token, user, autoDownload) {
+function ownedDeck(user, oid) {
+  $.ajax({
+    type: 'PATCH',
+    contentType: 'application/json',
+    headers: {
+      Authorization: user.getSignInUserSession().getIdToken().jwtToken
+    },
+    url: 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=' + oid,
+    success: json => {
+      document.location.href = json.body.downloadUrl;
+    },
+    error: error => {
+      console.error(error);
+    }
+  });
+}
+
+function withToken(token, user, autoDownload) {
   $.ajax({
     type: 'PATCH',
     contentType: 'application/json',

@@ -33,6 +33,7 @@ body.view-tips #view-tips,
 body.view-about #view-about,
 body.view-thanks #view-thanks,
 body.view-download #view-download,
+body.view-auth #view-auth,
 body.view-account #view-account {
   display: block;
 }
@@ -42,6 +43,7 @@ body.view-tips .nav-tips,
 body.view-about .nav-about,
 body.view-thanks .nav-thanks,
 body.view-download .nav-download,
+body.view-auth .nav-auth,
 body.view-account .nav-account {
   border-bottom: 2px solid #000;
 }
@@ -51,6 +53,7 @@ body:not(.view-tips) #view-tips,
 body:not(.view-about) #view-about,
 body:not(.view-thanks) #view-thanks,
 body:not(.view-download) #view-download,
+body:not(.view-auth) #view-auth,
 body:not(.view-account) #view-account {
   display: none;
 }

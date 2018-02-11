@@ -1,6 +1,8 @@
 const decks = require('./decks.json');
 const templatesRegex = new RegExp(/\/templates/);
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
+const download = require('./download');
+const _ = require('lodash');
 
 AWS.config.region = 'us-west-2';
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({
@@ -11,8 +13,6 @@ let cognitoUser;
 
 let hasToken = false;
 let stripeCheckout, currentDeck;
-
-const processPaymentUrl = 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid';
 
 $(document).ready(() => {
   initAccount();
@@ -25,8 +25,7 @@ module.exports = {
   register: register,
   login: login,
   logout: logout,
-  showAuth: showAuth,
-  hideAuth: hideAuth,
+  getDecks: getDecks,
   enableUserForm: enableUserForm,
   disableUserForm: disableUserForm
 };
@@ -70,7 +69,7 @@ function initPurchase(deck) {
 
 function apiHeaders() {
   return {
-    Authorization: cognitoUser.getSignInUserSession().getIdToken().jwtToken
+    Authorization: cognitoUser && cognitoUser.getSignInUserSession().getIdToken().jwtToken
   };
 }
 
@@ -88,12 +87,12 @@ function onToken(token) {
     token: token.id
   };
 
-  // console.info('onToken', data, processPaymentUrl);
+  // console.info('onToken', data);
   $.ajax({
     type: 'GET',
     headers: apiHeaders(),
     contentType: 'application/json',
-    url: processPaymentUrl,
+    url: 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid',
     data: data,
     success: () => {
       Router.go('/thanks');
@@ -121,19 +120,24 @@ function initAccount() {
     e.preventDefault();
     let data = getFormData($accountForm);
     disableUserForm();
-    login(data.email, data.password, data.password+''+1).then(onUser).catch(userError => {
-      // console.error('userError', userError);
-      if (userError.code === 'UserNotFoundException') {
-        register(data.email, data.password).then(onUser).catch(registerError => {
-          // console.error(registerError);
-          enableUserForm();
-        });
-      } else if (userError.code === 'NotAuthorizedException') {
-        onUserError('Incorrect Password.');
-      } else {
-        onUserError(userError.message);
-      }
-    });
+    login(data.email, data.password, data.newPassword, data.verificationCode)
+      .then(user => {
+        onUser(user);
+        Router.go('/');
+      })
+      .catch(userError => {
+        // console.error('userError', userError);
+        if (userError.code === 'UserNotFoundException') {
+          register(data.email, data.password).then(onUser).catch(registerError => {
+            // console.error(registerError);
+            enableUserForm();
+          });
+        } else if (userError.code === 'NotAuthorizedException') {
+          onUserError('Incorrect Password.');
+        } else {
+          onUserError(userError.message);
+        }
+      });
   });
 }
 
@@ -177,7 +181,7 @@ function register(email, password) {
   });
 }
 
-function login(email, password, newPassword) {
+function login(email, password, newPassword, verificationCode) {
   return new Promise((resolve, reject) => {
     if (!email) {
       return reject(new Error('Email is required'));
@@ -199,12 +203,53 @@ function login(email, password, newPassword) {
       newPasswordRequired: (userAttributes, requiredAttributes) => {
         _cognitoUser.completeNewPasswordChallenge(newPassword, null, this);
       },
+      passwordResetRequired: (userAttributes, requiredAttributes) => {
+        _cognitoUser.completePasswordResetChallenge(newPassword, null, this);
+      },
       onSuccess: (result) => {
         resolve(_cognitoUser);
+      },
+      onFailure: (error) => {
+        if (error.code === 'PasswordResetRequiredException') {
+          if (newPassword && verificationCode) {
+            confirmPassword(_cognitoUser, newPassword, verificationCode);
+          } else {
+            forgotPassword(_cognitoUser, newPassword, verificationCode);
+          }
+        } else {
+          reject(error);
+        }
+      }
+    });
+  });
+}
+
+function changePassword(user, currentPassword, newPassword) {
+  return new Promise((resolve, reject) => {
+    user.changePassword(currentPassword, newPassword, (changePasswordError, changePasswordResult) => {
+      if (changePasswordError) {
+        return reject(changePasswordError.message);
+      }
+      console.log('changePasswordResult:', changePasswordResult);
+      hidePasswordReset();
+      resolve(user);
+    });
+  });
+}
+
+function forgotPassword(user, newPassword, verificationCode) {
+  return new Promise((resolve, reject) => {
+    user.forgotPassword({
+      onSuccess: () => {
+        showPasswordReset();
       },
       onFailure: reject
     });
   });
+}
+
+function confirmPassword(user, password, verificationCode) {
+  user.confirmPassword(verificationCode, password, this);
 }
 
 function getUser() {
@@ -233,21 +278,7 @@ function onUser(user) {
   cognitoUser = user;
   $('html').addClass('logged-in');
   $('.nav-user').text(cognitoUser.username);
-  if (Router.currentView().url === '/account') {
-    if (window.history.length > 2) {
-      window.history.go(-1);
-    } else {
-      Router.go('/');
-    }
-  }
-}
-
-function showAuth() {
-  $('#auth').removeAttr('hidden');
-}
-
-function hideAuth() {
-  $('#auth').attr('hidden', 'hidden');
+  getDecks();
 }
 
 function enableUserForm() {
@@ -258,15 +289,74 @@ function disableUserForm() {
   $('#auth-form fieldset').attr('disabled', 'disabled');
 }
 
+function showPasswordReset() {
+  $('#email-input').attr('hidden', 'hidden');
+  $('#password-input').attr('hidden', 'hidden');
+  $('#new-password-input').removeAttr('hidden');
+  $('#new-password-input input').removeAttr('disabled');
+  $('#verification-code-input').removeAttr('hidden');
+  $('#verification-code-input input').removeAttr('disabled');
+  enableUserForm();
+}
+
+function hidePasswordReset() {
+  $('#email-input').removeAttr('hidden');
+  $('#password-input').removeAttr('hidden');
+  $('#new-password-input').attr('hidden', 'hidden');
+  $('#new-password-input input').attr('disabled', 'disabled');
+  $('#verification-code-input').attr('hidden', 'hidden');
+  $('#verification-code-input input').attr('disabled', 'disabled');
+}
+
 function onUserError(message) {
   $('#auth-error').removeAttr('hidden').text(message);
   enableUserForm();
 }
 
-function logout() {
-  cognitoUser.signOut();
-  cognitoUser = undefined;
-  $('html').removeClass('logged-in');
-  $('.nav-user').text('Login');
-  Router.go('/');
+function logout(user) {
+  if (user) {
+    user.signOut();
+    user = undefined;
+    $('html').removeClass('logged-in');
+    $('.nav-user').text('Login');
+  }
+  setTimeout(() => {
+    Router.go('/');
+  });
+}
+
+let hasDecks = false;
+function getDecks() {
+  if (hasDecks) {
+    return;
+  }
+  $.ajax({
+    type: 'GET',
+    headers: apiHeaders(),
+    contentType: 'application/json',
+    url: 'https://hwwhk00ik9.execute-api.us-west-2.amazonaws.com/prod/getDecks',
+    success: json => {
+      hasDecks = true;
+      let userDecks = json.body;
+      let $decks = $('#account-decks');
+      _.each(userDecks.Items, item => {
+        let deck = _.find(_.values(decks), {
+          sku: parseInt(item.sku, 10)
+        });
+        let $li = $('<li/>');
+        let $a = $('<a/>');
+        $a.attr('href', '/download?o=' + item.oid);
+        $a.on('click', e => {
+          e.preventDefault();
+          download.ownedDeck(cognitoUser, item.oid);
+        });
+        $a.text(deck.title);
+        $li.append($a);
+        $decks.append($li);
+      });
+    },
+    error: err => {
+      throw err;
+    }
+  });
 }

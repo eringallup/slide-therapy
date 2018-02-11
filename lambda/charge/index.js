@@ -58,7 +58,7 @@ exports.handler = (event, context, callback) => {
         }
         callback(null, {
           statusCode: 200,
-          body: JSON.stringify(_.omit(data.Attributes, 'charge'))
+          body: _.omit(data.Attributes, 'charge')
         });
       });
     });

@@ -69,7 +69,13 @@ module.exports = [{
     setView('view-download');
     document.title = baseTitle + ': Download';
     ecom.getUser().then(user => {
-      download(self.query.t, user, self.query.download === 'true');
+      if (self.query.t) {
+        download.withToken(self.query.t, user, self.query.download === 'true');
+      } else if (self.query.o) {
+        ecom.getUser().then(user => {
+          download.ownedDeck(user, self.query.o);
+        });
+      }
     });
     scrollTo('body');
   }
@@ -79,15 +85,20 @@ module.exports = [{
     ecom.getUser().then(user => {
       if (user) {
         setView('view-account');
-        // ecom.logout();
       } else {
-        ecom.showAuth();
+        setView('view-auth');
         ecom.enableUserForm();
       }
     });
   },
   onUnload: (self, url) => {
-    ecom.hideAuth();
     ecom.disableUserForm();
+  }
+}, {
+  url: '/logout',
+  controller: (self, url) => {
+    ecom.getUser().then(user => {
+      ecom.logout(user)
+    });
   }
 }];
