@@ -1,4 +1,5 @@
-const _ = require('lodash');
+import account from './account.jsx';
+import _ from 'lodash';
 
 module.exports = {
   ownedDeck: ownedDeck,
@@ -9,44 +10,36 @@ function ownedDeck(user, oid) {
   if (!user) {
     return location.href = '/';
   }
-  $.ajax({
-    type: 'PATCH',
-    contentType: 'application/json',
+  let headers = account.apiHeaders();
+  headers['Content-Type'] = 'application/json';
+  axios({
+    method: 'PATCH',
     headers: {
       Authorization: user.getSignInUserSession().getIdToken().jwtToken
     },
-    url: 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=' + oid,
-    success: json => {
-      document.location.href = json.body.downloadUrl;
-    },
-    error: error => {
-      console.error(error);
-    }
-  });
+    url: 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=' + oid
+  }).then(() => {
+    document.location.href = json.body.downloadUrl;
+  }).catch(console.error);
 }
 
 function withToken(token, user, autoDownload) {
   if (!user) {
     return location.href = '/';
   }
-  $.ajax({
-    type: 'PATCH',
-    contentType: 'application/json',
-    headers: {
-      Authorization: user.getSignInUserSession().getIdToken().jwtToken
-    },
-    url: 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?t=' + token,
-    success: json => {
-      $('#download-link')
-        .removeAttr('hidden')
-        .attr('href', json.body.downloadUrl)
-        .text('Download ' + json.body.deck.title);
-      if (autoDownload === true) {
-        document.location.href = json.body.downloadUrl;
-      }
-    },
-    error: error => {
-      console.error(error);
+  let headers = account.apiHeaders();
+  headers['Content-Type'] = 'application/json';
+  axios({
+    method: 'PATCH',
+    headers: headers,
+    url: 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?t=' + token
+  }).then(() => {
+    let downloadLink = document.querySelector('#download-link');
+    downloadLink.removeAttribute('hidden');
+    downloadLink.setAttribute('href', json.body.downloadUrl);
+    downloadLink.innerText = 'Download ' + json.body.deck.title;
+    if (autoDownload === true) {
+      document.location.href = json.body.downloadUrl;
     }
-  });
+  }).catch(console.error);
 }

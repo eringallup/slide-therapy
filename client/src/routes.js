@@ -1,22 +1,24 @@
-const account = require('./account');
-const ecom = require('./ecom');
-const download = require('./download');
+import ReactDOM from 'react-dom';
+import account from './account.jsx';
+import ecom from './ecom';
+import download from './download';
+
 const baseTitle = 'Slide Therapy 2017';
-const $body = $('body');
 let currentView = 'view-templates';
 
+const bodyClassList = document.body.classList;
 function setView(view) {
   if (view === currentView) {
     return;
   }
-  $body.addClass(view);
-  $body.removeClass(currentView);
+  bodyClassList.add(view);
+  bodyClassList.remove(currentView);
   currentView = view;
 }
 
 function scrollTo(id) {
   // console.info('scrollTo', id);
-  $(window).scrollTo(id, 250, 'easeInOut');
+  scrollIt(document.querySelector(id), 250, 'easeOutQuad');
 }
 
 module.exports = [{
@@ -86,12 +88,13 @@ module.exports = [{
         setView('view-account');
       } else {
         setView('view-auth');
-        account.enableUserForm();
+        account.renderAuthForm();
       }
     });
+    scrollTo('body');
   },
   onUnload: (self, url) => {
-    account.disableUserForm();
+    account.unrenderAuthForm();
   }
 }, {
   url: '/logout',
@@ -99,5 +102,6 @@ module.exports = [{
     account.getUser().then(user => {
       account.logout(user)
     });
+    scrollTo('body');
   }
 }];

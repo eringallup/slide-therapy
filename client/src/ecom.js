@@ -1,13 +1,13 @@
-const decks = require('./decks.json');
-const account = require('./account');
+import ready from './ready';
+import decks from './decks.json';
+import account from './account.jsx';
+import axios from 'axios';
+
 const templatesRegex = new RegExp(/\/templates/);
-
-let cognitoUser;
-
 let hasToken = false;
 let stripeCheckout, currentDeck;
 
-$(document).ready(() => {
+ready(() => {
   initEcom(50);
 });
 
@@ -34,8 +34,8 @@ function initEcom(delay) {
     token: onToken,
     closed: onClose
   });
-  $(window).on('popstate', stripeCheckout.close);
-  $('html').addClass('has-ecom');
+  window.addEventListener('popstate', stripeCheckout.close);
+  document.querySelector('html').classList.add('has-ecom');
 }
 
 function initPurchase(deck) {
@@ -81,19 +81,16 @@ function onToken(token) {
       });
     }
 
-    // $.ajax({
-    //   type: 'GET',
-    //   headers: account.apiHeaders(),
-    //   contentType: 'application/json',
-    //   url: 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid',
-    //   data: data,
-    //   success: () => {
-    //     Router.go('/thanks');
-    //   },
-    //   error: err => {
-    //     throw err;
-    //   }
-    // });
+    let headers = account.apiHeaders();
+    headers['Content-Type'] = 'application/json';
+    axios({
+      method: 'GET',
+      headers: headers,
+      url: 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid',
+      params: data
+    }).then(() => {
+      Router.go('/thanks');
+    }).catch(console.error);
   });
 }
 
