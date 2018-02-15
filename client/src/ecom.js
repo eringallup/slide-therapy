@@ -40,7 +40,9 @@ function initEcom(delay) {
 
 function initPurchase(deck) {
   account.getUser().then(user => {
-    currentDeck = skus[deck];
+    currentDeck = _.find(skus, {
+      slug: deck
+    });
     if (!currentDeck) {
       throw new Error('Deck configuration error.');
       return;
