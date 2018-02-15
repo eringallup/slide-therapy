@@ -1,0 +1,20 @@
+{
+  "1": {
+    "title": "Halcyon",
+    "sku": 1,
+    "path": "halcyon.ppt",
+    "amountInCents": 2900
+  },
+  "2": {
+    "title": "Summit",
+    "sku": 2,
+    "path": "summit.ppt",
+    "amountInCents": 2900
+  },
+  "3": {
+    "title": "Hitchcock",
+    "sku": 3,
+    "path": "hitchcock.ppt",
+    "amountInCents": 2900
+  }
+}

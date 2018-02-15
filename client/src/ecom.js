@@ -1,5 +1,5 @@
 import ready from './ready';
-import decks from './decks.json';
+import skus from 'slidetherapy/skus.json';
 import account from './account.jsx';
 import axios from 'axios';
 
@@ -40,7 +40,7 @@ function initEcom(delay) {
 
 function initPurchase(deck) {
   account.getUser().then(user => {
-    currentDeck = decks[deck];
+    currentDeck = skus[deck];
     if (!currentDeck) {
       throw new Error('Deck configuration error.');
       return;

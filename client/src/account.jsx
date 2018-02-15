@@ -8,7 +8,7 @@ import Vault from 'vault.js';
 import cacheStack from 'cache-stack';
 import axios from 'axios';
 import ready from './ready';
-import decks from './decks.json';
+import skus from 'slidetherapy/skus.json';
 
 AWS.config.region = 'us-west-2';
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({
@@ -221,9 +221,7 @@ function OwnedDecks(props) {
     return '';
   }
   const decksHtml = props.orders.map(order => {
-    let deck = _.find(Object.values(decks), {
-      sku: parseInt(order.sku, 10)
-    });
+    let deck = skus[order.sku];
     return <li key={order.oid}><a href={'/download?o=' + order.oid}>{deck.title}</a></li>;
   });
   return <React.Fragment><h2>Your decks</h2><ul className="list-unstyled">{decksHtml}</ul></React.Fragment>;

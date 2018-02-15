@@ -7,6 +7,7 @@
     "amazon-cognito-identity-js": "^1.31.0",
     "async": "^2.5.0",
     "axios": "^0.17.1",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
@@ -14,6 +15,7 @@
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.0.0-beta",
     "cache-stack": "^0.1.0",
+    "express": "^4.16.2",
     "html-loader": "^0.5.5",
     "jquery": "^3.2.1",
     "jquery.scrollto": "^2.1.2",
@@ -22,6 +24,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
+    "react-transmit": "^3.2.0",
     "redux": "^3.7.2",
     "stripe": "^4.14.0",
     "vault.js": "^1.0.3"
@@ -34,13 +37,14 @@
     "style-loader": "^0.19.0",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.1"
   },
   "scripts": {
-    "setup": "rm ./node_modules/slidetherapy && ln -s ../server ./node_modules/slidetherapy",
+    "setup": "rm ./node_modules/slidetherapy; ln -s ../ ./node_modules/slidetherapy",
     "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js",
     "watch": "webpack --config webpack.dev.js --watch",
     "client": "webpack-dev-server --config webpack.dev.js --open",
+    "start": "webpack --config webpack.dev.js && babel-node server.jsx",
     "build": "webpack --config webpack.dev.js",
     "build-prod": "webpack --config webpack.prod.js"
   },
