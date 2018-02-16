@@ -68,6 +68,23 @@ body:not(.view-account) #view-account {
   }
 }
 
+.img-placeholder {
+  background-color: #ddd;
+}
+
+#templates .img-placeholder {
+  width: 100%;
+  height: 80px;
+}
+
+#templates a:hover {
+  text-decoration: none;
+}
+
+.color-inherit {
+  color: inherit;
+}
+
 .btn {
   border-radius: 0;
 }

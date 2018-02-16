@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import _ from 'lodash';
 import download from './download';
@@ -8,6 +7,7 @@ import Vault from 'vault.js';
 import cacheStack from 'cache-stack';
 import axios from 'axios';
 import ready from './ready';
+import dataStore from './store.jsx';
 import skus from 'slidetherapy/skus.json';
 
 AWS.config.region = 'us-west-2';
@@ -33,25 +33,14 @@ ready(() => {
   initAccount();
 });
 
-function userStateStore(state = undefined, action) {
-  // console.log('userStateStore', state, action);
-  if (action.type === 'update') {
-    state = action.user;
-  } else if (action.type === 'logout') {
-    state = undefined;
-  }
-  return state;
-}
-
-let userState = createStore(userStateStore);
-
 class UserAuth extends React.Component {
   constructor(props) {
     super(props);
     this.state = props;
-    userState.subscribe(() => {
+    dataStore.subscribe(() => {
+      let currentState = dataStore.getState();
       this.setState({
-        user: userState.getState()
+        user: currentState.user
       });
     });
   }
@@ -63,24 +52,15 @@ class UserAuth extends React.Component {
   }
 }
 
-function authFormStore(state = {}, action) {
-  Object.keys(action).forEach(item => {
-    state[item] = action[item];
-  });
-  return state;
-}
-
-let authForm = createStore(authFormStore);
-
 class AuthForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    authForm.subscribe(item => {
-      let authState = authForm.getState();
-      Object.keys(authState).forEach(item => {
+    dataStore.subscribe(item => {
+      let currentState = dataStore.getState();
+      Object.keys(currentState).forEach(item => {
         this.setState({
-          [item]: authState[item]
+          [item]: currentState[item]
         });
       });
       if (this.state.changePassword) {
@@ -363,7 +343,7 @@ function getUser() {
 
 function onUser(user) {
   cognitoUser = user;
-  userState.dispatch({
+  dataStore.dispatch({
     type: 'update',
     user: cognitoUser
   });
@@ -393,21 +373,21 @@ function getFormData(form) {
 }
 
 function showPasswordReset() {
-  authForm.dispatch({
+  dataStore.dispatch({
     type: 'update',
     changingPassword: true
   });
 }
 
 function hidePasswordReset() {
-  authForm.dispatch({
+  dataStore.dispatch({
     type: 'update',
     changingPassword: false
   });
 }
 
 function onUserError(message) {
-  authForm.dispatch({
+  dataStore.dispatch({
     type: 'update',
     error: message
   });
@@ -417,7 +397,7 @@ function logout(user) {
   if (user) {
     user.signOut();
     user = undefined;
-    userState.dispatch({
+    dataStore.dispatch({
       type: 'logout'
     });
   }
