@@ -15,15 +15,15 @@ const userPool = new AmazonCognitoIdentity.CognitoUserPool({
 });
 let cognitoUser;
 
-module.exports = {
-  apiHeaders: apiHeaders,
-  getUser: getUser,
-  getEmail: getEmail,
-  register: register,
-  login: login,
-  onUser: onUser,
-  logout: logout,
-  getDecks: getDecks
+export {
+  apiHeaders,
+  getUser,
+  getEmail,
+  register,
+  login,
+  onUser,
+  logout,
+  getDecks
 };
 
 ready(initAccount);

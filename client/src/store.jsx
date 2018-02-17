@@ -13,4 +13,4 @@ function dataStore(state = {}, action) {
 
 let store = createStore(dataStore);
 
-module.exports = store;
+export default store;

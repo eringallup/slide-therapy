@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import axios from 'axios';
+import * as account from 'slidetherapy/client/src/account.jsx';
 
 module.exports = {
   ownedDeck: ownedDeck,
@@ -10,15 +10,11 @@ function ownedDeck(user, oid) {
   if (!user) {
     return location.href = '/';
   }
-  let headers = {
-    Authorization: user.getSignInUserSession().getIdToken().jwtToken,
-    'Content-Type': 'application/json'
-  };
+  let headers = account.apiHeaders();
+  headers['Content-Type'] = 'application/json';
   axios({
     method: 'PATCH',
-    headers: {
-      Authorization: user.getSignInUserSession().getIdToken().jwtToken
-    },
+    headers: headers,
     url: 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=' + oid
   }).then(json => {
     let body = json && json.data && json.data.body;
@@ -30,10 +26,8 @@ function withToken(token, user, autoDownload) {
   if (!user) {
     return location.href = '/';
   }
-  let headers = {
-    Authorization: user.getSignInUserSession().getIdToken().jwtToken,
-    'Content-Type': 'application/json'
-  };
+  let headers = account.apiHeaders();
+  headers['Content-Type'] = 'application/json';
   axios({
     method: 'PATCH',
     headers: headers,

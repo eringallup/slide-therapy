@@ -1,7 +1,8 @@
 import ready from 'slidetherapy/client/src/ready';
+import { getAll as routes } from 'slidetherapy/client/src/routes';
 
 ready(() => {
-  require('slidetherapy/client/src/routes').forEach(route => {
+  routes().forEach(route => {
     Router.route(route);
   });
   Router.ready();

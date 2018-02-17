@@ -1,6 +1,7 @@
 import ready from 'slidetherapy/client/src/ready';
 import skus from 'slidetherapy/skus.json';
-import account from 'slidetherapy/client/src/account.jsx';
+import * as account from 'slidetherapy/client/src/account.jsx';
+import _ from 'lodash';
 import axios from 'axios';
 
 const templatesRegex = new RegExp(/\/templates/);
@@ -20,7 +21,6 @@ function initEcom(delay) {
   if (!window.StripeCheckout) {
     if (delay > (1000 * 10)) {
       throw new Error('unable to init ecom.');
-      return;
     }
     setTimeout(() => {
       initEcom(delay * 2);
@@ -39,13 +39,12 @@ function initEcom(delay) {
 }
 
 function initPurchase(deck) {
-  account.getUser().then(user => {
+  account.getUser().then(() => {
     currentDeck = _.find(skus, {
       slug: deck
     });
     if (!currentDeck) {
       throw new Error('Deck configuration error.');
-      return;
     }
     let stripeConfig = {
       name: 'Slide Therapy',
