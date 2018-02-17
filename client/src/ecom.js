@@ -1,6 +1,6 @@
-import ready from './ready';
+import ready from 'slidetherapy/client/src/ready';
 import skus from 'slidetherapy/skus.json';
-import account from './account.jsx';
+import account from 'slidetherapy/client/src/account.jsx';
 import axios from 'axios';
 
 const templatesRegex = new RegExp(/\/templates/);

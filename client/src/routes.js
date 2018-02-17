@@ -1,7 +1,9 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
-import account from './account.jsx';
-import ecom from './ecom';
-import download from './download';
+import AuthForm from 'slidetherapy/client/src/components/AuthForm.jsx';
+import account from 'slidetherapy/client/src/account.jsx';
+import ecom from 'slidetherapy/client/src/ecom';
+import download from 'slidetherapy/client/src/download';
 
 const baseTitle = 'Slide Therapy 2017';
 let currentView = 'view-templates';
@@ -88,13 +90,13 @@ module.exports = [{
         setView('view-account');
       } else {
         setView('view-auth');
-        account.renderAuthForm();
+        ReactDOM.render(<AuthForm/>, document.querySelector('#view-auth .col'));
       }
     });
     scrollTo('body');
   },
   onUnload: (self, url) => {
-    account.unrenderAuthForm();
+    ReactDOM.unmountComponentAtNode(document.querySelector('#view-auth .col'));
   }
 }, {
   url: '/logout',
