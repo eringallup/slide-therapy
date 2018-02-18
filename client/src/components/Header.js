@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import UserAuth from 'components/UserAuth';
 
 export default class Header extends React.Component {
@@ -14,9 +15,9 @@ export default class Header extends React.Component {
         </div>
         <div className="col-sm-7 d-flex align-items-center justify-content-center justify-content-sm-end">
           <nav className="main-nav nav">
-            <a className="nav-link nav-templates" href="/">Templates</a>
-            <a className="nav-link nav-tips" href="/tips">Tips</a>
-            <a className="nav-link nav-about" href="/about">About</a>
+            <Link to="/" className="nav-link nav-templates" href="/">Templates</Link>
+            <Link to="/tips" className="nav-link nav-tips">Tips</Link>
+            <Link to="/about" className="nav-link nav-about">About</Link>
             <UserAuth/>
           </nav>
         </div>

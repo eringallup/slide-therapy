@@ -28,7 +28,7 @@ body.view-loading #content {
   opacity: 0;
 }
 
-body.view-templates #view-templates,
+/* body.view-templates #view-templates,
 body.view-tips #view-tips,
 body.view-about #view-about,
 body.view-thanks #view-thanks,
@@ -56,7 +56,7 @@ body:not(.view-download) #view-download,
 body:not(.view-auth) #view-auth,
 body:not(.view-account) #view-account {
   display: none;
-}
+} */
 
 .main-nav .nav-link {
   color: #000;

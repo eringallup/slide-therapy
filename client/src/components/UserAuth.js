@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import dataStore from 'store';
 
 export default class UserAuth extends React.Component {
@@ -14,8 +15,8 @@ export default class UserAuth extends React.Component {
   }
   render() {
     if (this.state.user) {
-      return <a className="nav-link nav-user" href="/account">{this.state.user.signInUserSession.idToken.payload.email}</a>;
+      return <Link to="/account" className="nav-link nav-user">{this.state.user.signInUserSession.idToken.payload.email}</Link>;
     }
-    return <a className="nav-link nav-user" href="/account">Login</a>;
+    return <Link to="/login" className="nav-link nav-user">Login</Link>;
   }
 }

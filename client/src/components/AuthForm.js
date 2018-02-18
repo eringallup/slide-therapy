@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import Vault from 'vault.js';
 import dataStore from 'store';
 import { login, register } from 'account';
@@ -7,7 +8,10 @@ export default class AuthForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    dataStore.subscribe(() => {
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+  componentDidMount() {
+    this.unsubscribe = dataStore.subscribe(() => {
       let currentState = dataStore.getState();
       Object.keys(currentState).forEach(item => {
         this.setState({
@@ -18,9 +22,6 @@ export default class AuthForm extends React.Component {
         this.newPasswordInput.focus();
       }
     });
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-  componentDidMount() {
     let username = Vault.Local.get('username');
     if (username) {
       this.emailInput.value = username;
@@ -30,6 +31,9 @@ export default class AuthForm extends React.Component {
     } else {
       this.emailInput.focus();
     }
+  }
+  componentWillUnmount() {
+    this.unsubscribe();
   }
   handleEmailBlur(e) {
     Vault.Local.set('username', e.target.value);
@@ -52,15 +56,8 @@ export default class AuthForm extends React.Component {
       disableForm: true
     });
     login(data.email, data.password, data.newPassword, data.verificationCode)
-      .then(() => {
-        this.passwordInput.value = '';
-        this.setState({
-          error: false,
-          disableForm: true
-        });
-        Router.go('/');
-      })
       .catch(userError => {
+        console.log(userError);
         if (userError.code === 'UserNotFoundException') {
           register(data.email, data.password).catch(registerError => {
             if (registerError) {
@@ -89,6 +86,9 @@ export default class AuthForm extends React.Component {
       });
   }
   render() {
+    if (this.state.user) {
+      return <Redirect to="/"/>;
+    }
     const disableForm = this.state.disableForm;
     const changingPassword = this.state.changingPassword;
     const hasError = !(this.state.error);

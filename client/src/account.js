@@ -9,7 +9,6 @@ const userPool = new AmazonCognitoIdentity.CognitoUserPool({
 });
 
 export {
-  init,
   apiHeaders,
   getUser,
   getEmail,
@@ -17,12 +16,6 @@ export {
   login,
   logout
 };
-
-function init() {
-  getUser().then(user => {
-    onUser(user);
-  });
-}
 
 function apiHeaders() {
   let currentState = dataStore.getState();
@@ -150,6 +143,10 @@ function getUser() {
         currentUser = undefined;
       }
       // console.log('Cognito session valid:', session.isValid());
+      dataStore.dispatch({
+        type: 'update',
+        user: currentUser
+      });
       resolve(currentUser);
     });
   });
@@ -185,7 +182,4 @@ function logout() {
       user: undefined
     });
   }
-  setTimeout(() => {
-    Router.go('/');
-  });
 }
