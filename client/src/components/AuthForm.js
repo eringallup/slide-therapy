@@ -1,7 +1,7 @@
 import React from 'react';
 import Vault from 'vault.js';
 import dataStore from 'store';
-import { login, onUser, register } from 'account';
+import { login, register } from 'account';
 
 export default class AuthForm extends React.Component {
   constructor(props) {
@@ -52,8 +52,7 @@ export default class AuthForm extends React.Component {
       disableForm: true
     });
     login(data.email, data.password, data.newPassword, data.verificationCode)
-      .then(user => {
-        onUser(user);
+      .then(() => {
         this.passwordInput.value = '';
         this.setState({
           error: false,
@@ -63,7 +62,7 @@ export default class AuthForm extends React.Component {
       })
       .catch(userError => {
         if (userError.code === 'UserNotFoundException') {
-          register(data.email, data.password).then(onUser).catch(registerError => {
+          register(data.email, data.password).catch(registerError => {
             if (registerError) {
               dataStore.dispatch({
                 type: 'update',

@@ -1,4 +1,5 @@
 import React from 'react';
+import UserAuth from 'components/UserAuth';
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class Header extends React.Component {
             <a className="nav-link nav-templates" href="/">Templates</a>
             <a className="nav-link nav-tips" href="/tips">Tips</a>
             <a className="nav-link nav-about" href="/about">About</a>
-            <span id="nav-user"></span>
+            <UserAuth/>
           </nav>
         </div>
       </div>

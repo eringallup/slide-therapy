@@ -1,38 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import AWS from 'aws-sdk';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
-import cacheStack from 'cache-stack';
-import axios from 'axios';
 import dataStore from 'store';
-import OwnedDecks from 'components/OwnedDecks';
 
 AWS.config.region = 'us-west-2';
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({
   UserPoolId: 'us-west-2_ElsbNKMlR',
   ClientId: '344cbh06h2oqsi3aqreaj22n88'
 });
-let cognitoUser;
 
 export {
+  init,
   apiHeaders,
   getUser,
   getEmail,
   register,
   login,
-  onUser,
-  logout,
-  getDecks
+  logout
 };
 
+function init() {
+  getUser().then(user => {
+    onUser(user);
+  });
+}
+
 function apiHeaders() {
+  let currentState = dataStore.getState();
   return {
-    Authorization: cognitoUser && cognitoUser.getSignInUserSession().getIdToken().jwtToken
+    Authorization: currentState.user && currentState.user.getSignInUserSession().getIdToken().jwtToken
   };
 }
 
 function getEmail() {
-  return cognitoUser && cognitoUser.signInUserSession.idToken.payload.email;
+  let currentState = dataStore.getState();
+  return currentState.user && currentState.user.signInUserSession.idToken.payload.email;
 }
 
 function register(email, password) {
@@ -57,6 +58,7 @@ function register(email, password) {
         return reject(err);
       }
       console.log('User name is ' + result.user.getUsername());
+      onUser(result.user);
       resolve(result.user);
     });
   });
@@ -88,6 +90,7 @@ function login(email, password, newPassword, verificationCode) {
         _cognitoUser.completePasswordResetChallenge(newPassword, null, this);
       },
       onSuccess: () => {
+        onUser(_cognitoUser);
         resolve(_cognitoUser);
       },
       onFailure: (error) => {
@@ -153,14 +156,10 @@ function getUser() {
 }
 
 function onUser(user) {
-  cognitoUser = user;
   dataStore.dispatch({
     type: 'update',
-    user: cognitoUser
+    user: user
   });
-  if (cognitoUser) {
-    getDecks();
-  }
 }
 
 function showPasswordReset() {
@@ -177,32 +176,16 @@ function showPasswordReset() {
 //   });
 // }
 
-function logout(user) {
-  if (user) {
-    user.signOut();
-    user = undefined;
+function logout() {
+  let currentState = dataStore.getState();
+  if (currentState.user) {
+    currentState.user.signOut();
     dataStore.dispatch({
-      type: 'logout'
+      type: 'logout',
+      user: undefined
     });
   }
   setTimeout(() => {
     Router.go('/');
   });
-}
-
-function getDecks() {
-  const decksCacheStack = cacheStack(callback => {
-    let headers = apiHeaders();
-    headers['Content-Type'] = 'application/json';
-    axios({
-      method: 'GET',
-      headers: headers,
-      url: 'https://hwwhk00ik9.execute-api.us-west-2.amazonaws.com/prod/getDecks'
-    }).then(callback).catch(console.error);
-  }, {
-    key: 'getDecks'
-  }, json => {
-    ReactDOM.render(<OwnedDecks orders={json.data.body.Items}/>, document.querySelector('#account-decks'));
-  });
-  return decksCacheStack;
 }

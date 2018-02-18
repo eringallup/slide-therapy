@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import AuthForm from 'components/AuthForm';
 import * as account from 'account';
 import ecom from 'ecom';
 import download from 'download';
@@ -95,20 +92,14 @@ const routes = [{
         setView('view-account');
       } else {
         setView('view-auth');
-        ReactDOM.render(<AuthForm/>, document.querySelector('#view-auth .col'));
       }
     });
     scrollTo('body');
-  },
-  onUnload: () => {
-    ReactDOM.unmountComponentAtNode(document.querySelector('#view-auth .col'));
   }
 }, {
   url: '/logout',
   controller: () => {
-    account.getUser().then(user => {
-      account.logout(user);
-    });
+    account.logout();
     scrollTo('body');
   }
 }];

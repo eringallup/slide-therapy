@@ -1,4 +1,5 @@
 import React from 'react';
+import OwnedDecks from 'components/OwnedDecks';
 
 export default class Account extends React.Component {
   constructor(props) {
@@ -13,7 +14,9 @@ export default class Account extends React.Component {
             <h2>Account</h2>
             <a href="/logout">Log out</a>
           </div>
-          <div className="col-sm-6" id="account-decks"></div>
+          <div className="col-sm-6">
+            <OwnedDecks/>
+          </div>
         </div>
       </div>
     </section>;
