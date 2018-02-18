@@ -4,9 +4,7 @@ import AWS from 'aws-sdk';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import cacheStack from 'cache-stack';
 import axios from 'axios';
-import ready from 'ready';
 import dataStore from 'store';
-import UserAuth from 'components/UserAuth';
 import OwnedDecks from 'components/OwnedDecks';
 
 AWS.config.region = 'us-west-2';
@@ -27,8 +25,6 @@ export {
   getDecks
 };
 
-ready(initAccount);
-
 function apiHeaders() {
   return {
     Authorization: cognitoUser && cognitoUser.getSignInUserSession().getIdToken().jwtToken
@@ -37,13 +33,6 @@ function apiHeaders() {
 
 function getEmail() {
   return cognitoUser && cognitoUser.signInUserSession.idToken.payload.email;
-}
-
-function initAccount() {
-  getUser().then(user => {
-    ReactDOM.render(<UserAuth/>, document.querySelector('#nav-user'));
-    onUser(user);
-  });
 }
 
 function register(email, password) {
