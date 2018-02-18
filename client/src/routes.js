@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthForm from 'slidetherapy/client/src/components/AuthForm.jsx';
-import * as account from 'slidetherapy/client/src/account.jsx';
-import ecom from 'slidetherapy/client/src/ecom';
-import download from 'slidetherapy/client/src/download';
+import AuthForm from 'components/AuthForm';
+import * as account from 'account';
+import ecom from 'ecom';
+import download from 'download';
 
 const baseTitle = 'Slide Therapy 2017';
 let currentView = 'view-templates';

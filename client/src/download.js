@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as account from 'slidetherapy/client/src/account.jsx';
+import * as account from 'account';
 
 module.exports = {
   ownedDeck: ownedDeck,

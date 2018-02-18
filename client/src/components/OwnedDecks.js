@@ -1,7 +1,7 @@
 import React from 'react';
-import skus from 'slidetherapy/skus.json';
-import download from 'slidetherapy/client/src/download';
-import dataStore from 'slidetherapy/client/src/store.jsx';
+import skus from 'skus.json';
+import download from 'download';
+import dataStore from 'store';
 
 export default class OwnedDecks extends React.Component {
   constructor(props) {

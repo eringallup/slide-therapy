@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import cacheStack from 'cache-stack';
 import axios from 'axios';
-import ready from 'slidetherapy/client/src/ready';
-import dataStore from 'slidetherapy/client/src/store.jsx';
-import UserAuth from 'slidetherapy/client/src/components/UserAuth.jsx';
-import OwnedDecks from 'slidetherapy/client/src/components/OwnedDecks.jsx';
+import ready from 'ready';
+import dataStore from 'store';
+import UserAuth from 'components/UserAuth';
+import OwnedDecks from 'components/OwnedDecks';
 
 AWS.config.region = 'us-west-2';
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({

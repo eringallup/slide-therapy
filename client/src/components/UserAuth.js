@@ -1,5 +1,5 @@
 import React from 'react';
-import dataStore from 'slidetherapy/client/src/store.jsx';
+import dataStore from 'store';
 
 export default class UserAuth extends React.Component {
   constructor(props) {

@@ -1,5 +1,5 @@
-import ready from 'slidetherapy/client/src/ready';
-import { getAll as routes } from 'slidetherapy/client/src/routes';
+import ready from 'ready';
+import { getAll as routes } from 'routes';
 
 ready(() => {
   routes().forEach(route => {

@@ -69,7 +69,7 @@ alphanum-sort@^1.0.1, alphanum-sort@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
 
-amazon-cognito-identity-js@^1.31.0:
+amazon-cognito-identity-js@1.x.x:
   version "1.31.0"
   resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-1.31.0.tgz#1dcd0f26ce9404c198a35468e8bb00410503021d"
   dependencies:
@@ -242,7 +242,7 @@ async@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
-async@^2.1.2, async@^2.5.0:
+async@^2.1.2, async@~2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.0.tgz#61a29abb6fcc026fea77e56d1c6ec53a795951f4"
   dependencies:
@@ -290,7 +290,7 @@ aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
-axios@^0.17.1:
+axios@~0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.17.1.tgz#2d8e3e5d0bdbd7327f91bc814f5c57660f81824d"
   dependencies:
@@ -1114,9 +1114,9 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^2.10.2:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
+bluebird@^3.5.0:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
@@ -1154,7 +1154,7 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap@^4.0.0-beta:
+bootstrap@~4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.0.0.tgz#ceb03842c145fcc1b9b4e15da2a05656ba68469a"
 
@@ -1305,7 +1305,7 @@ cache-base@^1.0.1:
     union-value "^1.0.0"
     unset-value "^1.0.0"
 
-cache-stack@^0.1.0:
+cache-stack@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/cache-stack/-/cache-stack-0.1.0.tgz#9b983023118bf7abc8bb55e406a02783bbf935ee"
   dependencies:
@@ -1365,8 +1365,8 @@ caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
   resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000803.tgz#3e8d2baf56c2fd5a59c82e227928a0dc2c26702d"
 
 caniuse-lite@^1.0.30000792:
-  version "1.0.30000808"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000808.tgz#7d759b5518529ea08b6705a19e70dbf401628ffc"
+  version "1.0.30000809"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000809.tgz#1e12c1344b8f74d56737ee2614bcedb648943479"
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -1990,7 +1990,7 @@ dns-txt@^2.0.2:
   dependencies:
     buffer-indexof "^1.0.0"
 
-doctrine@^2.1.0:
+doctrine@^2.0.2, doctrine@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-2.1.0.tgz#5cd01fc101621b42c4cd7f5d1a66243716d3f39d"
   dependencies:
@@ -2158,6 +2158,15 @@ escope@^3.6.0:
     es6-weak-map "^2.0.1"
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
+
+eslint-plugin-react@^7.6.1:
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.6.1.tgz#5d0e908be599f0c02fbf4eef0c7ed6f29dff7633"
+  dependencies:
+    doctrine "^2.0.2"
+    has "^1.0.1"
+    jsx-ast-utils "^2.0.1"
+    prop-types "^15.6.0"
 
 eslint-scope@^3.7.1:
   version "3.7.1"
@@ -2848,9 +2857,9 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
-hoist-non-react-statics@^2.2.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
+hoist-non-react-statics@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -3320,16 +3329,6 @@ jmespath@0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
 
-jquery.scrollto@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz#e7580d9c7ac46ef5bb25319483f6f45713fd7c6c"
-  dependencies:
-    jquery ">=1.8"
-
-jquery@>=1.8, jquery@^3.2.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
-
 js-base64@^2.1.9:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.3.tgz#2e545ec2b0f2957f41356510205214e98fad6582"
@@ -3414,6 +3413,12 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
+
+jsx-ast-utils@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-2.0.1.tgz#e801b1b39985e20fffc87b40e3748080e2dcac7f"
+  dependencies:
+    array-includes "^3.0.3"
 
 killable@^1.0.0:
   version "1.0.0"
@@ -3500,7 +3505,7 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
-lodash-es@^4.2.0, lodash-es@^4.2.1:
+lodash-es@^4.17.5, lodash-es@^4.2.1:
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.5.tgz#9fc6e737b1c4d151d8f9cae2247305d552ce748f"
 
@@ -3571,7 +3576,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0:
+lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0:
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
 
@@ -4261,10 +4266,6 @@ pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
-popper.js@^1.12.5:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.13.0.tgz#e1e7ff65cc43f7cf9cf16f1510a75e81f84f4565"
-
 portfinder@^1.0.9:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.13.tgz#bb32ecd87c27104ae6ee44b5a3ccbf0ebb1aede9"
@@ -4561,7 +4562,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.6.0:
+prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -4606,13 +4607,9 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
-qs@6.5.1:
+qs@6.5.1, qs@~6.5.1:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
-
-qs@~6.0.4:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.0.4.tgz#51019d84720c939b82737e84556a782338ecea7b"
 
 qs@~6.4.0:
   version "6.4.0"
@@ -4683,7 +4680,7 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^16.2.0:
+react-dom@~16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
   dependencies:
@@ -4692,25 +4689,25 @@ react-dom@^16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-redux@^5.0.6:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
+react-redux@~5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.7.tgz#0dc1076d9afb4670f993ffaef44b8f8c1155a4c8"
   dependencies:
-    hoist-non-react-statics "^2.2.1"
+    hoist-non-react-statics "^2.5.0"
     invariant "^2.0.0"
-    lodash "^4.2.0"
-    lodash-es "^4.2.0"
+    lodash "^4.17.5"
+    lodash-es "^4.17.5"
     loose-envify "^1.1.0"
-    prop-types "^15.5.10"
+    prop-types "^15.6.0"
 
-react-transmit@^3.2.0:
+react-transmit@~3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-transmit/-/react-transmit-3.2.0.tgz#be34984394e9761848b81734da0e718e1fbfefb8"
   dependencies:
     ascii-json ">= 0.2.0"
     object-assign ">= 4.1.0"
 
-react@^16.2.0:
+react@~16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:
@@ -4812,7 +4809,7 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-redux@^3.7.2:
+redux@~3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
   dependencies:
@@ -5404,14 +5401,14 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stripe@^4.14.0:
-  version "4.25.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-4.25.0.tgz#16af99c255e4fe22adbaf629f392af0715370760"
+stripe@~5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-5.4.0.tgz#df258a983386f132bc2b8846cbb7a39761de2694"
   dependencies:
-    bluebird "^2.10.2"
+    bluebird "^3.5.0"
     lodash.isplainobject "^4.0.6"
-    object-assign "^4.1.0"
-    qs "~6.0.4"
+    qs "~6.5.1"
+    safe-buffer "^5.1.1"
 
 style-loader@^0.19.0:
   version "0.19.1"
@@ -5613,8 +5610,8 @@ ua-parser-js@^0.7.9:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
 
 uglify-js@3.3.x:
-  version "3.3.10"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.3.10.tgz#8e47821d4cf28e14c1826a0078ba0825ed094da8"
+  version "3.3.11"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.3.11.tgz#e9d058b20715138bb4e8e5cae2ea581686bdaae3"
   dependencies:
     commander "~2.14.1"
     source-map "~0.6.1"
@@ -5765,7 +5762,7 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
-vault.js@^1.0.3:
+vault.js@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/vault.js/-/vault.js-1.0.3.tgz#e9af0769e5fb62f2e0b4145081e9d6acb43b8194"
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import Vault from 'vault.js';
-import dataStore from 'slidetherapy/client/src/store.jsx';
-import { login, onUser, register } from 'slidetherapy/client/src/account.jsx';
+import dataStore from 'store';
+import { login, onUser, register } from 'account';
 
 export default class AuthForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    dataStore.subscribe(item => {
+    dataStore.subscribe(() => {
       let currentState = dataStore.getState();
       Object.keys(currentState).forEach(item => {
         this.setState({

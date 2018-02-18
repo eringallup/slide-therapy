@@ -1,6 +1,6 @@
-import ready from 'slidetherapy/client/src/ready';
-import skus from 'slidetherapy/skus.json';
-import * as account from 'slidetherapy/client/src/account.jsx';
+import ready from 'ready';
+import skus from 'skus.json';
+import * as account from 'account';
 import _ from 'lodash';
 import axios from 'axios';
 

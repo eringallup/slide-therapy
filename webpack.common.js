@@ -13,7 +13,12 @@ module.exports = {
   resolve: {
     alias: {
       'vault.js': 'vault.js/browser.js'
-    }
+    },
+    modules: [
+      path.resolve('./client/src'),
+      path.resolve('./'),
+      'node_modules'
+    ]
   },
   module: {
     rules: [{
