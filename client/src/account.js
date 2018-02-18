@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AWS from 'aws-sdk';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import cacheStack from 'cache-stack';
 import axios from 'axios';
@@ -91,13 +92,13 @@ function login(email, password, newPassword, verificationCode) {
     };
     let _cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
     _cognitoUser.authenticateUser(authenticationDetails, {
-      newPasswordRequired: (userAttributes, requiredAttributes) => {
+      newPasswordRequired: () => {
         _cognitoUser.completeNewPasswordChallenge(newPassword, null, this);
       },
-      passwordResetRequired: (userAttributes, requiredAttributes) => {
+      passwordResetRequired: () => {
         _cognitoUser.completePasswordResetChallenge(newPassword, null, this);
       },
-      onSuccess: (result) => {
+      onSuccess: () => {
         resolve(_cognitoUser);
       },
       onFailure: (error) => {
@@ -115,20 +116,20 @@ function login(email, password, newPassword, verificationCode) {
   });
 }
 
-function changePassword(user, currentPassword, newPassword) {
-  return new Promise((resolve, reject) => {
-    user.changePassword(currentPassword, newPassword, (changePasswordError, changePasswordResult) => {
-      if (changePasswordError) {
-        return reject(changePasswordError.message);
-      }
-      console.log('changePasswordResult:', changePasswordResult);
-      hidePasswordReset();
-      resolve(user);
-    });
-  });
-}
+// function changePassword(user, currentPassword, newPassword) {
+//   return new Promise((resolve, reject) => {
+//     user.changePassword(currentPassword, newPassword, (changePasswordError, changePasswordResult) => {
+//       if (changePasswordError) {
+//         return reject(changePasswordError.message);
+//       }
+//       console.log('changePasswordResult:', changePasswordResult);
+//       hidePasswordReset();
+//       resolve(user);
+//     });
+//   });
+// }
 
-function forgotPassword(user, newPassword, verificationCode) {
+function forgotPassword(user) {
   return new Promise((resolve, reject) => {
     user.forgotPassword({
       onSuccess: () => {
@@ -180,19 +181,12 @@ function showPasswordReset() {
   });
 }
 
-function hidePasswordReset() {
-  dataStore.dispatch({
-    type: 'update',
-    changingPassword: false
-  });
-}
-
-function onUserError(message) {
-  dataStore.dispatch({
-    type: 'update',
-    error: message
-  });
-}
+// function hidePasswordReset() {
+//   dataStore.dispatch({
+//     type: 'update',
+//     changingPassword: false
+//   });
+// }
 
 function logout(user) {
   if (user) {

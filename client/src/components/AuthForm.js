@@ -23,12 +23,12 @@ export default class AuthForm extends React.Component {
   componentDidMount() {
     let username = Vault.Local.get('username');
     if (username) {
-      this.refs.emailInput.value = username;
+      this.emailInput.value = username;
     }
-    if (this.refs.emailInput.value) {
-      this.refs.passwordInput.focus();
+    if (this.emailInput.value) {
+      this.passwordInput.focus();
     } else {
-      this.refs.emailInput.focus();
+      this.emailInput.focus();
     }
   }
   handleEmailBlur(e) {
@@ -54,7 +54,7 @@ export default class AuthForm extends React.Component {
     login(data.email, data.password, data.newPassword, data.verificationCode)
       .then(user => {
         onUser(user);
-        this.refs.passwordInput.value = '';
+        this.passwordInput.value = '';
         this.setState({
           error: false,
           disableForm: true
@@ -64,6 +64,12 @@ export default class AuthForm extends React.Component {
       .catch(userError => {
         if (userError.code === 'UserNotFoundException') {
           register(data.email, data.password).then(onUser).catch(registerError => {
+            if (registerError) {
+              dataStore.dispatch({
+                type: 'update',
+                error: registerError
+              });
+            }
             this.setState({
               disableForm: false
             });
@@ -73,8 +79,8 @@ export default class AuthForm extends React.Component {
             error: 'Incorrect Password.',
             disableForm: false
           });
-          this.refs.passwordInput.focus();
-          this.refs.passwordInput.select();
+          this.passwordInput.focus();
+          this.passwordInput.select();
         } else {
           this.setState({
             error: userError.message,
@@ -91,7 +97,7 @@ export default class AuthForm extends React.Component {
       <div id="email-input">
         <label htmlFor="email">Email</label>
         <input
-          ref="emailInput"
+          ref={(el) => this.emailInput = el}
           type="email"
           id="email"
           name="email"
@@ -105,20 +111,20 @@ export default class AuthForm extends React.Component {
         <label htmlFor="password">Password</label>
         <input
           type="password"
-          ref="passwordInput"
+          ref={(el) => this.passwordInput = el}
           id="password"
           name="password"
           pattern="(?=^.{8,}$)(?![.\n])(?=.*\d)(?=.*\W+)(?=.*[A-Z])(?=.*[a-z]).*$"
           autoComplete="password"
           disabled={changingPassword}
         />
-      </div>
+      </div>;
     const newPasswordInput =
       <div id="new-password-input" hidden={!changingPassword}>
         <label htmlFor="newPassword">New Password</label>
         <input
           type="password"
-          ref="newPasswordInput"
+          ref={(el) => this.newPasswordInput = el}
           id="newPassword"
           name="newPassword"
           pattern="(?=^.{8,}$)(?![.\n])(?=.*\d)(?=.*\W+)(?=.*[A-Z])(?=.*[a-z]).*$"
@@ -131,27 +137,27 @@ export default class AuthForm extends React.Component {
         <label htmlFor="verificationCode">Verification Code</label>
         <input
           id="verificationCode"
-          ref="verificationCodeInput"
+          ref={(el) => this.verificationCodeInput = el}
           name="verificationCode"
           disabled={!changingPassword}
         />
       </div>;
     return <form id="auth-form" method="POST" action="/auth" onSubmit={this.onSubmit}>
-        <fieldset disabled={disableForm}>
-          {emailInput}
-          {passwordInput}
-          {newPasswordInput}
-          {verificationCodeInput}
-          <input
-            value="Login"
-            className="btn btn-primary btn-sm"
-            type="submit"
-            accessKey="s"
-          />
-        </fieldset>
-        <div id="auth-error" className="alert alert-danger" hidden={hasError}>
-          {this.state.error}
-        </div>
-      </form>;
+      <fieldset disabled={disableForm}>
+        {emailInput}
+        {passwordInput}
+        {newPasswordInput}
+        {verificationCodeInput}
+        <input
+          value="Login"
+          className="btn btn-primary btn-sm"
+          type="submit"
+          accessKey="s"
+        />
+      </fieldset>
+      <div id="auth-error" className="alert alert-danger" hidden={hasError}>
+        {this.state.error}
+      </div>
+    </form>;
   }
 }
