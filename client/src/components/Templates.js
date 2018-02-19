@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Templates extends React.Component {
   constructor(props) {
@@ -41,25 +42,25 @@ export default class Templates extends React.Component {
           </div>
           <div className="row">
             <div className="col">
-              <a href="/buy/halcyon">
+              <Link to="/buy/halcyon">
                 <h4 className="text-dark">Halcyon - $29</h4>
                 <div className="img-placeholder"></div>
                 <span className="buy btn btn-primary">Buy</span>
-              </a>
+              </Link>
             </div>
             <div className="col">
-              <a href="/buy/summit">
+              <Link to="/buy/summit">
                 <h4 className="text-dark">Summit - $29</h4>
                 <div className="img-placeholder"></div>
                 <span className="buy btn btn-primary">Buy</span>
-              </a>
+              </Link>
             </div>
             <div className="col">
-              <a href="/buy/hitchcock">
+              <Link to="/buy/hitchcock">
                 <h4 className="text-dark">Hitchcock - $29</h4>
                 <div className="img-placeholder"></div>
                 <span className="buy btn btn-primary">Buy</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="row">

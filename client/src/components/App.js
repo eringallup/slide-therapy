@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Header from 'components/Header';
 import Templates from 'components/Templates';
+import Buy from 'components/Buy';
 import Tips from 'components/Tips';
 import About from 'components/About';
 import Thanks from 'components/Thanks';
@@ -22,7 +23,8 @@ export default class App extends React.Component {
         <Header/>
         <div id="content">
           <Route exact path="/" component={Templates}/>
-          <Route path="/templates" component={Templates}/>
+          <Route path="/(templates|buy)" component={Templates}/>
+          <Route path="/buy/:slug" component={Buy}/>
           <Route path="/tips" component={Tips}/>
           <Route path="/about" component={About}/>
           <Route path="/thanks" component={Thanks}/>

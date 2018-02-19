@@ -1,19 +1,24 @@
 import ready from 'ready';
 import skus from 'skus.json';
 import * as account from 'account';
-import _ from 'lodash';
 import axios from 'axios';
+import generator from 'generate-password';
 
-const templatesRegex = new RegExp(/\/templates/);
 let hasToken = false;
 let stripeCheckout, currentDeck;
+let onSuccess = [];
+let onDismiss = [];
+let onError = [];
 
 ready(() => {
   initEcom(50);
 });
 
 module.exports = {
-  initPurchase: initPurchase
+  initPurchase: initPurchase,
+  onSuccess: fn => onSuccess.push(fn),
+  onError: fn => onError.push(fn),
+  onDismiss: fn => onDismiss.push(fn)
 };
 
 function initEcom(delay) {
@@ -40,9 +45,12 @@ function initEcom(delay) {
 
 function initPurchase(deck) {
   account.getUser().then(() => {
-    currentDeck = _.find(skus, {
-      slug: deck
-    });
+    let sku;
+    for (sku in skus) {
+      if (deck === skus[sku].slug) {
+        currentDeck = skus[sku];
+      }
+    }
     if (!currentDeck) {
       throw new Error('Deck configuration error.');
     }
@@ -62,37 +70,45 @@ function initPurchase(deck) {
 function onToken(token) {
   // console.info(token);
   hasToken = true;
+  account.getUser().then(user => {
+    if (user) {
+      completePurchase(token);
+      return;
+    }
+    const password = generator.generate({
+      length: 10,
+      numbers: true,
+      symbols: true,
+      uppercase: true,
+      strict: true
+    }) + '!';
+    account.register(token.email, password)
+      .then(() => completePurchase(token))
+      .catch(registerError => {
+        onError.forEach(fn => fn(registerError));
+      });
+  });
+}
 
+function completePurchase(token) {
   const data = {
     sku: currentDeck.sku,
     token: token.id
   };
 
-  account.getUser().then(user => {
-    console.info('onToken', token, user);
-
-    if (!user) {
-      account.register(token.email, token.email + 'A1!').then(user => {
-        console.log('register', user);
-      }).catch(registerError => {
-        if (registerError.code === 'UsernameExistsException') {
-          window.location.href = '/account';
-        }
-        console.error(registerError);
-      });
+  let headers = account.apiHeaders();
+  headers['Content-Type'] = 'application/json';
+  axios({
+    method: 'GET',
+    headers: headers,
+    url: 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid',
+    params: data
+  }).then(() => {
+    while(onSuccess.length) {
+      let fn = onSuccess.shift();
+      fn();
     }
-
-    let headers = account.apiHeaders();
-    headers['Content-Type'] = 'application/json';
-    axios({
-      method: 'GET',
-      headers: headers,
-      url: 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid',
-      params: data
-    }).then(() => {
-      Router.go('/thanks');
-    }).catch(console.error);
-  });
+  }).catch(console.error);
 }
 
 function onClose() {
@@ -100,7 +116,8 @@ function onClose() {
     hasToken = false;
     return;
   }
-  if (!templatesRegex.test(location.pathname)) {
-    Router.go('/templates');
+  while(onDismiss.length) {
+    let fn = onDismiss.shift();
+    fn();
   }
 }
