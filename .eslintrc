@@ -8,6 +8,7 @@
   },
   "globals": {
     "Router": true,
+    "Stripe": true,
     "StripeCheckout": true,
     "scrollIt": true
   },

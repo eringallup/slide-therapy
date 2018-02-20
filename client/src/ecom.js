@@ -1,47 +1,20 @@
-import ready from 'ready';
 import skus from 'skus.json';
 import * as account from 'account';
 import axios from 'axios';
 import generator from 'generate-password';
 
-let hasToken = false;
 let stripeCheckout, currentDeck;
 let onSuccess = [];
 let onDismiss = [];
 let onError = [];
 
-ready(() => {
-  initEcom(50);
-});
-
 module.exports = {
   initPurchase: initPurchase,
+  onToken: onToken,
   onSuccess: fn => onSuccess.push(fn),
   onError: fn => onError.push(fn),
   onDismiss: fn => onDismiss.push(fn)
 };
-
-function initEcom(delay) {
-  // console.log('initEcom', delay);
-  if (!window.StripeCheckout) {
-    if (delay > (1000 * 10)) {
-      throw new Error('unable to init ecom.');
-    }
-    setTimeout(() => {
-      initEcom(delay * 2);
-    }, delay);
-    return;
-  }
-  stripeCheckout = StripeCheckout.configure({
-    key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
-    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-    locale: 'auto',
-    token: onToken,
-    closed: onClose
-  });
-  window.addEventListener('popstate', stripeCheckout.close);
-  document.querySelector('html').classList.add('has-ecom');
-}
 
 function initPurchase(deck) {
   account.getUser().then(() => {
@@ -69,7 +42,6 @@ function initPurchase(deck) {
 
 function onToken(token) {
   // console.info(token);
-  hasToken = true;
   account.getUser().then(user => {
     if (user) {
       completePurchase(token);
@@ -109,15 +81,4 @@ function completePurchase(token) {
       fn();
     }
   }).catch(console.error);
-}
-
-function onClose() {
-  if (hasToken) {
-    hasToken = false;
-    return;
-  }
-  while(onDismiss.length) {
-    let fn = onDismiss.shift();
-    fn();
-  }
 }

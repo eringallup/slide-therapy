@@ -1,8 +1,14 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Vault from 'vault.js';
 import dataStore from 'store';
 import { login, register } from 'account';
+import {
+  EmailInput,
+  PasswordInput,
+  NewPasswordInput,
+  VerificationCodeInput
+} from 'components/FormInput';
+import Error from 'components/Error';
 
 export default class AuthForm extends React.Component {
   constructor(props) {
@@ -18,25 +24,10 @@ export default class AuthForm extends React.Component {
           [item]: currentState[item]
         });
       });
-      if (this.state.changePassword) {
-        this.newPasswordInput.focus();
-      }
     });
-    let username = Vault.Local.get('username');
-    if (username) {
-      this.emailInput.value = username;
-    }
-    if (this.emailInput.value) {
-      this.passwordInput.focus();
-    } else {
-      this.emailInput.focus();
-    }
   }
   componentWillUnmount() {
     this.unsubscribe();
-  }
-  handleEmailBlur(e) {
-    Vault.Local.set('username', e.target.value);
   }
   getFormData(form) {
     let data = {};
@@ -72,11 +63,9 @@ export default class AuthForm extends React.Component {
           });
         } else if (userError.code === 'NotAuthorizedException') {
           this.setState({
-            error: 'Incorrect Password.',
+            error: 'Incorrect Password',
             disableForm: false
           });
-          this.passwordInput.focus();
-          this.passwordInput.select();
         } else {
           this.setState({
             error: userError.message,
@@ -89,64 +78,21 @@ export default class AuthForm extends React.Component {
     if (this.state.user) {
       return <Redirect to="/"/>;
     }
-    const disableForm = this.state.disableForm;
-    const changingPassword = this.state.changingPassword;
-    const hasError = !(this.state.error);
-    const emailInput =
-      <div id="email-input">
-        <label htmlFor="email">Email</label>
-        <input
-          ref={(el) => this.emailInput = el}
-          type="email"
-          id="email"
-          name="email"
-          autoComplete="email"
-          onBlur={this.handleEmailBlur}
-          disabled={changingPassword}
-        />
-      </div>;
-    const passwordInput =
-      <div id="password-input">
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          ref={(el) => this.passwordInput = el}
-          id="password"
-          name="password"
-          pattern="(?=^.{8,}$)(?![.\n])(?=.*\d)(?=.*\W+)(?=.*[A-Z])(?=.*[a-z]).*$"
-          autoComplete="password"
-          disabled={changingPassword}
-        />
-      </div>;
-    const newPasswordInput =
-      <div id="new-password-input" hidden={!changingPassword}>
-        <label htmlFor="newPassword">New Password</label>
-        <input
-          type="password"
-          ref={(el) => this.newPasswordInput = el}
-          id="newPassword"
-          name="newPassword"
-          pattern="(?=^.{8,}$)(?![.\n])(?=.*\d)(?=.*\W+)(?=.*[A-Z])(?=.*[a-z]).*$"
-          autoComplete="password"
-          disabled={!changingPassword}
-        />
-      </div>;
-    const verificationCodeInput =
-      <div id="verification-code-input" hidden={!changingPassword}>
-        <label htmlFor="verificationCode">Verification Code</label>
-        <input
-          id="verificationCode"
-          ref={(el) => this.verificationCodeInput = el}
-          name="verificationCode"
-          disabled={!changingPassword}
-        />
-      </div>;
     return <form id="auth-form" method="POST" action="/auth" onSubmit={this.onSubmit}>
-      <fieldset disabled={disableForm}>
-        {emailInput}
-        {passwordInput}
-        {newPasswordInput}
-        {verificationCodeInput}
+      <fieldset disabled={this.state.disableForm}>
+        <EmailInput
+          changingPassword={this.state.changingPassword}
+        />
+        <PasswordInput
+          changingPassword={this.state.changingPassword}
+          errorMessage={this.state.error}
+        />
+        <NewPasswordInput
+          changingPassword={this.state.changingPassword}
+        />
+        <VerificationCodeInput
+          changingPassword={this.state.changingPassword}
+        />
         <input
           value="Login"
           className="btn btn-primary btn-sm"
@@ -154,9 +100,7 @@ export default class AuthForm extends React.Component {
           accessKey="s"
         />
       </fieldset>
-      <div id="auth-error" className="alert alert-danger" hidden={hasError}>
-        {this.state.error}
-      </div>
+      <Error errorMessage={this.state.error}/>
     </form>;
   }
 }

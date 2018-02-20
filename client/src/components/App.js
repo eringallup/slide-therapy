@@ -23,7 +23,7 @@ export default class App extends React.Component {
         <Header/>
         <div id="content">
           <Route exact path="/" component={Templates}/>
-          <Route path="/(templates|buy)" component={Templates}/>
+          <Route path="/templates" component={Templates}/>
           <Route path="/buy/:slug" component={Buy}/>
           <Route path="/tips" component={Tips}/>
           <Route path="/about" component={About}/>
