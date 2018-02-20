@@ -1,5 +1,7 @@
 import React from 'react';
 import Vault from 'vault.js';
+import * as account from 'account';
+import dataStore from 'store';
 
 export class EmailInput extends React.Component {
   constructor(props) {
@@ -15,7 +17,24 @@ export class EmailInput extends React.Component {
     }
   }
   handleEmailBlur(e) {
-    Vault.Local.set('username', e.target.value);
+    let emailValue = e.target.value;
+    Vault.Local.set('username', emailValue);
+    if (typeof this.state.onBlur === 'function') {
+      this.state.onBlur(emailValue);
+    }
+    if (emailValue) {
+      account.login(emailValue, 'abcDEF123!@#')
+        .catch(error => {
+          let authType = 'login';
+          if (error.code === 'UserNotFoundException') {
+            authType = 'register';
+          }
+          dataStore.dispatch({
+            type: 'update',
+            authType: authType
+          });
+        });
+    }
   }
   render() {
     return <div id="email-input">
@@ -27,7 +46,7 @@ export class EmailInput extends React.Component {
         id="email"
         name="email"
         autoComplete="email"
-        onBlur={this.handleEmailBlur}
+        onBlur={this.handleEmailBlur.bind(this)}
         disabled={this.state.changingPassword}
       />
     </div>;

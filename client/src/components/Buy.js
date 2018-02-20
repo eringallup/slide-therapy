@@ -1,10 +1,12 @@
 import skus from 'skus.json';
 import React from 'react';
-import { getUser } from 'account';
+import axios from 'axios';
+import generator from 'generate-password';
+import { getUser, register, apiHeaders } from 'account';
 import { Redirect } from 'react-router-dom';
-import { EmailInput, PasswordInput } from 'components/FormInput';
+import AuthForm from 'components/AuthForm';
+import dataStore from 'store';
 
-const templatesRegex = new RegExp(/\/templates/);
 const stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
 const elements = stripe.elements();
 const style = {
@@ -35,37 +37,41 @@ export default class Buy extends React.Component {
         this.deck = skus[sku];
       }
     }
-    this.ready = false;
-  }
-  onDismiss() {
-    if (this.ready && !templatesRegex.test(location.pathname)) {
-      this.setState({
-        dismissed: true
-      });
-    }
-  }
-  onSuccess() {
-    if (this.ready) {
-      this.setState({
-        success: true
-      });
-    }
-  }
-  onError(error) {
-    // console.log('onError', this.ready, error);
-    if (error.code === 'UsernameExistsException') {
-      this.setState({
-        login: true
-      });
-    }
   }
   componentDidMount() {
+    this.unsubscribe = dataStore.subscribe(() => {
+      let currentState = dataStore.getState();
+      Object.keys(currentState).forEach(item => {
+        this.setState({
+          [item]: currentState[item]
+        });
+      });
+    });
+    this.setupStripe();
     getUser().then(user => {
       this.setState({
         user: user
       });
+      if (this.state.user) {
+        this.focusStripe();
+      }
     });
-
+  }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+  componentDidUpdate() {
+    if (this.state.user) {
+      this.focusStripe();
+    }
+  }
+  focusStripe() {
+    setTimeout(() => {
+      card.focus();
+    }, 100);
+  }
+  setupStripe() {
+    // https://stripe.com/docs/stripe-js/elements/quickstart
     card.mount('#card-element');
     card.addEventListener('change', ({error}) => {
       var displayError = document.getElementById('card-errors');
@@ -75,33 +81,42 @@ export default class Buy extends React.Component {
         displayError.textContent = '';
       }
     });
-
-    // Handle form submission
-    const form = document.getElementById('payment-form');
+    var form = document.getElementById('payment-form');
     form.addEventListener('submit', event => {
       event.preventDefault();
-      stripe.createToken(card, response => {
-        if (response.error) {
+      stripe.createToken(card).then(result => {
+        if (result.error) {
           var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = response.error.message;
+          errorElement.textContent = result.error.message;
         } else {
-          this.onToken(response.token);
+          this.completePurchase(result.token);
         }
       });
     });
-
-    this.ready = true;
   }
-  componentWillUnmount() {
-    this.ready = false;
+  completePurchase(token) {
+    let requestConfig = {
+      method: 'GET',
+      headers: apiHeaders({
+        'Content-Type': 'application/json'
+      }),
+      url: 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid',
+      params: {
+        sku: this.deck.sku,
+        token: token.id
+      }
+    };
+    // console.log(requestConfig);
+    axios(requestConfig).then(() => {
+      this.setState({
+        success: true
+      });
+    }).catch(console.error);
+  }
+  checkEmail(email) {
+    console.log(email);
   }
   render() {
-    if (this.state.login) {
-      return <Redirect to="/login"/>;
-    }
-    if (this.state.dismissed) {
-      return <Redirect to="/"/>;
-    }
     if (this.state.success) {
       return <Redirect to="/thanks"/>;
     }
@@ -109,19 +124,21 @@ export default class Buy extends React.Component {
     if (!this.state.user) {
       auth = <fieldset className="row">
         <div className="col">
-          <EmailInput/>
-          <PasswordInput/>
+          <AuthForm
+            onEmailBlur={this.checkEmail}
+            redirectOnSuccess={false}
+          />
         </div>
       </fieldset>;
     }
     return <div className="container">
       <h2>Buy {this.deck.title}</h2>
+      {auth}
       <form action="/charge" method="post" id="payment-form">
-        {auth}
-        <fieldset className="row" disabled={this.state.loggingIn}>
+        <fieldset className="row" disabled={!this.state.user}>
           <div className="col">
             <label htmlFor="card-element">Credit or debit card</label>
-            <div id="card-element"></div>
+            <div id="card-element" className="mb-3"></div>
             <div id="card-errors" role="alert"></div>
             <button type="submit" className="btn btn-primary">Submit Payment</button>
           </div>

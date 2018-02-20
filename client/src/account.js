@@ -17,11 +17,11 @@ export {
   logout
 };
 
-function apiHeaders() {
+function apiHeaders(headers) {
   let currentState = dataStore.getState();
-  return {
+  return Object.assign({}, {
     Authorization: currentState.user && currentState.user.getSignInUserSession().getIdToken().jwtToken
-  };
+  }, headers);
 }
 
 function getEmail() {

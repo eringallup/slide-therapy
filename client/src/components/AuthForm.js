@@ -13,7 +13,7 @@ import Error from 'components/Error';
 export default class AuthForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = props;
     this.onSubmit = this.onSubmit.bind(this);
   }
   componentDidMount() {
@@ -76,31 +76,49 @@ export default class AuthForm extends React.Component {
   }
   render() {
     if (this.state.user) {
+      if (this.state.redirectOnSuccess === false) {
+        return '';
+      } else if (typeof this.state.redirectOnSuccess === 'string') {
+        return <Redirect to={this.state.redirectOnSuccess}/>;
+      }
       return <Redirect to="/"/>;
+    }
+    let submitLabel = 'Login';
+    if (this.state.authType === 'register') {
+      submitLabel = 'Register';
     }
     return <form id="auth-form" method="POST" action="/auth" onSubmit={this.onSubmit}>
       <fieldset disabled={this.state.disableForm}>
-        <EmailInput
-          changingPassword={this.state.changingPassword}
-        />
-        <PasswordInput
-          changingPassword={this.state.changingPassword}
-          errorMessage={this.state.error}
-        />
-        <NewPasswordInput
-          changingPassword={this.state.changingPassword}
-        />
-        <VerificationCodeInput
-          changingPassword={this.state.changingPassword}
-        />
+        <div className="mb-3">
+          <EmailInput
+            onBlur={this.state.onEmailBlur}
+            changingPassword={this.state.changingPassword}
+          />
+        </div>
+        <div className="mb-3">
+          <PasswordInput
+            changingPassword={this.state.changingPassword}
+            errorMessage={this.state.error}
+          />
+        </div>
+        <div className="mb-3">
+          <NewPasswordInput
+            changingPassword={this.state.changingPassword}
+          />
+        </div>
+        <div className="mb-3">
+          <VerificationCodeInput
+            changingPassword={this.state.changingPassword}
+          />
+        </div>
         <input
-          value="Login"
-          className="btn btn-primary btn-sm"
+          value={submitLabel}
+          className="btn btn-primary btn-sm mb-3"
           type="submit"
           accessKey="s"
         />
+        <Error errorMessage={this.state.error}/>
       </fieldset>
-      <Error errorMessage={this.state.error}/>
     </form>;
   }
 }
