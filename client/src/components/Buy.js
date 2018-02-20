@@ -1,6 +1,8 @@
+import skus from 'skus.json';
 import React from 'react';
+import { getUser } from 'account';
 import { Redirect } from 'react-router-dom';
-import { EmailInput } from 'components/FormInput';
+import { EmailInput, PasswordInput } from 'components/FormInput';
 
 const templatesRegex = new RegExp(/\/templates/);
 const stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
@@ -27,6 +29,12 @@ export default class Buy extends React.Component {
   constructor(props) {
     super(props);
     this.state = props;
+    let sku;
+    for (sku in skus) {
+      if (skus[sku].slug === this.state.match.params.slug) {
+        this.deck = skus[sku];
+      }
+    }
     this.ready = false;
   }
   onDismiss() {
@@ -52,6 +60,12 @@ export default class Buy extends React.Component {
     }
   }
   componentDidMount() {
+    getUser().then(user => {
+      this.setState({
+        user: user
+      });
+    });
+
     card.mount('#card-element');
     card.addEventListener('change', ({error}) => {
       var displayError = document.getElementById('card-errors');
@@ -64,15 +78,16 @@ export default class Buy extends React.Component {
 
     // Handle form submission
     const form = document.getElementById('payment-form');
-    form.addEventListener('submit', async (event) => {
+    form.addEventListener('submit', event => {
       event.preventDefault();
-      const {token, error} = await stripe.createToken(card);
-      if (error) {
-        var errorElement = document.getElementById('card-errors');
-        errorElement.textContent = error.message;
-      } else {
-        this.onToken(token);
-      }
+      stripe.createToken(card, response => {
+        if (response.error) {
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = response.error.message;
+        } else {
+          this.onToken(response.token);
+        }
+      });
     });
 
     this.ready = true;
@@ -90,13 +105,19 @@ export default class Buy extends React.Component {
     if (this.state.success) {
       return <Redirect to="/thanks"/>;
     }
+    let auth = '';
+    if (!this.state.user) {
+      auth = <fieldset className="row">
+        <div className="col">
+          <EmailInput/>
+          <PasswordInput/>
+        </div>
+      </fieldset>;
+    }
     return <div className="container">
+      <h2>Buy {this.deck.title}</h2>
       <form action="/charge" method="post" id="payment-form">
-        <fieldset className="row">
-          <div className="col">
-            <EmailInput/>
-          </div>
-        </fieldset>
+        {auth}
         <fieldset className="row" disabled={this.state.loggingIn}>
           <div className="col">
             <label htmlFor="card-element">Credit or debit card</label>
