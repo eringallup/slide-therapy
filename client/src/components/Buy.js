@@ -1,11 +1,27 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { EmailInput } from 'components/FormInput';
-import ecom from 'ecom';
 
 const templatesRegex = new RegExp(/\/templates/);
 const stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
 const elements = stripe.elements();
+const style = {
+  base: {
+    color: '#32325d',
+    lineHeight: '18px',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
+const card = elements.create('card', {style});
 
 export default class Buy extends React.Component {
   constructor(props) {
@@ -36,28 +52,11 @@ export default class Buy extends React.Component {
     }
   }
   componentDidMount() {
-    const style = {
-      base: {
-        color: '#32325d',
-        lineHeight: '18px',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#aab7c4'
-        }
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a'
-      }
-    };
-    const card = elements.create('card', {style: style});
     card.mount('#card-element');
-    card.addEventListener('change', event => {
+    card.addEventListener('change', ({error}) => {
       var displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
+      if (error) {
+        displayError.textContent = error.message;
       } else {
         displayError.textContent = '';
       }
@@ -65,23 +64,17 @@ export default class Buy extends React.Component {
 
     // Handle form submission
     const form = document.getElementById('payment-form');
-    form.addEventListener('submit', event => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
-
-      stripe.createToken(card).then(result => {
-        if (result.error) {
-          var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-        } else {
-          ecom.onToken(result.token);
-        }
-      });
+      const {token, error} = await stripe.createToken(card);
+      if (error) {
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = error.message;
+      } else {
+        this.onToken(token);
+      }
     });
 
-    // ecom.initPurchase(this.state.match.params.slug);
-    // ecom.onDismiss(this.onDismiss.bind(this));
-    // ecom.onSuccess(this.onSuccess.bind(this));
-    // ecom.onError(this.onError.bind(this));
     this.ready = true;
   }
   componentWillUnmount() {
@@ -109,7 +102,7 @@ export default class Buy extends React.Component {
             <label htmlFor="card-element">Credit or debit card</label>
             <div id="card-element"></div>
             <div id="card-errors" role="alert"></div>
-            <button type="submit">Submit Payment</button>
+            <button type="submit" className="btn btn-primary">Submit Payment</button>
           </div>
         </fieldset>
       </form>
