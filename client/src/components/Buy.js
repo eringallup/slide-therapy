@@ -1,8 +1,7 @@
 import skus from 'skus.json';
 import React from 'react';
 import axios from 'axios';
-import generator from 'generate-password';
-import { getUser, register, apiHeaders } from 'account';
+import { getUser, apiHeaders } from 'account';
 import { Redirect } from 'react-router-dom';
 import AuthForm from 'components/AuthForm';
 import dataStore from 'store';
