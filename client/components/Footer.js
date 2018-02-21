@@ -12,7 +12,7 @@ export default class Footer extends React.Component {
           <div className="col text-center">
             <p>&copy; 2018 Gallup Interactive.<br/>
             All Rights Reserved.</p>
-            A little helpful project by <a target="_blank" rel="noopener noreferrer" href="http://eringallup.info/">Gallup</a> and <a target="_blank" rel="noopener noreferrer" href="http://www.jimmybyrum.com/">Byrum</a>
+          A helpful project by <a target="_blank" rel="noopener noreferrer" href="http://eringallup.com">Gallup</a> and <a target="_blank" rel="noopener noreferrer" href="http://jimmybyrum.com">Byrum</a>
           </div>
         </div>
       </div>
