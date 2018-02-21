@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import dataStore from 'store';
-import { login, register } from 'account';
+import dataStore from 'lib/store';
+import { login, register } from 'lib/account';
 import {
   EmailInput,
   PasswordInput,

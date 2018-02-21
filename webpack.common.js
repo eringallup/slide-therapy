@@ -3,7 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './client/src/index.js',
+  entry: './client/index.js',
   plugins: [
     new CleanWebpackPlugin(['./client/dist']),
     // new HtmlWebpackPlugin({
@@ -19,7 +19,7 @@ module.exports = {
       'vault.js': 'vault.js/browser.js'
     },
     modules: [
-      path.resolve('./client/src'),
+      path.resolve('./client'),
       path.resolve('./'),
       'node_modules'
     ]

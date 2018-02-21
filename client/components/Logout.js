@@ -1,7 +1,7 @@
 import React from 'react';
-import { getUser, logout } from 'account';
 import { Redirect } from 'react-router-dom';
-import dataStore from 'store';
+import { getUser, logout } from 'lib/account';
+import dataStore from 'lib/store';
 
 export default class Logout extends React.Component {
   constructor(props) {

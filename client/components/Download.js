@@ -1,7 +1,7 @@
 import React from 'react';
 import qs from 'qs';
-import * as account from 'account';
-import download from 'download';
+import * as account from 'lib/account';
+import download from 'lib/download';
 
 export default class Download extends React.Component {
   constructor(props) {

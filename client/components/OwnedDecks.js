@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import skus from 'skus.json';
-import download from 'download';
-import dataStore from 'store';
-import cacheStack from 'cache-stack';
 import { Link } from 'react-router-dom';
-import * as account from 'account';
+import cacheStack from 'cache-stack';
+import skus from 'skus.json';
+import download from 'lib/download';
+import dataStore from 'lib/store';
+import * as account from 'lib/account';
 
 export default class OwnedDecks extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import dataStore from 'store';
+import dataStore from 'lib/store';
 
 export default class UserAuth extends React.Component {
   constructor(props) {

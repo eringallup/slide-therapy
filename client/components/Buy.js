@@ -1,10 +1,10 @@
 import skus from 'skus.json';
 import React from 'react';
 import axios from 'axios';
-import { getUser, apiHeaders } from 'account';
 import { Redirect } from 'react-router-dom';
+import { getUser, apiHeaders } from 'lib/account';
+import dataStore from 'lib/store';
 import AuthForm from 'components/AuthForm';
-import dataStore from 'store';
 
 const stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
 const elements = stripe.elements();

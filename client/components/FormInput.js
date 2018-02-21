@@ -1,7 +1,7 @@
 import React from 'react';
 import Vault from 'vault.js';
-import * as account from 'account';
-import dataStore from 'store';
+import * as account from 'lib/account';
+import dataStore from 'lib/store';
 
 export class EmailInput extends React.Component {
   constructor(props) {

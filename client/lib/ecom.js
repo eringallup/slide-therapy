@@ -1,5 +1,5 @@
 import skus from 'skus.json';
-import * as account from 'account';
+import * as account from 'lib/account';
 import axios from 'axios';
 import generator from 'generate-password';
 

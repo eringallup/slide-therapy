@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
-import dataStore from 'store';
+import dataStore from 'lib/store';
 
 AWS.config.region = 'us-west-2';
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as account from 'account';
+import * as account from 'lib/account';
 
 module.exports = {
   ownedDeck: ownedDeck,
