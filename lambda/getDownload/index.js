@@ -2,7 +2,6 @@ const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const crypto = require('crypto');
 const fs = require('fs');
-const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const skus = require('./skus.json');
 
@@ -117,20 +116,20 @@ function decrypt(token, password) {
 }
 
 function getSignedUrl(deck) {
-  // console.log('getSignedUrl', deck);
+  console.log('getSignedUrl', deck);
   let baseUrl = 'https://' + process.env.download + '/test.txt';
   let now = new Date();
   let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 15)) / 1000);
   let expires = '?Expires=' + expiresUtc;
 
   let policyStatementJson = JSON.stringify({
-     Statement: [{
-       Resource: baseUrl,
-       Condition: {
-          DateLessThan: {
-            'AWS:EpochTime': expiresUtc
-          }
-       }
+    Statement: [{
+      Resource: baseUrl,
+      Condition: {
+        DateLessThan: {
+          'AWS:EpochTime': expiresUtc
+        }
+      }
     }]
   });
   // console.log(policyStatementJson);
@@ -146,16 +145,16 @@ function getSignedUrl(deck) {
 
   let signed = sign.sign(privateKey).toString('base64');
   let verified = verify.verify(publicKey, signed, 'base64');
-  // console.log('verified', verified);
+  console.log('verified', verified);
 
   signed = signed.replace(/\+/g, '-');
-  signed = signed.replace(/\=/g, '_');
+  signed = signed.replace(/=/g, '_');
   signed = signed.replace(/\//g, '~');
   let signature = '&Signature=' + signed;
 
   let keyPair = '&Key-Pair-Id=' + process.env.access_key;
 
-  let url = baseUrl + expires + signature + keyPair
+  let url = baseUrl + expires + signature + keyPair;
   // console.log(baseUrl, '\n');
   // console.log(url, '\n');
   return url;

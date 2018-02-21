@@ -14,10 +14,10 @@ exports.handler = (event, context, callback) => {
       return callback(err);
     }
     const update = {
-        TableName: 'counters',
-        Key: {
-          type: 'oid'
-        },
+      TableName: 'counters',
+      Key: {
+        type: 'oid'
+      },
       UpdateExpression: 'set currentCount = currentCount + :val',
       ExpressionAttributeValues: {
         ':val': 1
@@ -44,7 +44,7 @@ exports.handler = (event, context, callback) => {
       sns.publish({
         Message: JSON.stringify(message),
         TopicArn: process.env.snsArn
-      }, (snsError, snsData) => {
+      }, snsError => {
         if (snsError) {
           return callback(snsError);
         }

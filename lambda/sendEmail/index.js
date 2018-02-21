@@ -4,7 +4,6 @@ const ses = new AWS.SES({
   apiVersion: '2010-12-01'
 });
 const dynamo = new AWS.DynamoDB.DocumentClient();
-const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 
 exports.handler = (event, context, callback) => {
@@ -75,7 +74,7 @@ function send(to, subject, body, textBody) {
     if (!textBody) {
       textBody = body.replace(/(<br>)/ig,' ');
       textBody = textBody.replace(/(<br\/>)/ig,' ');
-      textBody = textBody.replace(/(<br\ \/>)/ig,' ');
+      textBody = textBody.replace(/(<br \/>)/ig,' ');
       textBody = textBody.replace(/(<([^>]+)>)/ig,'');
     }
 

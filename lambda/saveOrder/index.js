@@ -40,7 +40,7 @@ exports.handler = (event, context, callback) => {
       sns.publish({
         Message: JSON.stringify(message),
         TopicArn: process.env.snsArn
-      }, (snsError, snsData) => {
+      }, snsError => {
         if (snsError) {
           return callback(snsError);
         }
