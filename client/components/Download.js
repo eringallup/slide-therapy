@@ -1,6 +1,6 @@
 import React from 'react';
 import qs from 'qs';
-import * as account from 'lib/account';
+import { getUser } from 'lib/account';
 import download from 'lib/download';
 
 export default class Download extends React.Component {
@@ -10,7 +10,7 @@ export default class Download extends React.Component {
   }
   componentDidMount() {
     let queryParams = qs.parse(location.search.substring(1));
-    account.getUser().then(user => {
+    getUser().then(user => {
       if (queryParams.o) {
         download.ownedDeck(user, queryParams.o);
       } else if (queryParams.t) {

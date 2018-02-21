@@ -1,6 +1,6 @@
 import React from 'react';
 import Vault from 'vault.js';
-import * as account from 'lib/account';
+import { login } from 'lib/account';
 import dataStore from 'lib/store';
 
 export class EmailInput extends React.Component {
@@ -23,7 +23,7 @@ export class EmailInput extends React.Component {
       this.state.onBlur(emailValue);
     }
     if (emailValue) {
-      account.login(emailValue, 'abcDEF123!@#')
+      login(emailValue, 'abcDEF123!@#')
         .catch(error => {
           let authType = 'login';
           if (error.code === 'UserNotFoundException') {

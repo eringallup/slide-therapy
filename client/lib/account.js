@@ -1,9 +1,14 @@
 import AWS from 'aws-sdk';
-import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+import {
+  CognitoUserPool,
+  CognitoUserAttribute,
+  AuthenticationDetails,
+  CognitoUser
+} from 'amazon-cognito-identity-js';
 import dataStore from 'lib/store';
 
 AWS.config.region = 'us-west-2';
-const userPool = new AmazonCognitoIdentity.CognitoUserPool({
+const userPool = new CognitoUserPool({
   UserPoolId: 'us-west-2_ElsbNKMlR',
   ClientId: '344cbh06h2oqsi3aqreaj22n88'
 });
@@ -39,7 +44,7 @@ function register(email, password) {
       return reject(new Error('Password is required'));
     }
     let attributeList = [];
-    var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute({
+    var attributeEmail = new CognitoUserAttribute({
       Name: 'email',
       Value: email
     });
@@ -69,12 +74,12 @@ function login(email, password, newPassword, verificationCode) {
       Username: email,
       Password: password
     };
-    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+    const authenticationDetails = new AuthenticationDetails(authenticationData);
     const userData = {
       Username: email,
       Pool: userPool
     };
-    let _cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    let _cognitoUser = new CognitoUser(userData);
     _cognitoUser.authenticateUser(authenticationDetails, {
       newPasswordRequired: () => {
         _cognitoUser.completeNewPasswordChallenge(newPassword, null, this);

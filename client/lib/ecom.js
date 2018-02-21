@@ -1,5 +1,5 @@
 import skus from 'skus.json';
-import * as account from 'lib/account';
+import { getUser, getEmail, register, apiHeaders } from 'lib/account';
 import axios from 'axios';
 import generator from 'generate-password';
 
@@ -17,7 +17,7 @@ module.exports = {
 };
 
 function initPurchase(deck) {
-  account.getUser().then(() => {
+  getUser().then(() => {
     let sku;
     for (sku in skus) {
       if (deck === skus[sku].slug) {
@@ -32,7 +32,7 @@ function initPurchase(deck) {
       description: currentDeck.title,
       amount: 2900
     };
-    let email = account.getEmail();
+    let email = getEmail();
     if (email) {
       stripeConfig.email = email;
     }
@@ -42,7 +42,7 @@ function initPurchase(deck) {
 
 function onToken(token) {
   // console.info(token);
-  account.getUser().then(user => {
+  getUser().then(user => {
     if (user) {
       completePurchase(token);
       return;
@@ -54,7 +54,7 @@ function onToken(token) {
       uppercase: true,
       strict: true
     }) + '!';
-    account.register(token.email, password)
+    register(token.email, password)
       .then(() => completePurchase(token))
       .catch(registerError => {
         onError.forEach(fn => fn(registerError));
@@ -68,7 +68,7 @@ function completePurchase(token) {
     token: token.id
   };
 
-  let headers = account.apiHeaders();
+  let headers = apiHeaders();
   headers['Content-Type'] = 'application/json';
   axios({
     method: 'GET',

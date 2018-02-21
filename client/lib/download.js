@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as account from 'lib/account';
+import { apiHeaders } from 'lib/account';
 
 module.exports = {
   ownedDeck: ownedDeck,
@@ -10,7 +10,7 @@ function ownedDeck(user, oid) {
   if (!user) {
     return location.href = '/';
   }
-  let headers = account.apiHeaders();
+  let headers = apiHeaders();
   headers['Content-Type'] = 'application/json';
   axios({
     method: 'PATCH',
@@ -26,7 +26,7 @@ function withToken(token, user, autoDownload) {
   if (!user) {
     return location.href = '/';
   }
-  let headers = account.apiHeaders();
+  let headers = apiHeaders();
   headers['Content-Type'] = 'application/json';
   axios({
     method: 'PATCH',

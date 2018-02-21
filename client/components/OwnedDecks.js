@@ -5,7 +5,7 @@ import cacheStack from 'cache-stack';
 import skus from 'skus.json';
 import download from 'lib/download';
 import dataStore from 'lib/store';
-import * as account from 'lib/account';
+import { apiHeaders } from 'lib/account';
 
 export default class OwnedDecks extends React.Component {
   constructor(props) {
@@ -28,7 +28,7 @@ export default class OwnedDecks extends React.Component {
       return;
     }
     cacheStack(callback => {
-      let headers = account.apiHeaders();
+      let headers = apiHeaders();
       headers['Content-Type'] = 'application/json';
       axios({
         method: 'GET',
