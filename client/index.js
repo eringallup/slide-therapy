@@ -14,6 +14,7 @@ if (document.attachEvent ? document.readyState === 'complete' : document.readySt
 
 function init() {
   ReactDOM.render(<App/>, document.querySelector('#app'));
+  document.querySelector('html').classList.remove('no-js');
   document.body.classList.remove('view-loading');
   getUser();
 }
