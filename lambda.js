@@ -20,6 +20,9 @@ function zipFile(lambdaFunction, callback) {
     if (cpError) {
       return callback(cpError);
     }
+    if (cpStderr) {
+      return callback(cpStderr);
+    }
     let zipFilePath = path.join('/tmp', lambdaFunction + '.zip');
     let zipCommand = [
       `cd ${LAMBDA_DIR}/${lambdaFunction}`,
@@ -30,7 +33,10 @@ function zipFile(lambdaFunction, callback) {
     // return callback();
     exec(zipCommand, (error, stdout, stderr) => {
       if (error) {
-        return _exit(error);
+        return callback(error);
+      }
+      if (stderr) {
+        return callback(stderr);
       }
       callback();
     });
