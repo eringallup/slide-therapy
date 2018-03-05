@@ -1,17 +1,17 @@
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './client/index.js',
   plugins: [
     new CleanWebpackPlugin(['./client/dist']),
-    // new HtmlWebpackPlugin({
-    //   template: path.resolve(__dirname, 'client', 'src', 'components', 'Html.js')
-    // })
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'client', 'index.html')
+    })
   ],
   output: {
-    filename: 'bundle.js',
+    filename: 'bundle-[chunkhash].js',
     path: path.resolve(__dirname, 'client', 'dist')
   },
   resolve: {

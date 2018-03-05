@@ -6,7 +6,7 @@ module.exports = merge(common, {
   devServer: {
     contentBase: './client',
     historyApiFallback: {
-      index: 'index.html'
+      // index: 'index.html'
     }
   }
 });
