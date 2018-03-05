@@ -38,6 +38,11 @@ export default class Buy extends React.Component {
       locale: 'auto',
       token: token => {
         this.completePurchase(token);
+      },
+      closed: () => {
+        setTimeout(() => {
+          window.location.href = '/templates';
+        }, 301);
       }
     });
     this.showCheckout();
