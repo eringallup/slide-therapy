@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import UserAuth from 'components/UserAuth';
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -18,7 +17,6 @@ export default class Header extends React.Component {
             <Link to="/" className="nav-link nav-templates" href="/">Templates</Link>
             <Link to="/tips" className="nav-link nav-tips">Tips</Link>
             <Link to="/about" className="nav-link nav-about">About</Link>
-            <UserAuth/>
           </nav>
         </div>
       </div>
