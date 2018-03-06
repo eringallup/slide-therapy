@@ -30,12 +30,10 @@ export default class Buy extends React.Component {
   }
   setupStripe() {
     this.handler = StripeCheckout.configure({
-      key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+      key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
       image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
       locale: 'auto',
-      token: token => {
-        this.completePurchase(token);
-      },
+      token: token => this.completePurchase(token),
       closed: () => {
         if (!this.state.success) {
           this.setState({
