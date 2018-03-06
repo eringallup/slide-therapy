@@ -3,7 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './client/index.js',
+  entry: ['whatwg-fetch', './client/index.js'],
   plugins: [
     new CleanWebpackPlugin(['./client/dist']),
     new HtmlWebpackPlugin({

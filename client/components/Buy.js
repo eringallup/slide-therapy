@@ -1,6 +1,6 @@
 import skus from 'skus.json';
+import qs from 'qs';
 import React from 'react';
-import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
 export default class Buy extends React.Component {
@@ -56,21 +56,19 @@ export default class Buy extends React.Component {
     this.setState({
       hasToken: true
     });
-    let requestConfig = {
+    const queryString = qs.stringify({
+      email: token.email,
+      sku: this.deck.sku,
+      token: token.id
+    });
+    const url = `https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid?${queryString}`;
+    fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
-      },
-      url: 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid',
-      params: {
-        email: token.email,
-        sku: this.deck.sku,
-        token: token.id
       }
-    };
-    // console.log(requestConfig);
-    axios(requestConfig).then(() => {
+    }).then(() => {
       this.setState({
         success: true
       });

@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
 import './vendor/scrollIt.js';

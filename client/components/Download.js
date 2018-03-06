@@ -1,6 +1,5 @@
 import React from 'react';
 import qs from 'qs';
-import axios from 'axios';
 
 export default class Download extends React.Component {
   constructor(props) {
@@ -19,7 +18,7 @@ export default class Download extends React.Component {
     const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=${oid}&e=${email}`;
     this.http(url)
       .then(json => {
-        let body = json && json.data && json.data.body;
+        let body = json && json.body;
         document.location.href = body.downloadUrl;
       })
       .catch(console.error);
@@ -28,7 +27,7 @@ export default class Download extends React.Component {
     const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?t=${token}`;
     this.http(url)
       .then(json => {
-        let body = json && json.data && json.data.body;
+        let body = json && json.body;
         let downloadLink = document.querySelector('#download-link');
         downloadLink.removeAttribute('hidden');
         downloadLink.setAttribute('href', body.downloadUrl);
@@ -40,14 +39,13 @@ export default class Download extends React.Component {
       .catch(console.error);
   }
   http(url) {
-    return axios({
+    return fetch(url, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
-      },
-      url: url
-    });
+      }
+    }).then(response => response.json());
   }
   render() {
     return <section id="view-download" className="py-5">
