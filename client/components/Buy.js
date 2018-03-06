@@ -6,22 +6,19 @@ import { Redirect } from 'react-router-dom';
 export default class Buy extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props;
-  }
-  componentDidMount() {
+    this.state = Object.assign({}, {
+      back: false,
+      success: false
+    }, props);
     this.setDeck();
     this.setupStripe();
   }
-  componentWillUpdate(newProps) {
-    if (this.state.match.params.slug !== newProps.match.params.slug) {
-      this.setState({
-        match: newProps.match
-      });
-    }
-  }
-  componentDidUpdate() {
-    this.setDeck();
+  componentDidMount() {
     this.showCheckout();
+    window.addEventListener('popstate', this.handler.close);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('popstate', this.handler.close);
   }
   setDeck() {
     let sku;
@@ -40,15 +37,13 @@ export default class Buy extends React.Component {
         this.completePurchase(token);
       },
       closed: () => {
-        setTimeout(() => {
-          window.location.href = '/templates';
-        }, 301);
+        if (!this.state.success) {
+          this.setState({
+            back: true
+          });
+        }
       }
     });
-    this.showCheckout();
-
-    // Close Checkout on page navigation:
-    window.addEventListener('popstate', this.handler.close);
   }
   showCheckout() {
     this.handler.open({
@@ -67,6 +62,7 @@ export default class Buy extends React.Component {
       },
       url: 'https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid',
       params: {
+        email: token.email,
         sku: this.deck.sku,
         token: token.id
       }
@@ -81,6 +77,9 @@ export default class Buy extends React.Component {
   render() {
     if (this.state.success) {
       return <Redirect to="/thanks"/>;
+    }
+    if (this.state.back) {
+      return <Redirect to="/templates"/>;
     }
     return '';
   }

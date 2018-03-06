@@ -4,13 +4,21 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 const sns = new AWS.SNS();
 
 exports.handler = (event, context, callback) => {
-  let eventJson = JSON.parse(event.Records[0].Sns.Message);
-  const orderDoc = new Order({
-    oid: eventJson.oid,
-    email: eventJson.email,
-    sku: eventJson.sku,
-    token: eventJson.token
-  });
+  let payload = {
+    oid: event.oid,
+    email: event.email,
+    sku: event.sku,
+    token: event.token
+  };
+  try {
+    let snsData = JSON.parse(event.Records[0].Sns.Message);
+    if (snsData) {
+      payload = snsData;
+    }
+  } catch (e) {
+    console.error('Error parsing JSON', e);
+  }
+  const orderDoc = new Order(payload);
   let update = {
     TableName: 'orders',
     Item: orderDoc
@@ -22,23 +30,15 @@ exports.handler = (event, context, callback) => {
     const get = {
       TableName: 'orders',
       Key: {
-        'oid': eventJson.oid
+        'oid': payload.oid
       }
     };
     dynamo.get(get, (getError, data) => {
       if (getError) {
         return callback(getError);
       }
-
-      const message = {
-        oid: eventJson.oid,
-        email: eventJson.email,
-        sku: eventJson.sku,
-        token: eventJson.token
-      };
-
       sns.publish({
-        Message: JSON.stringify(message),
+        Message: JSON.stringify(payload),
         TopicArn: process.env.snsArn
       }, snsError => {
         if (snsError) {
