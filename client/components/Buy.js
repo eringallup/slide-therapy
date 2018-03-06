@@ -8,7 +8,8 @@ export default class Buy extends React.Component {
     super(props);
     this.state = Object.assign({}, {
       back: false,
-      success: false
+      success: false,
+      hasToken: false
     }, props);
     this.setDeck();
     this.setupStripe();
@@ -35,7 +36,7 @@ export default class Buy extends React.Component {
       locale: 'auto',
       token: token => this.completePurchase(token),
       closed: () => {
-        if (!this.state.success) {
+        if (!this.state.hasToken) {
           this.setState({
             back: true
           });
@@ -52,6 +53,9 @@ export default class Buy extends React.Component {
     });
   }
   completePurchase(token) {
+    this.setState({
+      hasToken: true
+    });
     let requestConfig = {
       method: 'GET',
       headers: {
