@@ -6,13 +6,12 @@ export default class Footer extends React.Component {
     this.state = props;
   }
   render() {
-    return <footer>
+    return <footer className="d-block p-4">
       <div className="container">
         <div className="row">
           <div className="col text-center">
-            <p>&copy; 2018 Gallup Interactive.<br/>
+            <p>&copy; {new Date().getFullYear()} <a target="_blank" rel="noopener noreferrer" href="//nonepercent.com">The Nøne Percent LLC</a><br/>
             All Rights Reserved.</p>
-          A helpful project by <a target="_blank" rel="noopener noreferrer" href="http://eringallup.com">Gallup</a> and <a target="_blank" rel="noopener noreferrer" href="http://jimmybyrum.com">Byrum</a>
           </div>
         </div>
       </div>

@@ -1,10 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = props;
+  }
+  homeActive(match, location) {
+    if (!match) {
+      return false;
+    }
+    return (match.isExact || location.pathname === '/templates');
   }
   render() {
     return <header className="container">
@@ -14,9 +20,22 @@ export default class Header extends React.Component {
         </div>
         <div className="col-sm-7 d-flex align-items-center justify-content-center justify-content-sm-end">
           <nav className="main-nav nav">
-            <Link to="/" className="nav-link nav-templates" href="/">Templates</Link>
-            <Link to="/tips" className="nav-link nav-tips">Tips</Link>
-            <Link to="/about" className="nav-link nav-about">About</Link>
+            <NavLink
+              to="/"
+              isActive={this.homeActive}
+              activeClassName="active"
+              className="nav-link"
+            >Templates</NavLink>
+            <NavLink
+              to="/tips"
+              activeClassName="active"
+              className="nav-link"
+            >Tips</NavLink>
+            <NavLink
+              to="/about"
+              activeClassName="active"
+              className="nav-link"
+            >About</NavLink>
           </nav>
         </div>
       </div>

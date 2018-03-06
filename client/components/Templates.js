@@ -6,6 +6,13 @@ export default class Templates extends React.Component {
     super(props);
     this.state = props;
   }
+  componentDidMount() {
+    if (location.pathname === '/templates') {
+      scrollIt(document.getElementById('templates'), 200, 'easeInCubic');
+    } else {
+      scrollIt(document.body, 100, 'easeInCubic');
+    }
+  }
   render() {
     return <section id="view-templates">
       <div className="hero-layer d-flex align-items-center">
@@ -13,7 +20,7 @@ export default class Templates extends React.Component {
           <div className="row">
             <div className="col-sm-12 text-center">
               <h2>Up your presentation game</h2>
-              <a href="/templates" className="btn btn-primary">Start now</a>
+              <Link to="/templates" className="btn btn-primary">Start now</Link>
             </div>
           </div>
         </div>
@@ -37,7 +44,7 @@ export default class Templates extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col">
-              <h3 className="curlies">2016 Templates</h3>
+              <h3 className="curlies">2018 Templates</h3>
             </div>
           </div>
           <div className="row">
