@@ -6,17 +6,31 @@ const stripe = require('stripe')(process.env.stripe_key);
 const sns = new AWS.SNS();
 
 exports.handler = (event, context, callback) => {
-  let eventJson = JSON.parse(event.Records[0].Sns.Message);
-  const skuData = skus[eventJson.sku];
+  let payload = {
+    oid: event.oid,
+    email: event.email,
+    sku: event.sku,
+    token: event.token
+  };
+  try {
+    let snsData = JSON.parse(event.Records[0].Sns.Message);
+    if (snsData) {
+      payload = snsData;
+    }
+  } catch (e) {
+    console.error('Error parsing JSON', e);
+  }
+
+  const skuData = skus[payload.sku];
   const charge = {
     currency: 'usd',
     amount: skuData.amountInCents,
-    source: eventJson.token,
+    source: payload.token,
     description: 'Slide Therapy: ' + skuData.title,
     metadata: {
-      oid: eventJson.oid,
+      oid: payload.oid,
       sku: skuData.sku,
-      email: eventJson.email
+      email: payload.email
     }
   };
   stripe.charges.create(charge, (chargeError, chargeData) => {
@@ -27,7 +41,7 @@ exports.handler = (event, context, callback) => {
     const query = {
       TableName: 'orders',
       Key: {
-        oid: eventJson.oid
+        oid: payload.oid
       },
       UpdateExpression: 'set order_status = :status, charge = :charge, modified = :modified',
       ExpressionAttributeValues: {
@@ -42,15 +56,8 @@ exports.handler = (event, context, callback) => {
         return callback(updateError);
       }
 
-      const message = {
-        oid: eventJson.oid,
-        email: eventJson.email,
-        sku: eventJson.sku,
-        token: eventJson.token
-      };
-
       sns.publish({
-        Message: JSON.stringify(message),
+        Message: JSON.stringify(payload),
         TopicArn: process.env.snsArn
       }, snsError => {
         if (snsError) {

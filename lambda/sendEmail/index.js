@@ -7,20 +7,22 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 const jwt = require('jsonwebtoken');
 
 exports.handler = (event, context, callback) => {
-  let eventJson;
-  if (event.oid) {
-    eventJson = event;
-  } else {
-    try {
-      eventJson = JSON.parse(event.Records[0].Sns.Message);
-    } catch (e) {
-      return callback(e);
+  let payload = {
+    oid: event.oid
+  };
+  try {
+    let snsData = JSON.parse(event.Records[0].Sns.Message);
+    if (snsData) {
+      payload = snsData;
     }
+  } catch (e) {
+    console.error('Error parsing JSON', e);
   }
+
   const get = {
     TableName: 'orders',
     Key: {
-      'oid': eventJson.oid
+      'oid': payload.oid
     }
   };
   dynamo.get(get, (getError, data) => {
@@ -56,7 +58,7 @@ function sendFile(order) {
     token: order.token,
     created: order.created.valueOf()
   }).then(jwt => {
-    let url = process.env.webUrl + '/download?t=' + jwt;
+    let url = `${process.env.webUrl}/download?t=${jwt}&d=true`;
     let html = `
       Thanks for purchasing Slide Therapy 2018!
       <br>
