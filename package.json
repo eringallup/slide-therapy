@@ -40,12 +40,11 @@
     "webpack-require": "^0.0.16"
   },
   "scripts": {
-    "setup": "rm ./node_modules/slidetherapy; ln -s ../ ./node_modules/slidetherapy",
     "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js",
-    "watch": "NODE_PATH=client/src webpack --config webpack.dev.js --watch",
-    "client": "NODE_PATH=client/src webpack-dev-server --config webpack.dev.js --open",
-    "build": "NODE_PATH=client/src webpack --config webpack.dev.js",
-    "build-prod": "NODE_PATH=client/src webpack --config webpack.prod.js"
+    "watch": "webpack --config webpack.dev.js --watch",
+    "client": "webpack-dev-server --config webpack.dev.js --open",
+    "build": "webpack --config webpack.dev.js",
+    "build-prod": "webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",

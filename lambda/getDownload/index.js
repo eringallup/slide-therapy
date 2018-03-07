@@ -27,23 +27,9 @@ exports.handler = (event, context, callback) => {
 
 function downloadOwned(oid, email) {
   return new Promise((resolve, reject) => {
-    const query = {
-      TableName: 'orders',
-      FilterExpression : 'oid = :oid and email = :email',
-      ExpressionAttributeValues : {
-        ':oid': oid,
-        ':email' : email
-      }
-    };
-    dynamo.scan(query, (scanError, data) => {
-      if (scanError) {
-        return reject(scanError);
-      }
-      let order = data && data.Items && data.Items[0];
-      if (!order) {
-        return reject(new Error('order not found for user'));
-      }
-
+    getOrder(oid, email, order => {
+      return order.order_status === 'complete';
+    }).then(() => {
       const update = {
         TableName: 'orders',
         Key: {
@@ -66,7 +52,7 @@ function downloadOwned(oid, email) {
           downloadUrl: downloadUrl
         });
       });
-    });
+    }).catch(reject);
   });
 }
 
@@ -74,32 +60,70 @@ function downloadWithToken(token) {
   return new Promise((resolve, reject) => {
     decrypt(token).then(jsonToken => {
       // console.log('jsonToken', jsonToken);
-      const update = {
-        TableName: 'orders',
-        Key: {
-          oid: parseInt(jsonToken.oid, 10)
-        },
-        UpdateExpression: 'set downloads = downloads + :val',
-        ExpressionAttributeValues: {
-          ':val': 1
-        },
-        ReturnValues: 'ALL_NEW'
-      };
-      // console.log('update:', update);
-      dynamo.update(update, (err, order) => {
-        if (err) {
-          return reject(err);
-        }
-        if (jsonToken.token !== order.Attributes.token) {
-          return reject(new Error('tokens do not match. ' + jsonToken.token + ' != ' + order.Attributes.token));
-        }
-        const downloadUrl = getSignedUrl(order.Attributes.sku);
-        resolve({
-          deck: skus[order.Attributes.sku],
-          downloadUrl: downloadUrl
+      const oid = parseInt(jsonToken.oid, 10);
+      getOrder(oid, null, order => {
+        return order.order_status === 'complete' && jsonToken.token === order.token;
+      }).then(() => {
+        const update = {
+          TableName: 'orders',
+          Key: {
+            oid: oid
+          },
+          UpdateExpression: 'set downloads = downloads + :val',
+          ExpressionAttributeValues: {
+            ':val': 1
+          },
+          ReturnValues: 'ALL_NEW'
+        };
+        // console.log('update:', update);
+        dynamo.update(update, (err, order) => {
+          if (err) {
+            return reject(err);
+          }
+          const downloadUrl = getSignedUrl(order.Attributes.sku);
+          resolve({
+            deck: skus[order.Attributes.sku],
+            downloadUrl: downloadUrl
+          });
         });
-      });
+      }).catch(reject);
     }).catch(reject);
+  });
+}
+
+function getOrder(oid, email, validatorFn) {
+  return new Promise((resolve, reject) => {
+    let attrs = {};
+    let filter = [];
+    if (oid) {
+      attrs[':oid'] = oid;
+      filter.push('oid = :oid');
+    }
+    if (email) {
+      attrs[':email'] = email;
+      filter.push('email = :email');
+    }
+    const query = {
+      TableName: 'orders',
+      FilterExpression: filter.join(' and '),
+      ExpressionAttributeValues: attrs
+    };
+    dynamo.scan(query, (scanError, data) => {
+      if (scanError) {
+        return reject(scanError);
+      }
+      let order = data && data.Items && data.Items[0];
+      if (!order) {
+        return reject(new Error('order not found'));
+      }
+      if (typeof validatorFn === 'function') {
+        const isValid = validatorFn(order);
+        if (!isValid) {
+          return reject(new Error('order not valid'));
+        }
+      }
+      resolve(order);
+    });
   });
 }
 
