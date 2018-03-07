@@ -77,14 +77,27 @@ export default class Templates extends React.Component {
           </div>
           <div className="row">
             <div className="col col-8">
-              <div className="icon-with-text">
-                <img src="with-purchase-deck.png" alt="135 page Pro Tips Deck"/>
-                <p>135 page Pro Tips Deck with easy to follow design instructions</p>
-              </div>
-              <i className="fa fa-plus"></i>
-              <div className="icon-with-text">
-                <img src="with-purchase-icon-library.png" alt="500+ Icons"/>
-                <p>A library of 500+ icons included in the deck</p>
+              <div className="d-flex">
+                <div className="icon-with-text" style={{
+                  flex: 8
+                }}>
+                  <div className="img-placeholder"></div>
+                  <p>135 page Pro Tips Deck with easy to follow design instructions</p>
+                </div>
+                <div className="d-flex text-center" style={{
+                  flex: 1
+                }}>
+                  <span style={{
+                    flex: 1,
+                    alignSelf: 'center'
+                  }}>+</span>
+                </div>
+                <div className="icon-with-text" style={{
+                  flex: 8
+                }}>
+                  <div className="img-placeholder"></div>
+                  <p>A library of 500+ icons included in the deck</p>
+                </div>
               </div>
             </div>
             <div className="col">
