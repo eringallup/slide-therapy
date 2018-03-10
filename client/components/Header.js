@@ -23,16 +23,19 @@ export default class Header extends React.Component {
             <NavLink
               to="/"
               isActive={this.homeActive}
+              suppressHydrationWarning={true}
               activeClassName="active"
               className="nav-link"
             >Templates</NavLink>
             <NavLink
               to="/tips"
+              suppressHydrationWarning={true}
               activeClassName="active"
               className="nav-link"
             >Tips</NavLink>
             <NavLink
               to="/about"
+              suppressHydrationWarning={true}
               activeClassName="active"
               className="nav-link"
             >About</NavLink>

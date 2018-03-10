@@ -3,6 +3,13 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
+const fs = require('fs');
+const blogPostFiles = fs.readdirSync('./client/blog');
+let blogPosts = [];
+blogPostFiles.forEach(file => {
+  let markdown = fs.readFileSync(`./client/blog/${file}`, 'utf8');
+  blogPosts.push(markdown);
+});
 // const jsdom = require('jsdom');
 // const { JSDOM } = jsdom;
 // const dom = new JSDOM('<div/>');
@@ -15,9 +22,6 @@ module.exports = {
     'whatwg-fetch',
     './client/index.js'
   ],
-  node: {
-    fs: 'empty'
-  },
   plugins: [
     new CleanWebpackPlugin([outputDir]),
     new CopyWebpackPlugin([{
@@ -39,7 +43,10 @@ module.exports = {
         '/'
       ],
       locals: {
-        title: 'Slide Therapy'
+        title: 'Slide Therapy',
+        context: {
+          blogPosts: blogPosts.reverse()
+        }
       }
     })
   ],

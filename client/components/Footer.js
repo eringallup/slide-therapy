@@ -10,7 +10,7 @@ export default class Footer extends React.Component {
       <div className="container">
         <div className="row">
           <div className="col text-center">
-            <p>&copy; {new Date().getFullYear()} <a target="_blank" rel="noopener noreferrer" href="//nonepercent.com">The Nøne Percent LLC</a><br/>
+            <p>&copy; {new Date().getFullYear()} <a target="_blank" rel="noopener noreferrer" href="http://nonepercent.com">The Nøne Percent LLC</a><br/>
             All Rights Reserved.</p>
           </div>
         </div>

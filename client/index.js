@@ -16,7 +16,7 @@ if (typeof global.document !== 'undefined') {
 }
 
 function init() {
-  ReactDOM.render(<BrowserRouter>{Routes}</BrowserRouter>, document.querySelector('#app'));
+  ReactDOM.hydrate(<BrowserRouter><Routes/></BrowserRouter>, document.querySelector('#app'));
   document.querySelector('html').classList.remove('no-js');
   document.body.classList.remove('view-loading');
 }
@@ -25,7 +25,7 @@ export default locals => {
   const assets = Object.keys(locals.webpackStats.compilation.assets);
   const js = assets.filter(value => value.match(/\.js$/));
   return ReactDOMServer.renderToString(
-    <StaticRouter location={locals.path} context={{}}>
-      <Html js={js}>{Routes}</Html>
+    <StaticRouter location={locals.path} context={locals.context}>
+      <Html js={js} context={locals.context}><Routes context={locals.context}/></Html>
     </StaticRouter>);
 };

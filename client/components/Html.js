@@ -10,6 +10,7 @@ export default class Html extends React.Component {
     this.state.js.forEach(file => {
       jsFiles += `<script src="/${file}"></script>`;
     });
+    jsFiles += `<script>window.appContext = ${JSON.stringify(this.state.context)};</script>`;
     return <html lang="en" className="no-js">
       <head>
         <title>{this.state.title}</title>
