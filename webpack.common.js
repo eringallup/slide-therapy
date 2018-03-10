@@ -1,6 +1,5 @@
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
 const fs = require('fs');
@@ -10,10 +9,6 @@ blogPostFiles.forEach(file => {
   let markdown = fs.readFileSync(`./client/blog/${file}`, 'utf8');
   blogPosts.push(markdown);
 });
-// const jsdom = require('jsdom');
-// const { JSDOM } = jsdom;
-// const dom = new JSDOM('<div/>');
-// const { window, document, navigator } = dom;
 
 const outputDir = path.resolve(__dirname, 'client', 'dist');
 
@@ -29,9 +24,6 @@ module.exports = {
       to: outputDir,
       flatten: true
     }]),
-    // new HtmlWebpackPlugin({
-    //   template: path.resolve(__dirname, 'client', 'index.html')
-    // }),
     new StaticSiteGeneratorPlugin({
       crawl: true,
       globals: {
@@ -40,7 +32,9 @@ module.exports = {
         }
       },
       paths: [
-        '/'
+        '/',
+        '/download',
+        '/thanks'
       ],
       locals: {
         title: 'Slide Therapy',
@@ -67,15 +61,6 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.html$/,
-      loader: 'html-loader'
-    }, {
-      test: /\.css$/,
-      use: [
-        'style-loader',
-        'css-loader'
-      ]
-    }, {
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'babel-loader',
