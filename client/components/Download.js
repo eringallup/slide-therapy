@@ -19,7 +19,9 @@ export default class Download extends React.Component {
     this.http(url)
       .then(json => {
         let body = json && json.body;
-        document.location.href = body.downloadUrl;
+        if (typeof global.document !== 'undefined') {
+          document.location.href = body.downloadUrl;
+        }
       })
       .catch(console.error);
   }
@@ -28,12 +30,14 @@ export default class Download extends React.Component {
     this.http(url)
       .then(json => {
         let body = json && json.body;
-        let downloadLink = document.querySelector('#download-link');
-        downloadLink.removeAttribute('hidden');
-        downloadLink.setAttribute('href', body.downloadUrl);
-        downloadLink.innerText = 'Download ' + body.deck.title;
-        if (autoDownload === true) {
-          document.location.href = body.downloadUrl;
+        if (typeof global.document !== 'undefined') {
+          let downloadLink = document.querySelector('#download-link');
+          downloadLink.removeAttribute('hidden');
+          downloadLink.setAttribute('href', body.downloadUrl);
+          downloadLink.innerText = 'Download ' + body.deck.title;
+          if (autoDownload === true) {
+            document.location.href = body.downloadUrl;
+          }
         }
       })
       .catch(console.error);

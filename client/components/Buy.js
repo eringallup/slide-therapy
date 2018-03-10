@@ -16,10 +16,14 @@ export default class Buy extends React.Component {
   }
   componentDidMount() {
     this.showCheckout();
-    window.addEventListener('popstate', this.handler.close);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('popstate', this.handler.close);
+    }
   }
   componentWillUnmount() {
-    window.removeEventListener('popstate', this.handler.close);
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('popstate', this.handler.close);
+    }
   }
   setDeck() {
     let sku;

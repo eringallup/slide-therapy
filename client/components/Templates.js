@@ -7,10 +7,12 @@ export default class Templates extends React.Component {
     this.state = props;
   }
   componentDidMount() {
-    if (/templates|buy/i.test(location.pathname)) {
-      scrollIt(document.getElementById('templates'), 200, 'easeInCubic');
-    } else {
-      scrollIt(document.body, 100, 'easeInCubic');
+    if (typeof global.document !== 'undefined') {
+      if (/templates|buy/i.test(location.pathname)) {
+        scrollIt(document.getElementById('templates'), 200, 'easeInCubic');
+      } else {
+        scrollIt(document.body, 100, 'easeInCubic');
+      }
     }
   }
   render() {
