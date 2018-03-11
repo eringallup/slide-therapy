@@ -12,9 +12,13 @@ export default class Templates extends React.Component {
       if (location.pathname === '/start') {
         scrollIt(document.getElementById('start'), 200, 'easeInCubic');
       } else if (/templates|buy/i.test(location.pathname)) {
-        scrollIt(document.getElementById('templates'), 200, 'easeInCubic');
-      } else {
-        scrollIt(document.body, 100, 'easeInCubic');
+        if (window.pageYOffset < 10) {
+          scrollIt(document.getElementById('templates'), 200, 'easeInCubic');
+        }
+      } else if (location.pathname === '/') {
+        if (window.history.length > 1) {
+          scrollIt(document.body, 100, 'easeInCubic');
+        }
       }
     }
   }
