@@ -36,7 +36,7 @@ export default class Routes extends React.Component {
       <Header/>
       <div id="content">
         <Route exact path="/" component={Templates} context={this.state.context}/>
-        <Route path="/(templates|buy)" component={Templates} context={this.state.context}/>
+        <Route path="/(start|templates|buy)" component={Templates} context={this.state.context}/>
         <Route path="/buy/:slug" component={Buy} context={this.state.context}/>
         <Route path="/tips" component={Tips} context={this.state.context}/>
         <Route path="/about" component={About} context={this.state.context}/>

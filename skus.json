@@ -2,22 +2,44 @@
   "1": {
     "slug": "large-audiences",
     "title": "Large Audiences",
+    "image": "/images/home/largeaudience.png",
+    "description": "",
     "sku": 1,
     "path": "large-audiences.ppt",
-    "amountInCents": 2900
+    "amountInCents": 3900,
+    "displayPrice": 39
   },
   "2": {
     "slug": "small-audiences",
     "title": "Small Audiences",
+    "image": "/images/home/smallaudience.png",
+    "description": "",
     "sku": 2,
     "path": "small-audiences.ppt",
-    "amountInCents": 2900
+    "amountInCents": 3900,
+    "displayPrice": 39
   },
   "3": {
     "slug": "solitary-audiences",
     "title": "Solitary Audiences",
+    "image": "/images/home/solitaryaudience.png",
+    "description": "",
     "sku": 3,
     "path": "solitary-audiences.ppt",
-    "amountInCents": 2900
+    "amountInCents": 3900,
+    "displayPrice": 39
+  },
+  "4": {
+    "slug": "all-audiences",
+    "title": "All Audiences",
+    "description": "Be ready for any audience. Get all 3 together.",
+    "sku": 4,
+    "path": [
+      "large-audiences.ppt",
+      "small-audiences.ppt",
+      "solitary-audiences.ppt"
+    ],
+    "amountInCents": 9900,
+    "displayPrice": 99
   }
 }

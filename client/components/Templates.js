@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import skus from 'skus.json';
 
 export default class Templates extends React.Component {
   constructor(props) {
@@ -8,7 +9,9 @@ export default class Templates extends React.Component {
   }
   componentDidMount() {
     if (typeof global.document !== 'undefined') {
-      if (/templates|buy/i.test(location.pathname)) {
+      if (location.pathname === '/start') {
+        scrollIt(document.getElementById('start'), 200, 'easeInCubic');
+      } else if (/templates|buy/i.test(location.pathname)) {
         scrollIt(document.getElementById('templates'), 200, 'easeInCubic');
       } else {
         scrollIt(document.body, 100, 'easeInCubic');
@@ -16,13 +19,38 @@ export default class Templates extends React.Component {
     }
   }
   render() {
+    const templates = [skus[1], skus[2], skus[3]].map(item => {
+      return <div key={item.sku} className="col deck" itemScope itemType="http://schema.org/Product">
+        <Link className="d-flex" to={`/buy/${item.slug}`}>
+          <span
+            className="order-0 text-secondary"
+          >{item.sku}</span>
+          <h4
+            itemProp="name"
+            className="order-2 text-dark"
+          >{item.title} - ${item.displayPrice}</h4>
+          <div
+            itemProp="image"
+            className="order-1"
+          ><img className="img-fluid" src={item.image}/></div>
+          <div
+            className="order-3"
+          ><span className="buy btn btn-primary">Buy</span></div>
+        </Link>
+      </div>;
+    });
     return <section id="view-templates">
-      <div className="hero-layer d-flex align-items-center">
+      <div
+        className="hero-layer d-flex align-items-center"
+        style={{
+          backgroundImage: 'url(/images/home/topimage1.jpg)'
+        }}
+      >
         <div className="container">
           <div className="row">
             <div className="col-sm-12 text-center">
               <h2>Up your presentation game</h2>
-              <Link to="/templates" className="btn btn-primary">Start now</Link>
+              <Link to="/start" className="btn btn-primary">Start now</Link>
             </div>
           </div>
         </div>
@@ -33,102 +61,66 @@ export default class Templates extends React.Component {
             <h3>Expert-Designed PowerPoint Templates <em>with built-in mentoring</em></h3>
           </div>
         </div>
-        <div className="row">
+        <div id="start" className="row">
           <div className="col">
-            <p>It&apos;s no secret- PowerPoint is notoriously difficult to work with. With its multitude of tools, hidden confusing Slide Master and its outdated templates, it can be a real challenge to get the story right, much less make it look good. And when it doesn&apos;t look good, your message can get lost.</p>
-          </div>
-          <div className="col">
-            <p>Luckily there is Slide Therapy- a presentation template that also includes all of the design tips and assets you need to make your presentation great. Created by a veteran Silicon Valley designer, the templates are modern in design and easily customizable. So your presentation will look good- and your message will shine.</p>
+            <h3>Communicate Clearly. Work Faster. Look Elegant.</h3>
+            <p className="lead">Slide Therapy is a series of master PowerPoint files that include everything you need to make a stunning presentation:</p>
           </div>
         </div>
-      </div>
-      <div id="templates" className="bg-gray1">
-        <div className="container">
-          <div className="row">
-            <div className="col">
-              <h3 className="curlies">2018 Templates</h3>
-            </div>
+        <div className="row">
+          <div className="col">
+            <h4>Templates</h4>
+            <ol className="list-unstyled">
+              <li>28 light templates</li>
+              <li>24 dark templates</li>
+              <li>500+ icon library</li>
+              <li>80+ shape library</li>
+            </ol>
           </div>
-          <div className="row">
-            <div className="col">
-              <Link to="/buy/large-audiences">
-                <h4 className="text-dark">Large Audiences - $29</h4>
-                <div className="img-placeholder"></div>
-                <span className="buy btn btn-primary">Buy</span>
-              </Link>
-            </div>
-            <div className="col">
-              <Link to="/buy/small-audiences">
-                <h4 className="text-dark">Small Audiences - $29</h4>
-                <div className="img-placeholder"></div>
-                <span className="buy btn btn-primary">Buy</span>
-              </Link>
-            </div>
-            <div className="col">
-              <Link to="/buy/solitary-audiences">
-                <h4 className="text-dark">Solitary Audiences - $29</h4>
-                <div className="img-placeholder"></div>
-                <span className="buy btn btn-primary">Buy</span>
-              </Link>
-            </div>
+          <div className="col">
+            <h4>Tips</h4>
+            <ol className="list-unstyled">
+              <li>Keeping a Clean Look</li>
+              <li>Changing Colors</li>
+              <li>Changing Fonts</li>
+              <li>Finding Images</li>
+              <li>Making Graphics Using Icons</li>
+              <li>Making Graphics Using Shapes</li>
+              <li>Illustrating Abstract Concepts</li>
+              <li>Formatting Graphs</li>
+              <li>Formatting Charts</li>
+              <li>Formatting Tables</li>
+              <li>Adding Maps</li>
+            </ol>
           </div>
-          <div className="row">
-            <div className="col">
-              <h3 className="line-through">Included With Purchase</h3>
-            </div>
+          <div className="col d-flex align-items-center">
+            <img className="img-fluid" src="/images/home/laptop.png" alt=""/>
           </div>
-          <div className="row">
-            <div className="col col-8">
-              <div className="d-flex">
-                <div className="icon-with-text" style={{
-                  flex: 8
-                }}>
-                  <div className="img-placeholder"></div>
-                  <p>135 page Pro Tips Deck with easy to follow design instructions</p>
-                </div>
-                <div className="d-flex text-center" style={{
-                  flex: 1
-                }}>
-                  <span style={{
-                    flex: 1,
-                    alignSelf: 'center'
-                  }}>+</span>
-                </div>
-                <div className="icon-with-text" style={{
-                  flex: 8
-                }}>
-                  <div className="img-placeholder"></div>
-                  <p>A library of 500+ icons included in the deck</p>
-                </div>
-              </div>
+        </div>
+        <div id="templates" className="row">
+          <div
+            itemScope itemType="http://schema.org/Product"
+            className="d-flex flex-row justify-content-center"
+          >
+            <h4 itemProp="name">Special</h4>
+            <p
+              itemProp="description"
+              className="lead"
+            >{skus[4].description}</p>
+            <div className="full-price">$117</div>
+            <div itemProp="offers" itemScope itemType="http://schema.org/Offer">
+              <span itemProp="priceCurrency" content="USD">$</span>
+              <span itemProp="price" content="99.00">{skus[4].displayPrice}</span>
             </div>
-            <div className="col">
-              <h5>Pro Tips Include</h5>
-              <ul>
-                <li>Altering your template</li>
-                <li>Slide Types + their best use</li>
-                <li>How to adhere to a grid layout</li>
-                <li>Creating a custom color palette</li>
-                <li>Finding great images</li>
-                <li>Formatting charts &amp; graphs</li>
-                <li>Making tables look great</li>
-                <li>Creating beautiful diagrams</li>
-                <li>Changing typography</li>
-                <li>Illustrating with icons</li>
-                <li>Integrating maps</li>
-              </ul>
-            </div>
+            <Link
+              to="/buy/all-audiences"
+              className="buy btn btn-primary"
+            >Buy</Link>
           </div>
         </div>
       </div>
       <div className="container">
-        <div className="row">
-          <div className="col text-center">
-            <h3>How <em>it works</em></h3>
-          </div>
-        </div>
-        <div className="row">
-        </div>
+        <div className="flex-row">{templates}</div>
       </div>
     </section>;
   }

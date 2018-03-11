@@ -10,7 +10,8 @@ blogPostFiles.forEach(file => {
   blogPosts.push(markdown);
 });
 
-const outputDir = path.resolve(__dirname, 'client', 'dist');
+const clientDir = path.resolve(__dirname, 'client');
+const outputDir = path.resolve(clientDir, 'dist');
 
 module.exports = {
   entry: [
@@ -20,9 +21,13 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin([outputDir]),
     new CopyWebpackPlugin([{
-      from: './client/*.css',
+      from: path.resolve(clientDir, '*.css'),
       to: outputDir,
       flatten: true
+    }, {
+      from: path.resolve(clientDir, 'images'),
+      to: path.resolve(outputDir, 'images'),
+      flatten: false
     }]),
     new StaticSiteGeneratorPlugin({
       crawl: true,
