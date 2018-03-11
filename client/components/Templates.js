@@ -51,22 +51,22 @@ export default class Templates extends React.Component {
           </div>
           <div className="row">
             <div className="col">
-              <Link to="/buy/halcyon">
-                <h4 className="text-dark">Halcyon - $29</h4>
+              <Link to="/buy/large-audiences">
+                <h4 className="text-dark">Large Audiences - $29</h4>
                 <div className="img-placeholder"></div>
                 <span className="buy btn btn-primary">Buy</span>
               </Link>
             </div>
             <div className="col">
-              <Link to="/buy/summit">
-                <h4 className="text-dark">Summit - $29</h4>
+              <Link to="/buy/small-audiences">
+                <h4 className="text-dark">Small Audiences - $29</h4>
                 <div className="img-placeholder"></div>
                 <span className="buy btn btn-primary">Buy</span>
               </Link>
             </div>
             <div className="col">
-              <Link to="/buy/hitchcock">
-                <h4 className="text-dark">Hitchcock - $29</h4>
+              <Link to="/buy/solitary-audiences">
+                <h4 className="text-dark">Solitary Audiences - $29</h4>
                 <div className="img-placeholder"></div>
                 <span className="buy btn btn-primary">Buy</span>
               </Link>

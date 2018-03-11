@@ -51,7 +51,7 @@ export default class Buy extends React.Component {
   showCheckout() {
     this.handler.open({
       name: this.deck.title,
-      description: 'Slide Therapy',
+      description: 'Single-user License',
       zipCode: true,
       amount: this.deck.amountInCents
     });

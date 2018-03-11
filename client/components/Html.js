@@ -22,7 +22,7 @@ export default class Html extends React.Component {
         <link href="/style.css" rel="stylesheet" type="text/css"/>
         <script src="//checkout.stripe.com/checkout.js"></script>
       </head>
-      <body className="view-loading">
+      <body>
         <div id="app" className="d-flex flex-column">{this.state.children}</div>
         <div dangerouslySetInnerHTML={{__html: jsFiles}}></div>
       </body>

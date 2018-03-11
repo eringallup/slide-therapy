@@ -9,10 +9,6 @@ body {
   min-height: 100vh;
 }
 
-body.view-loading #content {
-  opacity: 0;
-}
-
 [hidden] {
   visibility: collapse;
   pointer-events: none;

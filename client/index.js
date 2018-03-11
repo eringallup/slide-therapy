@@ -18,7 +18,6 @@ if (typeof global.document !== 'undefined') {
 function init() {
   ReactDOM.hydrate(<BrowserRouter><Routes/></BrowserRouter>, document.querySelector('#app'));
   document.querySelector('html').classList.remove('no-js');
-  document.body.classList.remove('view-loading');
 }
 
 export default locals => {

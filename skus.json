@@ -1,23 +1,23 @@
 {
   "1": {
-    "slug": "halcyon",
-    "title": "Halcyon",
+    "slug": "large-audiences",
+    "title": "Large Audiences",
     "sku": 1,
-    "path": "halcyon.ppt",
+    "path": "large-audiences.ppt",
     "amountInCents": 2900
   },
   "2": {
-    "slug": "summit",
-    "title": "Summit",
+    "slug": "small-audiences",
+    "title": "Small Audiences",
     "sku": 2,
-    "path": "summit.ppt",
+    "path": "small-audiences.ppt",
     "amountInCents": 2900
   },
   "3": {
-    "slug": "hitchcock",
-    "title": "Hitchcock",
+    "slug": "solitary-audiences",
+    "title": "Solitary Audiences",
     "sku": 3,
-    "path": "hitchcock.ppt",
+    "path": "solitary-audiences.ppt",
     "amountInCents": 2900
   }
 }
