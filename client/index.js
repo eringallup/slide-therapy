@@ -24,7 +24,7 @@ export default locals => {
   const assets = Object.keys(locals.webpackStats.compilation.assets);
   const js = assets.filter(value => value.match(/\.js$/));
   return ReactDOMServer.renderToString(
-    <StaticRouter location={locals.path} context={locals.context}>
+    <StaticRouter location={locals.path} context={{}}>
       <Html js={js} title={locals.title} context={locals.context}><Routes context={locals.context}/></Html>
     </StaticRouter>);
 };
