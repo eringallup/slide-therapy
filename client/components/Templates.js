@@ -1,28 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import skus from 'skus.json';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import skus from 'skus.json'
 
 export default class Templates extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = props;
+  constructor (props) {
+    super(props)
+    this.state = props
   }
-  componentDidMount() {
+  componentDidMount () {
     if (typeof global.document !== 'undefined') {
       if (location.pathname === '/start') {
-        scrollIt(document.getElementById('start'), 200, 'easeInCubic');
+        scrollIt(document.getElementById('start'), 200, 'easeInCubic')
       } else if (/templates|buy/i.test(location.pathname)) {
         if (window.pageYOffset < 10) {
-          scrollIt(document.getElementById('templates'), 200, 'easeInCubic');
+          scrollIt(document.getElementById('templates'), 200, 'easeInCubic')
         }
       } else if (location.pathname === '/') {
         if (window.history.length > 1) {
-          scrollIt(document.body, 100, 'easeInCubic');
+          scrollIt(document.body, 100, 'easeInCubic')
         }
       }
     }
   }
-  render() {
+  render () {
     const templates = [skus[1], skus[2], skus[3]].map(item => {
       return <div key={item.sku} className="col deck" itemScope itemType="http://schema.org/Product">
         <Link className="d-flex" to={`/buy/${item.slug}`}>
@@ -36,13 +36,13 @@ export default class Templates extends React.Component {
           <div
             itemProp="image"
             className="order-1"
-          ><img className="img-fluid" src={item.image}/></div>
+          ><img className="img-fluid" src={item.image} /></div>
           <div
             className="order-3"
           ><span className="buy btn btn-primary">Buy</span></div>
         </Link>
-      </div>;
-    });
+      </div>
+    })
     return <section id="view-templates">
       <div
         className="hero-layer d-flex align-items-center"
@@ -98,7 +98,7 @@ export default class Templates extends React.Component {
             </ol>
           </div>
           <div className="col d-flex align-items-center">
-            <img className="img-fluid" src="/images/home/laptop.png" alt=""/>
+            <img className="img-fluid" src="/images/home/laptop.png" alt="" />
           </div>
         </div>
         <div id="templates" className="row">
@@ -126,6 +126,6 @@ export default class Templates extends React.Component {
       <div className="container">
         <div className="flex-row">{templates}</div>
       </div>
-    </section>;
+    </section>
   }
 }

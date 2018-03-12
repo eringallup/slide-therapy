@@ -1,67 +1,67 @@
-import React from 'react';
-import qs from 'qs';
+import React from 'react'
+import qs from 'qs'
 
 export default class Download extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = props;
+  constructor (props) {
+    super(props)
+    this.state = props
   }
-  componentDidMount() {
-    let queryParams = qs.parse(location.search.substring(1));
+  componentDidMount () {
+    let queryParams = qs.parse(location.search.substring(1))
     if (queryParams.o && queryParams.e) {
-      this.ownedDeck(queryParams.o, queryParams.e);
+      this.ownedDeck(queryParams.o, queryParams.e)
     } else if (queryParams.t) {
-      this.withToken(queryParams.t, queryParams.d === 'true');
+      this.withToken(queryParams.t, queryParams.d === 'true')
     }
   }
-  ownedDeck(oid, email) {
-    const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=${oid}&e=${email}`;
+  ownedDeck (oid, email) {
+    const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=${oid}&e=${email}`
     this.http(url)
       .then(json => {
-        let body = json && json.body;
+        let body = json && json.body
         if (typeof global.document !== 'undefined') {
-          document.location.href = body.downloadUrl;
+          document.location.href = body.downloadUrl
         }
       })
-      .catch(console.error);
+      .catch(console.error)
   }
-  withToken(token, autoDownload) {
-    const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?t=${token}`;
+  withToken (token, autoDownload) {
+    const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?t=${token}`
     this.http(url)
       .then(json => {
-        let body = json && json.body;
+        let body = json && json.body
         if (typeof global.document !== 'undefined') {
-          let downloadLink = document.querySelector('#download-link');
-          downloadLink.removeAttribute('hidden');
-          downloadLink.setAttribute('href', body.downloadUrl);
-          downloadLink.innerText = 'Download ' + body.deck.title;
+          let downloadLink = document.querySelector('#download-link')
+          downloadLink.removeAttribute('hidden')
+          downloadLink.setAttribute('href', body.downloadUrl)
+          downloadLink.innerText = 'Download ' + body.deck.title
           if (autoDownload === true) {
-            document.location.href = body.downloadUrl;
+            document.location.href = body.downloadUrl
           }
         }
       })
-      .catch(console.error);
+      .catch(console.error)
   }
-  http(url) {
+  http (url) {
     return fetch(url, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
       }
-    }).then(response => response.json());
+    }).then(response => response.json())
   }
-  render() {
+  render () {
     return <section id="view-download" className="py-5">
       <div className="container">
         <div className="row">
           <div className="col-sm-12">
             <h2>Download</h2>
             <p className="lead">Your deck should start downloading in a moment.</p>
-            <a id="download-link" hidden></a>
+            <a id="download-link" hidden />
           </div>
         </div>
       </div>
-    </section>;
+    </section>
   }
 }

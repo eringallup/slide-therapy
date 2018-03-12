@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 export default class Thanks extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = props;
+  constructor (props) {
+    super(props)
+    this.state = props
   }
-  render() {
+  render () {
     return <section id="view-thanks" className="py-5">
       <div className="container">
         <div className="row">
@@ -16,6 +16,6 @@ export default class Thanks extends React.Component {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
   }
 }

@@ -1,23 +1,23 @@
-import React from 'react';
+import React from 'react'
 
 export default class Tips extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = props;
+  constructor (props) {
+    super(props)
+    this.state = props
   }
-  render() {
+  render () {
     let tipsHtml = tips.map((tip, index) => {
       return <div key={index} className="tip d-flex flex-row" itemScope itemType="http://schema.org/BlogPosting">
         <div className="tip-image">
-          <img itemProp="image" className="img-fluid" src={tip.image} alt=""/>
+          <img itemProp="image" className="img-fluid" src={tip.image} alt="" />
         </div>
         <div className="tip-content">
           <h4>Pro Tip #{index + 1}</h4>
           <h3 itemProp="headline">{tip.title}</h3>
           <div itemProp="articleBody">{tip.body}</div>
         </div>
-      </div>;
-    });
+      </div>
+    })
     return <section id="view-tips" className="py-5">
       <div className="container">
         <div className="row">
@@ -27,7 +27,7 @@ export default class Tips extends React.Component {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
   }
 }
 
@@ -71,4 +71,4 @@ const tips = [{
   title: 'Do use a dark template for a dark room.',
   body: 'If you know that the room that you will be presenting in will be very dark, consider using the dark background templates. Much like how dark backgrounds are easier for reading from your tablet in bed at night, the slides will be easier on your audience\'s eyes in a dark room.\n\nEach Slide Therapy Template and Tips file contains both dark and light background slide designs.',
   image: '/images/tips/tip10.png'
-}];
+}]

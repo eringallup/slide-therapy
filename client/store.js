@@ -1,12 +1,12 @@
-import { createStore } from 'redux';
+import { createStore } from 'redux'
 
-function dataStore(state = {}, action) {
+function dataStore (state = {}, action) {
   Object.keys(action).forEach(item => {
-    state[item] = action[item];
-  });
-  return state;
+    state[item] = action[item]
+  })
+  return state
 }
 
-let store = createStore(dataStore);
+let store = createStore(dataStore)
 
-export default store;
+export default store

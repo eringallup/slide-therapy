@@ -7,10 +7,9 @@
       }
   },
   "globals": {
-    "Router": true,
-    "Stripe": true,
     "StripeCheckout": true,
-    "scrollIt": true
+    "scrollIt": true,
+    "fetch": true
   },
   "rules": {
     "no-console": 0,
@@ -28,7 +27,14 @@
     ],
     "semi": [
       2,
-      "always"
+      "never",
+      {
+        "beforeStatementContinuationChars": "always"
+      }
+    ],
+    "jsx-quotes": [
+      "error",
+      "prefer-double"
     ]
   },
   "env": {
@@ -41,6 +47,8 @@
   ],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "standard",
+    "standard-jsx"
   ]
 }
