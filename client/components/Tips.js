@@ -1,49 +1,74 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import marked from 'marked';
-import dataStore from 'store';
+
+const tips = [{
+  title: 'Don\'t use the slide master.',
+  body: 'Aside from being hard to find and confusing to use, the slide master makes every slide have the same background, which is too visually static. It is easier to manage the visuals by keeping all objects selectable and on top of each slide.',
+  image: '/images/tips/tip1.png'
+}, {
+  title: 'Don\'t use the defaults.',
+  body: 'Default templates are in an awkward square dimension. Default fonts are too large. Default color palettes have too much repetition. Default shapes have loud colors and dated-looking shadows.',
+  image: '/images/tips/tip2.png'
+}, {
+  title: 'Do use copyright-safe images.',
+  body: 'Googling an image is easy but finding one that is copyright-safe is difficult. It is better to use trusted sources to either buy an image license or find images that are copyright-free.\n\nFor more tips on sourcing images, go to the Finding Images section of Templates and Tips.',
+  image: '/images/tips/tip3.png'
+}, {
+  title: 'Don\'t brand every slide with your logo.',
+  body: 'A logo on every slide not only makes your deck look dated, it takes up valuable space for your message. Your audience should be introduced to your company on the Cover Slide and reminded again on the Conclusion Slide.',
+  image: '/images/tips/tip4.png'
+}, {
+  title: 'Do use interstitial slides to change topics.',
+  body: 'An interstitial slide is a title page for a subtopic of your presentation. It gives your audience a visual cue to your topic change and is a great place to add visual interest.',
+  image: '/images/tips/tip5.png'
+}, {
+  title: 'Do keep it one thought per slide.',
+  body: 'Rather than condense all of your thoughts into a minimum of slides, spread your message out. This aids in audience comprehension and gives you room to illustrate your points.',
+  image: '/images/tips/tip6.png'
+}, {
+  title: 'Don\'t use the automatic bullets.',
+  body: 'PowerPoint\'s automatic bullets are clunky and hard to control. To mark a list of items, use a hyphen.\n\nConceptually, bullets are problematic because they are often used to outline the speaker\'s script, which makes for dull visuals and encourages the audience to read ahead rather than listen.',
+  image: '/images/tips/tip7.png'
+}, {
+  title: 'Do trim text where you can.',
+  body: 'Can your text be shorter and more succinct? Wherever possible, trim out passive phrases, conversational writing and adjectives, all which add visual clutter to a message.',
+  image: '/images/tips/tip8.png'
+}, {
+  title: 'Do create a custom color palette.',
+  body: 'As mentioned in Tip #2, PowerPoint\'s standard and theme colors are difficult to work with. Creating your own palette is easy and using it throughout your presentation will make the design cohesive.\n\nSlide Therapy has a worksheet which guides you through the process of creating your own custom harmonious color palette.',
+  image: '/images/tips/tip9.png'
+}, {
+  title: 'Do use a dark template for a dark room.',
+  body: 'If you know that the room that you will be presenting in will be very dark, consider using the dark background templates. Much like how dark backgrounds are easier for reading from your tablet in bed at night, the slides will be easier on your audience\'s eyes in a dark room.\n\nEach Slide Therapy Template and Tips file contains both dark and light background slide designs.',
+  image: '/images/tips/tip10.png'
+}];
 
 export default class Tips extends React.Component {
   constructor(props) {
     super(props);
-    let posts = [];
-    const postData = props.staticContext && props.staticContext.blogPosts;
-    if (postData) {
-      postData.forEach(post => {
-        posts.push(marked(post));
-      });
-    }
-    this.state = {};
-    Object.assign(this.state, props, {
-      posts: posts.join('')
-    });
-  }
-  componentDidMount() {
-    let currentState = dataStore.getState();
-    this.setState({
-      posts: currentState.posts.join('')
-    });
+    this.state = props;
   }
   render() {
+    let tipsHtml = tips.map((tip, index) => {
+      return <div key={index} className="tip d-flex flex-row" itemScope itemType="http://schema.org/BlogPosting">
+        <div className="tip-image">
+          <img itemProp="image" className="img-fluid" src={tip.image} alt=""/>
+        </div>
+        <div className="tip-content">
+          <h4>Pro Tip #{index + 1}</h4>
+          <h3 itemProp="headline">{tip.title}</h3>
+          <div itemProp="articleBody">{tip.body}</div>
+        </div>
+      </div>;
+    });
     return <section id="view-tips" className="py-5">
       <div className="container">
         <div className="row">
           <div className="col-sm-12">
-            <h2>Tips</h2>
-            <div
-              id="blogPosts"
-              suppressHydrationWarning={true}
-              dangerouslySetInnerHTML={{
-                __html: this.state.posts
-              }}
-            />
+            <h2 className="text-center">10 Pro Tips</h2>
+            <div id="blogPosts">{tipsHtml}</div>
           </div>
         </div>
       </div>
     </section>;
   }
 }
-
-Tips.propTypes = {
-  staticContext: PropTypes.object
-};

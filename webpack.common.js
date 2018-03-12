@@ -2,14 +2,6 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-const fs = require('fs');
-const blogPostFiles = fs.readdirSync('./client/blog');
-let blogPosts = [];
-blogPostFiles.forEach(file => {
-  let markdown = fs.readFileSync(`./client/blog/${file}`, 'utf8');
-  blogPosts.push(markdown);
-});
-
 const clientDir = path.resolve(__dirname, 'client');
 const outputDir = path.resolve(clientDir, 'dist');
 
@@ -42,10 +34,7 @@ module.exports = {
         '/thanks'
       ],
       locals: {
-        title: 'Slide Therapy',
-        context: {
-          blogPosts: blogPosts.reverse()
-        }
+        title: 'Slide Therapy'
       }
     })
   ],

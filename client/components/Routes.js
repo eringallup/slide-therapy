@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dataStore from 'store';
-import marked from 'marked';
 import { Route } from 'react-router-dom';
 import Header from 'components/Header';
 import Templates from 'components/Templates';
@@ -16,20 +14,6 @@ export default class Routes extends React.Component {
   constructor(props) {
     super(props);
     this.state = props;
-  }
-  componentWillMount() {
-    if (typeof global.window !== 'undefined') {
-      let posts = [];
-      if (window.appContext) {
-        window.appContext.blogPosts.forEach(post => {
-          posts.push(marked(post));
-        });
-      }
-      dataStore.dispatch({
-        type: 'update',
-        posts: posts
-      });
-    }
   }
   render() {
     return <React.Fragment>
