@@ -4,6 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 import { BrowserRouter, StaticRouter } from 'react-router-dom';
 import Routes from 'components/Routes';
 import Html from 'components/Html';
+import dataStore from 'store';
 
 if (typeof global.document !== 'undefined') {
   require('whatwg-fetch');
@@ -18,6 +19,29 @@ if (typeof global.document !== 'undefined') {
 function init() {
   ReactDOM.hydrate(<BrowserRouter><Routes/></BrowserRouter>, document.querySelector('#app'));
   document.querySelector('html').classList.remove('no-js');
+  let stripeCheckout = StripeCheckout.configure({
+    key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
+    locale: 'auto',
+    token: token => {
+      dataStore.dispatch({
+        type: 'update',
+        token: token
+      });
+    },
+    closed: () => {
+      let currentState = dataStore.getState();
+      if (!currentState.token) {
+        dataStore.dispatch({
+          type: 'update',
+          checkoutClosed: true
+        });
+      }
+    }
+  });
+  dataStore.dispatch({
+    type: 'update',
+    stripeCheckout: stripeCheckout
+  });
 }
 
 export default locals => {

@@ -2,27 +2,41 @@ import skus from 'skus.json';
 import qs from 'qs';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import dataStore from 'store';
 
 export default class Buy extends React.Component {
   constructor(props) {
     super(props);
     this.state = Object.assign({}, {
-      back: false,
-      success: false,
-      hasToken: false
+      checkoutClosed: false,
+      success: false
     }, props);
     this.setDeck();
-    this.setupStripe();
   }
   componentDidMount() {
+    this.setStates();
+    this.unsubscribe = dataStore.subscribe(() => this.setStates());
     this.showCheckout();
-    if (typeof window !== 'undefined') {
-      window.addEventListener('popstate', this.handler.close);
-    }
   }
   componentWillUnmount() {
+    this.unsubscribe();
     if (typeof window !== 'undefined') {
-      window.removeEventListener('popstate', this.handler.close);
+      window.removeEventListener('popstate', this.stripeCheckout.close);
+    }
+  }
+  setStates() {
+    let currentState = dataStore.getState();
+    this.setState({
+      checkoutClosed: currentState.checkoutClosed
+    });
+    if (!this.stripeCheckout && currentState.stripeCheckout) {
+      this.stripeCheckout = currentState.stripeCheckout;
+      if (typeof window !== 'undefined') {
+        window.addEventListener('popstate', this.stripeCheckout.close);
+      }
+    }
+    if (currentState.token) {
+      this.completePurchase(currentState.token);
     }
   }
   setDeck() {
@@ -33,33 +47,16 @@ export default class Buy extends React.Component {
       }
     }
   }
-  setupStripe() {
-    this.handler = StripeCheckout.configure({
-      key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
-      image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-      locale: 'auto',
-      token: token => this.completePurchase(token),
-      closed: () => {
-        if (!this.state.hasToken) {
-          this.setState({
-            back: true
-          });
-        }
-      }
-    });
-  }
   showCheckout() {
-    this.handler.open({
+    this.stripeCheckout.open({
       name: this.deck.title,
       description: 'Single-user License',
+      image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
       zipCode: true,
       amount: this.deck.amountInCents
     });
   }
   completePurchase(token) {
-    this.setState({
-      hasToken: true
-    });
     const queryString = qs.stringify({
       email: token.email,
       sku: this.deck.sku,
@@ -82,7 +79,7 @@ export default class Buy extends React.Component {
     if (this.state.success) {
       return <Redirect to="/thanks"/>;
     }
-    if (this.state.back) {
+    if (this.state.checkoutClosed) {
       return <Redirect to="/templates"/>;
     }
     return '';
