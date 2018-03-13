@@ -1,3 +1,7 @@
+$bg-light: #eee;
+$bg-dark: #333;
+@import "~bootstrap/scss/bootstrap";
+
 html,
 body {
   color: #333;
@@ -12,6 +16,30 @@ body {
 [hidden] {
   visibility: collapse;
   pointer-events: none;
+}
+
+.img-placeholder {
+  background-color: #ddd;
+}
+
+.color-inherit {
+  color: inherit;
+}
+
+.btn {
+  border-radius: 0;
+}
+
+a.btn.btn-primary,
+.btn.btn-primary {
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
+  font-style: italic;
+}
+a.btn.btn-primary:focus,
+.btn.btn-primary:focus {
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, .5);
 }
 
 #app {
@@ -39,35 +67,15 @@ footer {
   border-bottom: 3px solid #000;
 }
 
-.img-placeholder {
-  background-color: #ddd;
-}
-
-.color-inherit {
-  color: inherit;
-}
-
-.btn {
-  border-radius: 0;
-}
-
-a.btn.btn-primary,
-.btn.btn-primary {
-  color: #fff;
-  background-color: #000;
-  border-color: #000;
-  font-style: italic;
-}
-a.btn.btn-primary:focus,
-.btn.btn-primary:focus {
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, .5);
-}
-
 .hero-layer {
   min-height: 425px;
   background-repeat: no-repeat;
   background-size: cover;
   color: #fff;
+}
+
+.deck {
+
 }
 
 #blogPosts {

@@ -24,7 +24,11 @@ export default class Templates extends React.Component {
   }
   render () {
     const templates = [skus[1], skus[2], skus[3]].map(item => {
-      return <div key={item.sku} className="col deck" itemScope itemType="http://schema.org/Product">
+      return <div
+        key={item.sku}
+        className="deck"
+        itemScope itemType="http://schema.org/Product"
+      >
         <Link className="d-flex" to={`/buy/${item.slug}`}>
           <span
             className="order-0 text-secondary"
@@ -65,46 +69,49 @@ export default class Templates extends React.Component {
             <h3>Expert-Designed PowerPoint Templates <em>with built-in mentoring</em></h3>
           </div>
         </div>
-        <div id="start" className="row">
-          <div className="col">
-            <h3>Communicate Clearly. Work Faster. Look Elegant.</h3>
-            <p className="lead">Slide Therapy is a series of master PowerPoint files that include everything you need to make a stunning presentation:</p>
+        <div id="start" className="bg-light">
+          <div className="row">
+            <div className="col text-center">
+              <h3>Communicate Clearly. Work Faster. Look Elegant.</h3>
+              <p className="lead">Slide Therapy is a series of master PowerPoint files that include everything you need to make a stunning presentation:</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <h4>Templates</h4>
+              <ol className="list-unstyled">
+                <li>28 light templates</li>
+                <li>24 dark templates</li>
+                <li>500+ icon library</li>
+                <li>80+ shape library</li>
+              </ol>
+            </div>
+            <div className="col">
+              <h4>Tips</h4>
+              <ol className="list-unstyled">
+                <li>Keeping a Clean Look</li>
+                <li>Changing Colors</li>
+                <li>Changing Fonts</li>
+                <li>Finding Images</li>
+                <li>Making Graphics Using Icons</li>
+                <li>Making Graphics Using Shapes</li>
+                <li>Illustrating Abstract Concepts</li>
+                <li>Formatting Graphs</li>
+                <li>Formatting Charts</li>
+                <li>Formatting Tables</li>
+                <li>Adding Maps</li>
+              </ol>
+            </div>
+            <div className="col d-flex align-items-center">
+              <img className="img-fluid" src="/images/home/laptop.png" alt="" />
+            </div>
           </div>
         </div>
         <div className="row">
-          <div className="col">
-            <h4>Templates</h4>
-            <ol className="list-unstyled">
-              <li>28 light templates</li>
-              <li>24 dark templates</li>
-              <li>500+ icon library</li>
-              <li>80+ shape library</li>
-            </ol>
-          </div>
-          <div className="col">
-            <h4>Tips</h4>
-            <ol className="list-unstyled">
-              <li>Keeping a Clean Look</li>
-              <li>Changing Colors</li>
-              <li>Changing Fonts</li>
-              <li>Finding Images</li>
-              <li>Making Graphics Using Icons</li>
-              <li>Making Graphics Using Shapes</li>
-              <li>Illustrating Abstract Concepts</li>
-              <li>Formatting Graphs</li>
-              <li>Formatting Charts</li>
-              <li>Formatting Tables</li>
-              <li>Adding Maps</li>
-            </ol>
-          </div>
-          <div className="col d-flex align-items-center">
-            <img className="img-fluid" src="/images/home/laptop.png" alt="" />
-          </div>
-        </div>
-        <div id="templates" className="row">
           <div
+            id="templates"
             itemScope itemType="http://schema.org/Product"
-            className="d-flex flex-row justify-content-center"
+            className="d-flex flex-row w-100 justify-content-center bg-dark"
           >
             <h4 itemProp="name">Special</h4>
             <p
@@ -121,10 +128,8 @@ export default class Templates extends React.Component {
               className="buy btn btn-primary"
             >Buy</Link>
           </div>
+          <div className="bg-light flex-row w-100">{templates}</div>
         </div>
-      </div>
-      <div className="container">
-        <div className="flex-row">{templates}</div>
       </div>
     </section>
   }

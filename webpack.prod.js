@@ -1,8 +1,8 @@
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const common = require('./webpack.common.js');
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const MinifyPlugin = require('babel-minify-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const common = require('./webpack.common.js')
 
 module.exports = merge(common, {
   devtool: 'source-map',
@@ -15,4 +15,4 @@ module.exports = merge(common, {
       'process.env.NODE_ENV': JSON.stringify('production')
     })
   ]
-});
+})
