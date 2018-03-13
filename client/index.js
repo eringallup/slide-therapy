@@ -1,3 +1,4 @@
+import './style.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ReactDOMServer from 'react-dom/server'
@@ -46,9 +47,10 @@ function init () {
 
 export default locals => {
   const assets = Object.keys(locals.webpackStats.compilation.assets)
+  const css = assets.filter(value => value.match(/\.css$/))
   const js = assets.filter(value => value.match(/\.js$/))
   return ReactDOMServer.renderToString(
     <StaticRouter location={locals.path} context={{}}>
-      <Html js={js} title={locals.title} context={locals.context}><Routes context={locals.context} /></Html>
+      <Html js={js} css={css} title={locals.title} context={locals.context}><Routes context={locals.context} /></Html>
     </StaticRouter>)
 }

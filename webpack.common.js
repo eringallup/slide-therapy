@@ -1,9 +1,10 @@
-const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-const clientDir = path.resolve(__dirname, 'client');
-const outputDir = path.resolve(clientDir, 'dist');
+const path = require('path')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const clientDir = path.resolve(__dirname, 'client')
+const outputDir = path.resolve(clientDir, 'dist')
 
 module.exports = {
   entry: [
@@ -13,10 +14,10 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin([outputDir]),
     new CopyWebpackPlugin([{
-      from: path.resolve(clientDir, '*.css'),
-      to: outputDir,
-      flatten: true
-    }, {
+    //   from: path.resolve(clientDir, '*.css'),
+    //   to: outputDir,
+    //   flatten: true
+    // }, {
       from: path.resolve(clientDir, 'images'),
       to: path.resolve(outputDir, 'images'),
       flatten: false
@@ -36,7 +37,8 @@ module.exports = {
       locals: {
         title: 'Slide Therapy'
       }
-    })
+    }),
+    new ExtractTextPlugin('styles-[contenthash].css')
   ],
   output: {
     filename: 'bundle-[chunkhash].js',
@@ -55,6 +57,12 @@ module.exports = {
   },
   module: {
     rules: [{
+      test: /\.css$/,
+      use: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader'
+      })
+    }, {
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'babel-loader',
@@ -67,4 +75,4 @@ module.exports = {
       loader: 'json'
     }]
   }
-};
+}
