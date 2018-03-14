@@ -27,8 +27,45 @@ export default class Templates extends React.Component {
   scrollDown () {
     scrollIt(document.getElementById('start'), 200, 'easeInCubic')
   }
+  showPreview (e, deck) {
+    e.preventDefault()
+    this.setState({
+      preview: deck
+    })
+  }
+  closePreview (e, deck) {
+    e.preventDefault()
+    this.setState({
+      preview: undefined
+    })
+  }
+  nextPreview () {
+    // do something
+  }
+  prevPreview () {
+    // do something
+  }
   render () {
     const templates = [skus[1], skus[2], skus[3]].map(item => {
+      let preview = []
+      if (this.state.preview && this.state.preview.sku === item.sku) {
+        preview.push(<div key={item.sku} className="preview p-3">
+          <div className="preview-image"
+            style={{
+              backgroundImage: 'url(/images/previews/large-audiences/preview-1.png)'
+            }}
+          />
+          <ol className="list-unstyled">
+            <li
+              onClick={this.nextPreview}
+              className="clickable slide-nav slide-nav-prev">&lt;</li>
+            <li
+              onClick={this.prevPreview}
+              className="clickable slide-nav slide-nav-next">&gt;</li>
+          </ol>
+          <span className="clickable closer" onClick={e => this.closePreview(e, item)}>x</span>
+        </div>)
+      }
       return <div
         key={item.sku}
         className="deck d-flex align-items-center"
@@ -36,6 +73,7 @@ export default class Templates extends React.Component {
       >
         <span className="order-0">{item.sku}</span>
         <div className="order-2">
+          {preview}
           <span className="h3">for</span>
           <h4 itemProp="name">{item.title}</h4>
           <div
@@ -56,6 +94,10 @@ export default class Templates extends React.Component {
             <span itemProp="price" content={item.displayPrice}>{item.displayPrice}</span>
           </span>
           <Link className="buy btn btn-lg btn-primary" to={`/buy/${item.slug}`}>Buy</Link>
+          <div
+            className="clickable st-uppercase mt-3"
+            onClick={e => this.showPreview(e, item)}
+          >Preview</div>
         </div>
       </div>
     })

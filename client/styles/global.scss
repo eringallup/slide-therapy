@@ -11,6 +11,19 @@ body {
   pointer-events: none;
 }
 
+.clickable {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.fill-parent {
+  @extend .position-absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
 .img-placeholder {
   background-color: #ddd;
 }
@@ -60,13 +73,17 @@ h4, .h4 {
   flex-grow: 1;
 }
 
-.main-nav .nav-link {
-  @extend .position-relative;
-  top: .3rem;
+.st-uppercase {
   @extend .text-dark;
   @extend .text-uppercase;
   font-size: $font-size-base * 1.1;
   letter-spacing: 1.78;
+}
+
+.main-nav .nav-link {
+  @extend .st-uppercase;
+  @extend .position-relative;
+  top: .3rem;
   padding: .5rem 1.75rem;
   &.active:after {
     content: '';

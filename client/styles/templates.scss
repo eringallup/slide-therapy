@@ -57,9 +57,10 @@
 
 .deck {
   background-color: $white;
+  @extend .p-5;
   @extend .my-5;
   > * {
-    @extend .p-3;
+    @extend .px-4;
   }
   [itemprop="offers"] {
     @extend .d-block;
@@ -71,5 +72,33 @@
     font-family: $font-family-serif;
     font-size: 150px;
     color: #ccc;
+  }
+  .order-2 {
+    @extend .position-relative;
+  }
+  .preview {
+    background-color: $dark;
+    color: $white;
+    @extend .fill-parent;
+    .preview-image {
+      @extend .fill-parent;
+      @extend .text-center;
+      top: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      left: 1rem;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+    .slide-nav {
+      @extend .position-relative;
+      z-index: $z-space;
+    }
+    .closer {
+      @extend .position-absolute;
+      top: .5rem;
+      right: .5rem;
+    }
   }
 }
