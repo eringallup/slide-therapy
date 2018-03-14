@@ -1,0 +1,18 @@
+#view-about {
+  line-height: $line-height-lg;
+  h3 {
+    font-size: inherit;
+  }
+  h3:not(:first-child) {
+    @extend .mt-5;
+  }
+  h4 {
+    @extend .p-4;
+    @extend .text-center;
+    border: 1px solid $light;
+    border-width: 12px 0;
+    @include media-breakpoint-down(md) {
+      font-size: $font-size-base * 2.5;
+    }
+  }
+}

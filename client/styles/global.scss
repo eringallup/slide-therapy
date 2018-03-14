@@ -49,6 +49,7 @@ h4, .h4 {
   @extend .font-italic;
   font-family: $font-family-serif;
   font-size: $font-size-base * 3;
+  text-transform: none !important;
 }
 
 #app {
