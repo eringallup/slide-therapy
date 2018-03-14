@@ -1,0 +1,19 @@
+.tip {
+  background: $white;
+  border-radius: 15px;
+  justify-content: space-between;
+}
+.tip:nth-child(even) {
+  flex-direction: row-reverse !important;
+}
+.tip-image {
+  flex-grow: 1;
+}
+.tip-content {
+  flex-grow: 2;
+  padding-left: 1rem;
+}
+.tip:nth-child(even) .tip-content {
+  padding-left: auto;
+  padding-right: 1rem;
+}

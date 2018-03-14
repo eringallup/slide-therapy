@@ -7,25 +7,21 @@ export default class Tips extends React.Component {
   }
   render () {
     let tipsHtml = tips.map((tip, index) => {
-      return <div key={index} className="tip d-flex flex-row" itemScope itemType="http://schema.org/BlogPosting">
-        <div className="tip-image">
+      return <div key={index} className="tip p-5 mb-5 d-flex flex-row" itemScope itemType="http://schema.org/BlogPosting">
+        <div className="tip-image col-md-5">
           <img itemProp="image" className="img-fluid" src={tip.image} alt="" />
         </div>
         <div className="tip-content">
-          <h4>Pro Tip #{index + 1}</h4>
-          <h3 itemProp="headline">{tip.title}</h3>
+          <span className="h3">Pro Tip #{index + 1}</span>
+          <h3 className="h4" itemProp="headline">{tip.title}</h3>
           <div itemProp="articleBody">{tip.body}</div>
         </div>
       </div>
     })
-    return <section id="view-tips" className="py-5">
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-12">
-            <h2 className="text-center">10 Pro Tips</h2>
-            <div id="blogPosts">{tipsHtml}</div>
-          </div>
-        </div>
+    return <section id="view-tips">
+      <div id="blogPosts" className="bg-light pb-5">
+        <h2 className="h4 py-4 text-center">10 Pro Tips</h2>
+        <div className="container">{tipsHtml}</div>
       </div>
     </section>
   }

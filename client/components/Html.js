@@ -12,7 +12,6 @@ export default class Html extends React.Component {
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-        <link href="//fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext" rel="stylesheet" type="text/css" />
         <link href={`/${this.state.css[0]}`} rel="stylesheet" type="text/css" />
         <script src="//checkout.stripe.com/checkout.js" />
       </head>

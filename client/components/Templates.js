@@ -7,44 +7,56 @@ export default class Templates extends React.Component {
     super(props)
     this.state = props
   }
-  componentDidMount () {
-    if (typeof global.document !== 'undefined') {
-      if (location.pathname === '/start') {
-        scrollIt(document.getElementById('start'), 200, 'easeInCubic')
-      } else if (/templates|buy/i.test(location.pathname)) {
-        if (window.pageYOffset < 10) {
-          scrollIt(document.getElementById('templates'), 200, 'easeInCubic')
-        }
-      } else if (location.pathname === '/') {
-        if (window.history.length > 1) {
-          scrollIt(document.body, 100, 'easeInCubic')
-        }
-      }
-    }
+  // componentDidMount () {
+  //   if (typeof global.document !== 'undefined') {
+  //     if (location.pathname === '/start') {
+  //       if (window.history.length <= 2) {
+  //         scrollIt(document.getElementById('start'), 200, 'easeInCubic')
+  //       }
+  //     } else if (/templates|buy/i.test(location.pathname)) {
+  //       if (window.pageYOffset < 10) {
+  //         scrollIt(document.getElementById('templates'), 200, 'easeInCubic')
+  //       }
+  //     } else if (location.pathname === '/') {
+  //       if (window.history.length > 1) {
+  //         scrollIt(document.body, 100, 'easeInCubic')
+  //       }
+  //     }
+  //   }
+  // }
+  scrollDown () {
+    scrollIt(document.getElementById('start'), 200, 'easeInCubic')
   }
   render () {
     const templates = [skus[1], skus[2], skus[3]].map(item => {
       return <div
         key={item.sku}
-        className="deck"
+        className="deck d-flex align-items-center"
         itemScope itemType="http://schema.org/Product"
       >
-        <Link className="d-flex" to={`/buy/${item.slug}`}>
-          <span
-            className="order-0 text-secondary"
-          >{item.sku}</span>
-          <h4
-            itemProp="name"
-            className="order-2 text-dark"
-          >{item.title} - ${item.displayPrice}</h4>
+        <span className="order-0">{item.sku}</span>
+        <div className="order-2">
+          <span className="h3">for</span>
+          <h4 itemProp="name">{item.title}</h4>
           <div
-            itemProp="image"
-            className="order-1"
-          ><img className="img-fluid" src={item.image} /></div>
-          <div
-            className="order-3"
-          ><span className="buy btn btn-primary">Buy</span></div>
-        </Link>
+            itemProp="description"
+            className=""
+            dangerouslySetInnerHTML={{
+              __html: item.description
+            }}
+          />
+        </div>
+        <div
+          itemProp="image"
+          className="order-1 col col-md-2 col-sm-3"
+        ><img className="img-fluid" src={item.image} /></div>
+        <div className="order-3 text-center">
+          <span itemProp="offers" itemScope itemType="http://schema.org/Offer">
+            <span itemProp="priceCurrency" content="USD">$</span>
+            <span itemProp="price" content={item.displayPrice}>{item.displayPrice}</span>
+          </span>
+          <Link className="buy btn btn-lg btn-primary" to={`/buy/${item.slug}`}>Buy</Link>
+        </div>
       </div>
     })
     return <section id="view-templates">
@@ -57,36 +69,45 @@ export default class Templates extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-sm-12 text-center">
-              <h2>Up your presentation game</h2>
-              <Link to="/start" className="btn btn-primary">Start now</Link>
+              <h2>Up your presentation game.</h2>
+              <Link
+                onClick={this.scrollDown}
+                to="/start"
+                className="btn btn-primary text-uppercase"
+              >Start now</Link>
             </div>
           </div>
         </div>
       </div>
       <div className="container">
-        <div className="row">
+        <div className="row p-5">
           <div className="col text-center">
             <h3>Expert-Designed PowerPoint Templates <em>with built-in mentoring</em></h3>
           </div>
         </div>
-        <div id="start" className="bg-light">
+      </div>
+      <div id="start" className="bg-light">
+        <div className="container py-5">
           <div className="row">
             <div className="col text-center">
-              <h3>Communicate Clearly. Work Faster. Look Elegant.</h3>
-              <p className="lead">Slide Therapy is a series of master PowerPoint files that include everything you need to make a stunning presentation:</p>
+              <h3>Communicate Clearly. Work Faster.<span className="br" />Look Elegant.</h3>
+              <p className="lead mt-3 text-left">Slide Therapy is a series of master PowerPoint files that include everything you need to make a stunning presentation:</p>
             </div>
           </div>
-          <div className="row">
-            <div className="col">
+          <div className="row pt-3">
+            <div className="col-md col-sm-6">
               <h4>Templates</h4>
               <ol className="list-unstyled">
-                <li>28 light templates</li>
-                <li>24 dark templates</li>
+                <li>5+ Cover slide designs</li>
+                <li>5+ Overview slide designs</li>
+                <li>10+ Content slide designs</li>
+                <li>2+ Interstitial slide designs</li>
+                <li>5+ Conclusion slide designs</li>
                 <li>500+ icon library</li>
                 <li>80+ shape library</li>
               </ol>
             </div>
-            <div className="col">
+            <div className="col-md col-sm-6">
               <h4>Tips</h4>
               <ol className="list-unstyled">
                 <li>Keeping a Clean Look</li>
@@ -102,34 +123,39 @@ export default class Templates extends React.Component {
                 <li>Adding Maps</li>
               </ol>
             </div>
-            <div className="col d-flex align-items-center">
+            <div className="col-md-5 d-none d-md-flex align-items-center">
               <img className="img-fluid" src="/images/home/laptop.png" alt="" />
             </div>
           </div>
         </div>
-        <div className="row">
+        <div
+          id="templates"
+          itemScope itemType="http://schema.org/Product"
+          className="d-flex flex-column flex-md-row w-100 justify-content-center align-items-center bg-dark text-light"
+        >
+          <h4 className="m-0" itemProp="name">Special</h4>
           <div
-            id="templates"
-            itemScope itemType="http://schema.org/Product"
-            className="d-flex flex-row w-100 justify-content-center bg-dark"
-          >
-            <h4 itemProp="name">Special</h4>
-            <p
-              itemProp="description"
-              className="lead"
-            >{skus[4].description}</p>
-            <div className="full-price">$117</div>
-            <div itemProp="offers" itemScope itemType="http://schema.org/Offer">
+            itemProp="description"
+            className="lead text-center text-md-left"
+            dangerouslySetInnerHTML={{
+              __html: skus[4].description
+            }}
+          />
+          <div>
+            <s className="full-price">$117</s>
+            <span itemProp="offers" itemScope itemType="http://schema.org/Offer">
               <span itemProp="priceCurrency" content="USD">$</span>
-              <span itemProp="price" content="99.00">{skus[4].displayPrice}</span>
-            </div>
+              <span itemProp="price" content={skus[4].displayPrice}>{skus[4].displayPrice}</span>
+            </span>
+          </div>
+          <div>
             <Link
               to="/buy/all-audiences"
-              className="buy btn btn-primary"
+              className="buy btn btn-lg btn-light"
             >Buy</Link>
           </div>
-          <div className="bg-light flex-row w-100">{templates}</div>
         </div>
+        <div className="bg-light container pb-5">{templates}</div>
       </div>
     </section>
   }

@@ -1,0 +1,75 @@
+.hero-layer {
+  min-height: 425px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: $white;
+  h2 {
+    font-family: $font-family-serif;
+    @extend .h1;
+  }
+}
+
+#start {
+  h3 {
+    letter-spacing: $letter-spacing-xl;
+    line-height: $line-height-lg;
+  }
+  ol li {
+    line-height: $line-height-lg * 1.1;
+  }
+}
+
+[itemprop="offers"] {
+  font-size: $font-size-base * 2.7;
+  font-family: $font-family-serif;
+}
+
+#templates {
+  @extend .py-4;
+  > * {
+    @extend .px-3;
+  }
+  h4 {
+    letter-spacing: 1;
+  }
+  s {
+    @extend .position-relative;
+    font-family: $font-family-serif;
+    color: #F57A7A;
+    font-size: $font-size-base * 2;
+    text-decoration: none;
+    &:after {
+      content: '';
+      @extend .position-absolute;
+      top: 60%;
+      left: 0;
+      right: 0;
+      border-top: 1px solid #F57A7A;
+    }
+  }
+  [itemprop="offers"] {
+    @extend .pl-4;
+  }
+  .btn {
+    min-width: 10rem;
+  }
+}
+
+.deck {
+  background-color: $white;
+  @extend .my-5;
+  > * {
+    @extend .p-3;
+  }
+  [itemprop="offers"] {
+    @extend .d-block;
+  }
+  .btn {
+    min-width: 10rem;
+  }
+  .order-0 {
+    font-family: $font-family-serif;
+    font-size: 150px;
+    color: #ccc;
+  }
+}

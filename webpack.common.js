@@ -14,10 +14,6 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin([outputDir]),
     new CopyWebpackPlugin([{
-    //   from: path.resolve(clientDir, '*.css'),
-    //   to: outputDir,
-    //   flatten: true
-    // }, {
       from: path.resolve(clientDir, 'images'),
       to: path.resolve(outputDir, 'images'),
       flatten: false
@@ -57,7 +53,7 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.css$/,
+      test: /\.s?(c|a)ss$/,
       use: ExtractTextPlugin.extract({
         fallback: 'style-loader',
         use: [{
