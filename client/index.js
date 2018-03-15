@@ -8,6 +8,7 @@ import Html from 'components/Html'
 import dataStore from 'store'
 
 if (typeof global.document !== 'undefined') {
+  require('bootstrap')
   require('whatwg-fetch')
   require('./vendor/scrollIt.js')
   if (document.attachEvent ? document.readyState === 'complete' : document.readyState !== 'loading') {

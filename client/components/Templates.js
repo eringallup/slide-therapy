@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import skus from 'skus.json'
+import $ from 'jquery'
 
 export default class Templates extends React.Component {
   constructor (props) {
@@ -39,31 +40,60 @@ export default class Templates extends React.Component {
       preview: undefined
     })
   }
-  nextPreview () {
-    // do something
+  nextSlide (e) {
+    e.preventDefault()
+    $('#slide-preview').carousel('next')
   }
-  prevPreview () {
-    // do something
+  prevSlide (e) {
+    e.preventDefault()
+    $('#slide-preview').carousel('prev')
   }
   render () {
     const templates = [skus[1], skus[2], skus[3]].map(item => {
       let preview = []
       if (this.state.preview && this.state.preview.sku === item.sku) {
-        preview.push(<div key={item.sku} className="preview p-3">
-          <div className="preview-image"
-            style={{
-              backgroundImage: 'url(/images/previews/large-audiences/preview-1.png)'
-            }}
-          />
-          <ol className="list-unstyled">
-            <li
-              onClick={this.nextPreview}
-              className="clickable slide-nav slide-nav-prev">&lt;</li>
-            <li
-              onClick={this.prevPreview}
-              className="clickable slide-nav slide-nav-next">&gt;</li>
-          </ol>
-          <span className="clickable closer" onClick={e => this.closePreview(e, item)}>x</span>
+        let slides = []
+        for (let i = 1; i <= 50; i++) {
+          slides.push(<div
+            key={`slide-${i}`}
+            className={'carousel-item' + (i === 1 ? ' active' : '')}
+          >
+            <img
+              className="d-block w-100" src={`/images/previews/large-audiences/preview-${i}.png`} alt=""
+            />
+          </div>)
+        }
+        preview.push(<div key={item.sku} className="preview py-4 px-5">
+          <div id="slide-preview" className="carousel slide" data-ride="carousel">
+            <div className="carousel-inner">{slides}</div>
+            <a
+              className="carousel-control-prev"
+              href="#"
+              onClick={e => this.prevSlide(e)}
+              role="button"
+              data-slide="prev"
+            >
+              <span className="carousel-control-prev-icon" aria-hidden="true" />
+              <span className="sr-only">Previous</span>
+            </a>
+            <a
+              className="carousel-control-next"
+              href="#"
+              onClick={e => this.nextSlide(e)}
+              role="button"
+              data-slide="next"
+            >
+              <span className="carousel-control-next-icon" aria-hidden="true" />
+              <span className="sr-only">Next</span>
+            </a>
+          </div>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="alert"
+            aria-label="Close"
+            onClick={e => this.closePreview(e, item)}
+          ><span aria-hidden="true">&times;</span></button>
         </div>)
       }
       return <div

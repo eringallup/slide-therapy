@@ -9,7 +9,8 @@
   "globals": {
     "StripeCheckout": true,
     "scrollIt": true,
-    "fetch": true
+    "fetch": true,
+    "$": true
   },
   "rules": {
     "no-console": 0,
