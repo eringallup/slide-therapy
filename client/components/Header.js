@@ -16,7 +16,7 @@ export default class Header extends React.Component {
     return <header className="container">
       <div className="row">
         <div className="col-sm-5 py-3">
-          <h1 className="m-0"><Link to="/"><img className="img-fluid" src="/images/slide-therapy-logo.png" alt="Slide Therapy" width="222" height="39" /></Link></h1>
+          <h1 className="m-0 text-center text-md-left"><Link to="/"><img className="img-fluid" src="/images/slide-therapy-logo.png" alt="Slide Therapy" width="222" height="39" /></Link></h1>
         </div>
         <div className="col-sm-7 d-flex align-items-center justify-content-center justify-content-sm-end">
           <nav className="main-nav nav">
