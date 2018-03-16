@@ -62,7 +62,7 @@ export default class Templates extends React.Component {
             className={'carousel-item' + (i === 1 ? ' active' : '')}
           >
             <img
-              className="d-block w-100" src={`/images/previews/large-audiences/preview-${i}.png`} alt=""
+              className="d-block w-100" src={`/images/previews/${item.slug}/preview-${i}.png`} alt=""
             />
           </div>)
         }
