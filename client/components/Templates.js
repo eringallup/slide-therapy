@@ -30,6 +30,9 @@ export default class Templates extends React.Component {
   }
   showPreview (e, deck) {
     e.preventDefault()
+    if (this.state.preview && this.state.preview.slug === deck.slug) {
+      return this.closePreview(e, deck)
+    }
     this.setState({
       preview: deck
     })
@@ -63,8 +66,8 @@ export default class Templates extends React.Component {
             />
           </div>)
         }
-        preview.push(<div key={item.sku} className="preview py-4 px-5">
-          <div id="slide-preview" className="carousel slide" data-ride="carousel">
+        preview.push(<div key={item.sku} className="preview py-3 px-4 py-md-5 px-md-5">
+          <div id="slide-preview" className="carousel slide position-static">
             <div className="carousel-inner">{slides}</div>
             <a
               className="carousel-control-prev"
@@ -87,36 +90,36 @@ export default class Templates extends React.Component {
               <span className="sr-only">Next</span>
             </a>
           </div>
-          <button
-            type="button"
-            className="close"
-            data-dismiss="alert"
-            aria-label="Close"
-            onClick={e => this.closePreview(e, item)}
-          ><span aria-hidden="true">&times;</span></button>
+          <div className="close-icon clickable" onClick={e => this.closePreview(e, item)}>
+            <span aria-hidden="true">&times;</span>
+          </div>
         </div>)
       }
       return <div
         key={item.sku}
-        className="deck d-flex align-items-center"
+        className="deck d-flex align-items-center flex-column flex-md-row"
         itemScope itemType="http://schema.org/Product"
       >
-        <span className="order-0">{item.sku}</span>
+        <span className="order-0 d-none d-lg-block">{item.sku}</span>
         <div className="order-2">
-          {preview}
-          <span className="h3">for</span>
-          <h4 itemProp="name">{item.title}</h4>
-          <div
-            itemProp="description"
-            className=""
-            dangerouslySetInnerHTML={{
-              __html: item.description
-            }}
-          />
+          <div className="aspect-md-16x9 position-relative">
+            {preview}
+            <div className="description">
+              <span className="h3">for</span>
+              <h4 itemProp="name">{item.title}</h4>
+              <div
+                itemProp="description"
+                className=""
+                dangerouslySetInnerHTML={{
+                  __html: item.description
+                }}
+              />
+            </div>
+          </div>
         </div>
         <div
           itemProp="image"
-          className="order-1 col col-md-2 col-sm-3"
+          className="order-1 d-none d-lg-block col-lg-2"
         ><img className="img-fluid" src={item.image} /></div>
         <div className="order-3 text-center">
           <span itemProp="offers" itemScope itemType="http://schema.org/Offer">

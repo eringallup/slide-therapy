@@ -76,42 +76,49 @@
   }
   .order-2 {
     @extend .position-relative;
+    flex-grow: 1;
   }
   .preview {
     background-color: $dark;
     color: $white;
-    @extend .fill-parent;
-    .close {
+    .close-icon {
       @extend .position-absolute;
-      color: $white;
-      top: .5rem;
-      right: .7rem;
+      @extend .text-center;
+      top: 0;
+      right: 0;
+      width: 25px;
+      @extend .font-weight-light;
+      font-size: $font-size-base * 1.5;
+      color: $gray-400;
+      @include media-breakpoint-up(md) {
+        width: 45px;
+      }
     }
   }
-  .carousel {
-    max-width: 100%;
-    @extend .fill-parent;
-    top: 2rem;
-    bottom: 2rem;
-    left: 3rem;
-    right: 3rem;
+  .preview + .description {
+    @extend .d-none;
+  }
+  @include media-breakpoint-up(md) {
+    .preview,
+    .description {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      top: 1.5rem;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      left: 1.5rem;
+    }
   }
   .carousel-inner {
-    padding-top: 56.25%;
-    max-width: 75%;
     @extend .m-auto;
-    .carousel-item {
-      @extend .position-absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    }
   }
-  .carousel-control-prev {
-    left: -40px;
-  }
+  .carousel-control-prev,
   .carousel-control-next {
-    right: -40px;
+    width: 20px;
+    @include media-breakpoint-up(md) {
+      width: 50px;
+    }
   }
 }
