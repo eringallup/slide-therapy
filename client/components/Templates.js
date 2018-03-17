@@ -2,29 +2,34 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import skus from 'skus.json'
 import $ from 'jquery'
+import dataStore from 'store'
 
 export default class Templates extends React.Component {
   constructor (props) {
     super(props)
     this.state = props
   }
-  // componentDidMount () {
-  //   if (typeof global.document !== 'undefined') {
-  //     if (location.pathname === '/start') {
-  //       if (window.history.length <= 2) {
-  //         scrollIt(document.getElementById('start'), 200, 'easeInCubic')
-  //       }
-  //     } else if (/templates|buy/i.test(location.pathname)) {
-  //       if (window.pageYOffset < 10) {
-  //         scrollIt(document.getElementById('templates'), 200, 'easeInCubic')
-  //       }
-  //     } else if (location.pathname === '/') {
-  //       if (window.history.length > 1) {
-  //         scrollIt(document.body, 100, 'easeInCubic')
-  //       }
-  //     }
-  //   }
-  // }
+  componentDidMount () {
+    dataStore.dispatch({
+      type: 'update',
+      hasToken: false
+    })
+    // if (typeof global.document !== 'undefined') {
+    //   if (location.pathname === '/start') {
+    //     if (window.history.length <= 2) {
+    //       scrollIt(document.getElementById('start'), 200, 'easeInCubic')
+    //     }
+    //   } else if (/templates|buy/i.test(location.pathname)) {
+    //     if (window.pageYOffset < 10) {
+    //       scrollIt(document.getElementById('templates'), 200, 'easeInCubic')
+    //     }
+    //   } else if (location.pathname === '/') {
+    //     if (window.history.length > 1) {
+    //       scrollIt(document.body, 100, 'easeInCubic')
+    //     }
+    //   }
+    // }
+  }
   scrollDown () {
     scrollIt(document.getElementById('start'), 200, 'easeInCubic')
   }

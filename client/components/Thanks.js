@@ -1,9 +1,16 @@
 import React from 'react'
+import dataStore from 'store'
 
 export default class Thanks extends React.Component {
   constructor (props) {
     super(props)
     this.state = props
+  }
+  componentDidMount () {
+    dataStore.dispatch({
+      type: 'update',
+      hasToken: false
+    })
   }
   render () {
     return <section id="view-thanks" className="py-5">

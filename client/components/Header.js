@@ -15,10 +15,10 @@ export default class Header extends React.Component {
   render () {
     return <header className="container">
       <div className="row">
-        <div className="col-sm-5 py-3">
+        <div className="col-md-5 pt-3 py-md-3">
           <h1 className="m-0 text-center text-md-left"><Link to="/"><img className="img-fluid" src="/images/slide-therapy-logo.png" alt="Slide Therapy" width="222" height="39" /></Link></h1>
         </div>
-        <div className="col-sm-7 d-flex align-items-center justify-content-center justify-content-sm-end">
+        <div className="col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
           <nav className="main-nav nav">
             <NavLink
               to="/"

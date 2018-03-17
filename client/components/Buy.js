@@ -8,8 +8,9 @@ export default class Buy extends React.Component {
   constructor (props) {
     super(props)
     this.state = Object.assign({}, {
+      hasToken: false,
       checkoutClosed: false,
-      success: false
+      checkoutSuccess: false
     }, props)
     this.setDeck()
   }
@@ -26,8 +27,10 @@ export default class Buy extends React.Component {
   }
   setStates () {
     let currentState = dataStore.getState()
+    console.log('setStates', currentState)
     this.setState({
-      checkoutClosed: currentState.checkoutClosed
+      checkoutClosed: currentState.checkoutClosed,
+      hasToken: currentState.hasToken
     })
     if (!this.stripeCheckout && currentState.stripeCheckout) {
       this.stripeCheckout = currentState.stripeCheckout
@@ -53,10 +56,12 @@ export default class Buy extends React.Component {
       description: 'Single-user License',
       image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
       zipCode: true,
+      billingAddress: true,
       amount: this.deck.amountInCents
     })
   }
   completePurchase (token) {
+    console.info('completePurchase', token)
     const queryString = qs.stringify({
       email: token.email,
       sku: this.deck.sku,
@@ -71,12 +76,12 @@ export default class Buy extends React.Component {
       }
     }).then(() => {
       this.setState({
-        success: true
+        checkoutSuccess: true
       })
     }).catch(console.error)
   }
   render () {
-    if (this.state.success) {
+    if (this.state.hasToken && this.state.checkoutSuccess) {
       return <Redirect to="/thanks" />
     }
     if (this.state.checkoutClosed) {
