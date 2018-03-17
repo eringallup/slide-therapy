@@ -12,7 +12,8 @@ export default class Templates extends React.Component {
   componentDidMount () {
     dataStore.dispatch({
       type: 'update',
-      hasToken: false
+      hasToken: false,
+      token: undefined
     })
     // if (typeof global.document !== 'undefined') {
     //   if (location.pathname === '/start') {

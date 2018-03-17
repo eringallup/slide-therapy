@@ -25,7 +25,7 @@ function init () {
     key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
     locale: 'auto',
     token: token => {
-      console.log('token', token)
+      // console.log('token', token)
       dataStore.dispatch({
         type: 'update',
         hasToken: true,
@@ -33,7 +33,9 @@ function init () {
       })
     },
     closed: error => {
-      console.log('closed', error)
+      if (error) {
+        console.log('closed', error)
+      }
       let currentState = dataStore.getState()
       if (!currentState.token) {
         dataStore.dispatch({

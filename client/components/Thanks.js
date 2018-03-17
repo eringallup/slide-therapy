@@ -9,7 +9,8 @@ export default class Thanks extends React.Component {
   componentDidMount () {
     dataStore.dispatch({
       type: 'update',
-      hasToken: false
+      hasToken: false,
+      token: undefined
     })
   }
   render () {

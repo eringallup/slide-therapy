@@ -1,5 +1,6 @@
 import React from 'react'
 import qs from 'qs'
+import skus from '../../skus.json'
 
 export default class Download extends React.Component {
   constructor (props) {
@@ -20,7 +21,9 @@ export default class Download extends React.Component {
       .then(json => {
         let body = json && json.body
         if (typeof global.document !== 'undefined') {
-          document.location.href = body.downloadUrl
+          this.setState({
+            urls: body.urls
+          })
         }
       })
       .catch(console.error)
@@ -31,12 +34,11 @@ export default class Download extends React.Component {
       .then(json => {
         let body = json && json.body
         if (typeof global.document !== 'undefined') {
-          let downloadLink = document.querySelector('#download-link')
-          downloadLink.removeAttribute('hidden')
-          downloadLink.setAttribute('href', body.downloadUrl)
-          downloadLink.innerText = 'Download ' + body.deck.title
+          this.setState({
+            urls: body.urls
+          })
           if (autoDownload === true) {
-            document.location.href = body.downloadUrl
+            document.location.href = this.state.urls[Object.keys(this.state.urls)[0]]
           }
         }
       })
@@ -52,13 +54,21 @@ export default class Download extends React.Component {
     }).then(response => response.json())
   }
   render () {
+    let downloadLinks = []
+    if (this.state.urls) {
+      for (let sku in this.state.urls) {
+        downloadLinks.push(<li key={sku}>
+          <a key={sku} href={this.state.urls[sku]}>Download {skus[sku].title}</a>
+        </li>)
+      }
+    }
     return <section id="view-download" className="py-5">
       <div className="container">
         <div className="row">
           <div className="col-sm-12">
             <h2>Download</h2>
             <p className="lead">Your deck should start downloading in a moment.</p>
-            <a id="download-link" hidden />
+            <ol className="list-unstyled">{downloadLinks}</ol>
           </div>
         </div>
       </div>

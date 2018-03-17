@@ -27,7 +27,7 @@ export default class Buy extends React.Component {
   }
   setStates () {
     let currentState = dataStore.getState()
-    console.log('setStates', currentState)
+    // console.log('setStates', currentState)
     this.setState({
       checkoutClosed: currentState.checkoutClosed,
       hasToken: currentState.hasToken
@@ -61,7 +61,7 @@ export default class Buy extends React.Component {
     })
   }
   completePurchase (token) {
-    console.info('completePurchase', token)
+    // console.info('completePurchase', token)
     const queryString = qs.stringify({
       email: token.email,
       sku: this.deck.sku,

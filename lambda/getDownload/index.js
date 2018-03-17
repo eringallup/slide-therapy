@@ -46,7 +46,9 @@ function downloadOwned (oid, email) {
         if (err) {
           return reject(err)
         }
-        resolve(geDownloadUrls(order.Attributes.sku))
+        resolve({
+          urls: geDownloadUrls(order.Attributes.sku)
+        })
       })
     }).catch(reject)
   })
@@ -76,7 +78,9 @@ function downloadWithToken (token) {
           if (err) {
             return reject(err)
           }
-          resolve(geDownloadUrls(order.Attributes.sku))
+          resolve({
+            urls: geDownloadUrls(order.Attributes.sku)
+          })
         })
       }).catch(reject)
     }).catch(reject)
@@ -145,7 +149,7 @@ function getSignedUrl (sku) {
   let baseUrl = 'https://' + process.env.download + '/test.txt?sku=' + sku
   let now = new Date()
   let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 15)) / 1000)
-  let expires = '?Expires=' + expiresUtc
+  let expires = '&Expires=' + expiresUtc
 
   let policyStatementJson = JSON.stringify({
     Statement: [{
