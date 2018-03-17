@@ -46,11 +46,7 @@ function downloadOwned (oid, email) {
         if (err) {
           return reject(err)
         }
-        const downloadUrl = getSignedUrl(order.Attributes.sku)
-        resolve({
-          deck: skus[order.Attributes.sku],
-          downloadUrl: downloadUrl
-        })
+        resolve(geDownloadUrls(order.Attributes.sku))
       })
     }).catch(reject)
   })
@@ -80,15 +76,20 @@ function downloadWithToken (token) {
           if (err) {
             return reject(err)
           }
-          const downloadUrl = getSignedUrl(order.Attributes.sku)
-          resolve({
-            deck: skus[order.Attributes.sku],
-            downloadUrl: downloadUrl
-          })
+          resolve(geDownloadUrls(order.Attributes.sku))
         })
       }).catch(reject)
     }).catch(reject)
   })
+}
+
+function geDownloadUrls (sku) {
+  const skuData = skus[sku]
+  let downloadUrls = {}
+  skuData.purchase_rights.forEach(purchaseRight => {
+    downloadUrls[purchaseRight] = getSignedUrl(purchaseRight)
+  })
+  return downloadUrls
 }
 
 function getOrder (oid, email, validatorFn) {
@@ -139,9 +140,9 @@ function decrypt (token, password) {
   })
 }
 
-function getSignedUrl (deck) {
-  console.log('getSignedUrl', deck)
-  let baseUrl = 'https://' + process.env.download + '/test.txt'
+function getSignedUrl (sku) {
+  console.log('getSignedUrl', sku)
+  let baseUrl = 'https://' + process.env.download + '/test.txt?sku=' + sku
   let now = new Date()
   let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 15)) / 1000)
   let expires = '?Expires=' + expiresUtc
