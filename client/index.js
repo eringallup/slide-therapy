@@ -8,6 +8,8 @@ import Html from 'components/Html'
 import dataStore from 'store'
 
 if (typeof global.document !== 'undefined') {
+  window.$ = require('jquery')
+  window.Vault = require('vault.js')
   require('bootstrap')
   require('whatwg-fetch')
   require('./vendor/scrollIt.js')
@@ -26,13 +28,14 @@ function init () {
 
 function setupStripe (attempt) {
   // console.log('setupStripe', attempt, window.StripeCheckout)
-  if (window.StripeCheckout === undefined) {
+  if (typeof StripeCheckout === 'undefined') {
     setTimeout(() => {
       if (attempt < 5000) {
         attempt *= 2
       }
       setupStripe(attempt)
     }, attempt)
+    return
   }
   let stripeCheckout = StripeCheckout.configure({
     key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',

@@ -10,7 +10,8 @@
     "StripeCheckout": true,
     "scrollIt": true,
     "fetch": true,
-    "$": true
+    "$": true,
+    "Vault": true
   },
   "rules": {
     "no-console": 0,
