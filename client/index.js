@@ -21,6 +21,19 @@ if (typeof global.document !== 'undefined') {
 function init () {
   ReactDOM.hydrate(<BrowserRouter><Routes /></BrowserRouter>, document.querySelector('#app'))
   document.querySelector('html').classList.remove('no-js')
+  setupStripe(10)
+}
+
+function setupStripe (attempt) {
+  // console.log('setupStripe', attempt, window.StripeCheckout)
+  if (window.StripeCheckout === undefined) {
+    setTimeout(() => {
+      if (attempt < 5000) {
+        attempt *= 2
+      }
+      setupStripe(attempt)
+    }, attempt)
+  }
   let stripeCheckout = StripeCheckout.configure({
     key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
     locale: 'auto',

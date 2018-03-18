@@ -21,6 +21,13 @@ export default class Buy extends React.Component {
   }
   componentWillUnmount () {
     this.unsubscribe()
+    dataStore.dispatch({
+      type: 'update',
+      hasToken: false,
+      checkoutClosed: false,
+      checkoutSuccess: false,
+      token: undefined
+    })
     if (typeof window !== 'undefined') {
       window.removeEventListener('popstate', this.stripeCheckout.close)
     }
@@ -85,7 +92,7 @@ export default class Buy extends React.Component {
       return <Redirect to="/thanks" />
     }
     if (this.state.checkoutClosed) {
-      return <Redirect to="/templates" />
+      return <Redirect to="/" />
     }
     return ''
   }

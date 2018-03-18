@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import skus from 'skus.json'
-import $ from 'jquery'
+import { $ } from 'jquery'
 import dataStore from 'store'
 
 export default class Templates extends React.Component {
@@ -10,11 +10,8 @@ export default class Templates extends React.Component {
     this.state = props
   }
   componentDidMount () {
-    dataStore.dispatch({
-      type: 'update',
-      hasToken: false,
-      token: undefined
-    })
+    this.setStates()
+    this.unsubscribe = dataStore.subscribe(() => this.setStates())
     // if (typeof global.document !== 'undefined') {
     //   if (location.pathname === '/start') {
     //     if (window.history.length <= 2) {
@@ -30,6 +27,17 @@ export default class Templates extends React.Component {
     //     }
     //   }
     // }
+  }
+  componentWillUnmount () {
+    this.unsubscribe()
+  }
+  setStates () {
+    let currentState = dataStore.getState()
+    if (!this.state.stripeCheckout && currentState.stripeCheckout) {
+      this.setState({
+        stripeCheckout: currentState.stripeCheckout
+      })
+    }
   }
   scrollDown () {
     scrollIt(document.getElementById('start'), 200, 'easeInCubic')
@@ -58,6 +66,7 @@ export default class Templates extends React.Component {
     $('#slide-preview').carousel('prev')
   }
   render () {
+    // console.info('render', this.state.stripeCheckout)
     const templates = [skus[1], skus[2], skus[3]].map(item => {
       let preview = []
       if (this.state.preview && this.state.preview.sku === item.sku) {
@@ -132,7 +141,10 @@ export default class Templates extends React.Component {
             <span itemProp="priceCurrency" content="USD">$</span>
             <span itemProp="price" content={item.displayPrice}>{item.displayPrice}</span>
           </span>
-          <Link className="buy btn btn-lg btn-primary" to={`/buy/${item.slug}`}>Buy</Link>
+          <Link
+            className={'buy btn btn-lg btn-primary' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
+            to={`/buy/${item.slug}`}
+          >Buy</Link>
           <div
             className="clickable st-uppercase mt-3"
             onClick={e => this.showPreview(e, item)}
@@ -232,7 +244,7 @@ export default class Templates extends React.Component {
           <div>
             <Link
               to="/buy/all-audiences"
-              className="buy btn btn-lg btn-light"
+              className={'buy btn btn-lg btn-light' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
             >Buy</Link>
           </div>
         </div>

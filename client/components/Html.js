@@ -13,11 +13,11 @@ export default class Html extends React.Component {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
         <link href={`/${this.state.css[0]}`} rel="stylesheet" type="text/css" />
-        <script src="//checkout.stripe.com/checkout.js" />
+        <script src="//checkout.stripe.com/checkout.js" async />
+        <script src={`/${this.state.js[0]}`} async />
       </head>
       <body>
         <div id="app" className="d-flex flex-column">{this.state.children}</div>
-        <script src={`/${this.state.js[0]}`} />
       </body>
     </html>
   }
