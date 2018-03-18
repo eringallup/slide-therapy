@@ -1,51 +1,51 @@
-const path = require('path');
-const async = require('async');
-const fs = require('fs');
-const exec = require('child_process').exec;
+const path = require('path')
+const async = require('async')
+const fs = require('fs')
+const exec = require('child_process').exec
 
-const LAMBDA_DIR = path.join(__dirname, 'lambda');
-const ROOT_DIR = path.join(__dirname);
+const LAMBDA_DIR = path.join(__dirname, 'lambda')
+const ROOT_DIR = path.join(__dirname)
 
 fs.readdir(LAMBDA_DIR, 'utf8', (dirError, files) => {
   if (dirError) {
-    return _exit(dirError);
+    return _exit(dirError)
   }
-  async.each(files, zipFile, _exit);
-});
+  async.each(files, zipFile, _exit)
+})
 
-function zipFile(lambdaFunction, callback) {
-  const cp = `cp ${ROOT_DIR}/skus.json ${LAMBDA_DIR}/${lambdaFunction}`;
-  // console.log(cp);
+function zipFile (lambdaFunction, callback) {
+  const cp = `cp ${ROOT_DIR}/skus.json ${LAMBDA_DIR}/${lambdaFunction}`
+  // console.log(cp)
   exec(cp, (cpError, cpStdout, cpStderr) => {
     if (cpError) {
-      return callback(cpError);
+      return callback(cpError)
     }
     if (cpStderr) {
-      return callback(cpStderr);
+      return callback(cpStderr)
     }
-    let zipFilePath = path.join('/tmp', lambdaFunction + '.zip');
+    let zipFilePath = path.join('/tmp', lambdaFunction + '.zip')
     let zipCommand = [
       `cd ${LAMBDA_DIR}/${lambdaFunction}`,
       `zip -X -r ${zipFilePath} ./*`,
       `aws lambda update-function-code --publish --function-name ${lambdaFunction} --zip-file fileb://${zipFilePath}`
-    ].join(' && ');
-    console.log(zipCommand);
-    // return callback();
+    ].join(' && ')
+    console.log(zipCommand)
+    // return callback()
     exec(zipCommand, (error, stdout, stderr) => {
       if (error) {
-        return callback(error);
+        return callback(error)
       }
       if (stderr) {
-        return callback(stderr);
+        return callback(stderr)
       }
-      callback();
-    });
-  });
+      callback()
+    })
+  })
 }
 
-function _exit(errors) {
+function _exit (errors) {
   if (errors) {
-    console.error('errors:', errors);
+    console.error('errors:', errors)
   }
-  process.exit(errors);
+  process.exit(errors)
 }

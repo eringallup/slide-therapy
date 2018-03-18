@@ -35,13 +35,36 @@ exports.handler = (event, context, callback) => {
   }
   stripe.charges.create(charge, (chargeError, chargeData) => {
     if (chargeError) {
-      return callback(chargeError)
+      markOrderFailed(payload.oid, chargeData)
+        .then(() => callback(chargeError))
+        .catch(callback)
+    } else {
+      markOrderComplete(payload.oid, chargeData)
+        .then(data => {
+          sns.publish({
+            Message: JSON.stringify(payload),
+            TopicArn: process.env.snsArn
+          }, snsError => {
+            if (snsError) {
+              return callback(snsError)
+            }
+            callback(null, {
+              statusCode: 200,
+              body: _.omit(data.Attributes, 'charge')
+            })
+          })
+        })
+        .catch(callback)
     }
+  })
+}
 
+function markOrderComplete (oid, chargeData) {
+  return new Promise((resolve, reject) => {
     const query = {
       TableName: 'orders',
       Key: {
-        oid: payload.oid
+        oid: oid
       },
       UpdateExpression: 'set order_status = :status, charge = :charge, modified = :modified',
       ExpressionAttributeValues: {
@@ -53,21 +76,33 @@ exports.handler = (event, context, callback) => {
     }
     dynamo.update(query, (updateError, data) => {
       if (updateError) {
-        return callback(updateError)
+        return reject(updateError)
       }
+      resolve(data)
+    })
+  })
+}
 
-      sns.publish({
-        Message: JSON.stringify(payload),
-        TopicArn: process.env.snsArn
-      }, snsError => {
-        if (snsError) {
-          return callback(snsError)
-        }
-        callback(null, {
-          statusCode: 200,
-          body: _.omit(data.Attributes, 'charge')
-        })
-      })
+function markOrderFailed (oid, chargeData) {
+  return new Promise((resolve, reject) => {
+    const query = {
+      TableName: 'orders',
+      Key: {
+        oid: oid
+      },
+      UpdateExpression: 'set order_status = :status, charge = :charge, modified = :modified',
+      ExpressionAttributeValues: {
+        ':status': 'failed',
+        ':charge': chargeData,
+        ':modified': new Date().toString()
+      },
+      ReturnValues: 'UPDATED_NEW'
+    }
+    dynamo.update(query, (updateError, data) => {
+      if (updateError) {
+        return reject(updateError)
+      }
+      resolve(data)
     })
   })
 }
