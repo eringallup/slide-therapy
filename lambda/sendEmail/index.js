@@ -5,18 +5,21 @@ const ses = new AWS.SES({
 })
 const dynamo = new AWS.DynamoDB.DocumentClient()
 const jwt = require('jsonwebtoken')
+const skus = require('skus.json')
 
 exports.handler = (event, context, callback) => {
   let payload = {
     oid: event.oid
   }
-  try {
-    let snsData = JSON.parse(event.Records[0].Sns.Message)
-    if (snsData) {
-      payload = snsData
+  if (event.Records) {
+    try {
+      let snsData = JSON.parse(event.Records[0].Sns.Message)
+      if (snsData) {
+        payload = snsData
+      }
+    } catch (e) {
+      console.error('Error parsing JSON', e)
     }
-  } catch (e) {
-    console.error('Error parsing JSON', e)
   }
 
   const get = {
@@ -59,54 +62,31 @@ function sendFile (order) {
     created: order.created.valueOf()
   }).then(jwt => {
     let url = `${process.env.webUrl}/download?t=${jwt}&d=true`
-    let html = `
-      Thanks for purchasing Slide Therapy 2018!
-      <br>
-      <a href="${url}">Click here to download your deck</a>
-    `
-    return send(order.email, 'Thank you!', html)
+    return send(order.email, {
+      sku: skus[order.sku],
+      url: url
+    })
   })
 }
 
-function send (to, subject, body, textBody) {
+function send (to, context) {
   return new Promise((resolve, reject) => {
-    if (!to || !subject || !body) {
-      return reject(new Error('missing to, subject, or body field'))
-    }
-    if (!textBody) {
-      textBody = body.replace(/(<br>)/ig, ' ')
-      textBody = textBody.replace(/(<br\/>)/ig, ' ')
-      textBody = textBody.replace(/(<br \/>)/ig, ' ')
-      textBody = textBody.replace(/(<([^>]+)>)/ig, '')
+    if (!to || !context) {
+      return reject(new Error('missing to or context field'))
     }
 
     let params = {
       Destination: {
-        ToAddresses: [
-          to
-        ]
+        ToAddresses: [ to ]
       },
-      Message: {
-        Body: {
-          Html: {
-            Data: body,
-            Charset: 'UTF-8'
-          },
-          Text: {
-            Data: textBody,
-            Charset: 'UTF-8'
-          }
-        },
-        Subject: {
-          Data: subject,
-          Charset: 'UTF-8'
-        }
-      },
+      Template: process.env.emailTemplate,
+      TemplateData: JSON.stringify(context),
       Source: process.env.supportEmailAddress,
-      SourceArn: process.env.emailArn
+      SourceArn: process.env.emailArn,
+      ConfigurationSetName: process.env.emailConfigurationSetName
     }
-    // console.log(params)
-    ses.sendEmail(params, (err, data) => {
+    console.log(params)
+    ses.sendTemplatedEmail(params, (err, data) => {
       if (err) {
         return reject(err, err.stack)
       }

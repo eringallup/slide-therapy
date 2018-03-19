@@ -42,6 +42,8 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "extract-text-webpack-plugin": "^3.0.2",
+    "fs-extra": "^5.0.0",
+    "jsdom": "^11.6.2",
     "json-loader": "^0.5.7",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.7",
@@ -54,6 +56,7 @@
   },
   "scripts": {
     "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js",
+    "ses": "AWS_PROFILE=slide-therapy node ./ses.js",
     "watch": "webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.dev.js",
     "build-prod": "webpack --config webpack.prod.js"
