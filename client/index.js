@@ -8,9 +8,7 @@ import Html from 'components/Html'
 import dataStore from 'store'
 
 if (typeof global.document !== 'undefined') {
-  window.$ = require('jquery')
   window.Vault = require('vault.js')
-  require('bootstrap')
   require('whatwg-fetch')
   require('./vendor/scrollIt.js')
   if (document.attachEvent ? document.readyState === 'complete' : document.readyState !== 'loading') {
