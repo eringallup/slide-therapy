@@ -71,9 +71,11 @@ export default class Buy extends React.Component {
       email = Vault.get('slideTherapyEmail')
     }
     this.stripeCheckout.open({
-      name: this.deck.title,
-      description: 'Single-user License',
+      currency: 'USD',
+      name: 'Slide Therapy',
+      description: `Single-user License for ${this.deck.title}`,
       image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+      panelLabel: 'Buy for {{amount}}',
       email: email,
       zipCode: true,
       // billingAddress: true,
