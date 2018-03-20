@@ -22,6 +22,9 @@ export default class Buy extends React.Component {
     gtag('config', gTagId)
   }
   componentWillUnmount () {
+    if (this.ellipsisTimeout) {
+      clearTimeout(this.ellipsisTimeout)
+    }
     this.unsubscribe()
     dataStore.dispatch({
       type: 'update',
@@ -114,7 +117,7 @@ export default class Buy extends React.Component {
     } else {
       num++
     }
-    setTimeout(() => {
+    this.ellipsisTimeout = setTimeout(() => {
       this.startEllipsis(num)
     }, 300)
   }
