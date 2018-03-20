@@ -6,6 +6,10 @@ export default class Html extends React.Component {
     this.state = props
   }
   render () {
+    const isProd = process && process.env && process.env.NODE_ENV === 'production'
+    const gTag = {
+      __html: isProd ? '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116092135-1" /><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag("js", new Date());gtag("config", "UA-116092135-1");</script>' : ''
+    }
     return <html lang="en" className="no-js">
       <head>
         <title>{this.state.title}</title>
@@ -29,6 +33,7 @@ export default class Html extends React.Component {
           src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
           integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
           crossOrigin="anonymous" />
+        <div dangerouslySetInnerHTML={gTag} />
         <script src="//checkout.stripe.com/checkout.js" async />
         <script src={`/${this.state.js[0]}`} async />
       </body>
