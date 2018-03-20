@@ -7,5 +7,24 @@
     Thanks for purchasing {{sku.title}}!
     <br>
     <a href="{{url}}">Click here to download your deck</a>
+    <br>
+    <br>
+    <table>
+      <tbody>
+        <tr>
+          <td align="left">Order ID</td>
+          <td align="right">{{order.oid}}</td>
+        </tr>
+        <tr>
+        <tr>
+          <td align="left">{{sku.title}}</td>
+          <td align="right">${{sku.displayPrice}}</td>
+        </tr>
+        <tr>
+          <td align="left">Date</td>
+          <td align="right">{{order.created}}</td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>
