@@ -71,7 +71,7 @@ export default class Buy extends React.Component {
     }
   }
   saveEmail (email) {
-    if (global.window && window.Vault) {
+    if (window && window.Vault) {
       Vault.set('slideTherapyEmail', email, {
         expires: '+1 day'
       })
@@ -79,7 +79,7 @@ export default class Buy extends React.Component {
   }
   getEmail () {
     let email = ''
-    if (global.window && window.Vault) {
+    if (window && window.Vault) {
       email = Vault.get('slideTherapyEmail')
     }
     return email

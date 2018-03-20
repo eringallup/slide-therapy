@@ -29,14 +29,18 @@ export default class Templates extends React.Component {
   componentDidMount () {
     this.setStates()
     this.getImage()
-    gtag('config', gTagId)
+    setTimeout(() => {
+      gtag('config', gTagId, {
+        hero_image: this.state.backgroundImage.url
+      })
+    })
     // this.scrollToSection()
   }
   componentWillUnmount () {
     this.unsubscribe()
   }
   scrollToSection () {
-    // if (typeof global.document !== 'undefined') {
+    // if (typeof document !== 'undefined') {
     //   if (location.pathname === '/start') {
     //     if (window.history.length <= 2) {
     //       scrollIt(document.getElementById('start'), 200, 'easeInCubic')
@@ -61,7 +65,7 @@ export default class Templates extends React.Component {
       newState.stripeCheckout = currentState.stripeCheckout
     }
     this.setState(newState)
-    if (global.window && newState.backgroundImage) {
+    if (window && newState.backgroundImage) {
       setTimeout(() => this.setBackgroundImage())
     }
   }
@@ -133,7 +137,7 @@ export default class Templates extends React.Component {
     if (!this.state.backgroundImage && !currentState.backgroundImage) {
       const rnd = Math.floor(Math.random() * this.state.backgroundImages.length)
       const backgroundImage = this.state.backgroundImages[rnd]
-      if (global.window) {
+      if (typeof window !== 'undefined') {
         dataStore.dispatch({
           type: 'update',
           backgroundImage: backgroundImage

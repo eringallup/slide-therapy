@@ -59,7 +59,7 @@
     "ses": "AWS_PROFILE=slide-therapy node ./ses.js",
     "watch": "webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.dev.js",
-    "build-prod": "webpack --config webpack.prod.js"
+    "build-prod": "NODE_ENV=production webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",

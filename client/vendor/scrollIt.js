@@ -1,6 +1,6 @@
 // https://pawelgrzybek.com/page-scroll-in-vanilla-javascript/
 function scrollIt(destination, duration = 200, easing = 'linear', callback) {
-  if (typeof global.window === 'undefined' || typeof global.document === 'undefined') {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
     return;
   }
 

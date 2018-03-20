@@ -6,6 +6,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const clientDir = path.resolve(__dirname, 'client')
 const outputDir = path.resolve(clientDir, 'dist')
 
+const isProd = process && process.env && process.env.NODE_ENV === 'production'
+const gTagId = isProd ? 'UA-116092135-1' : 'UA-116093458-1'
+
 module.exports = {
   entry: [
     'whatwg-fetch',
@@ -31,7 +34,9 @@ module.exports = {
         '/thanks'
       ],
       locals: {
-        title: 'Slide Therapy'
+        title: 'Slide Therapy',
+        gTagId: gTagId,
+        isProd: isProd
       }
     }),
     new ExtractTextPlugin('styles-[contenthash].css')

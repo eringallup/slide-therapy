@@ -23,7 +23,7 @@ export default class Download extends React.Component {
     this.http(url)
       .then(json => {
         let body = json && json.body
-        if (typeof global.document !== 'undefined') {
+        if (typeof document !== 'undefined') {
           this.setState({
             urls: body.urls
           })
@@ -36,7 +36,7 @@ export default class Download extends React.Component {
     this.http(url)
       .then(json => {
         let body = json && json.body
-        if (typeof global.document !== 'undefined') {
+        if (typeof document !== 'undefined') {
           this.setState({
             urls: body.urls
           })
