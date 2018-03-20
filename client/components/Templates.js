@@ -59,10 +59,27 @@ export default class Templates extends React.Component {
     if (!this.state.stripeCheckout && currentState.stripeCheckout) {
       newState.stripeCheckout = currentState.stripeCheckout
     }
-    if (global.window && newState.backgroundImage) {
-      newState.heroReady = 'ready'
-    }
     this.setState(newState)
+    if (global.window && newState.backgroundImage) {
+      setTimeout(() => this.setBackgroundImage())
+    }
+  }
+  setBackgroundImage () {
+    // console.log('setBackgroundImage', this.state.backgroundImage)
+    if (this.state.backgroundImage) {
+      this.bgImagePreload = new Image()
+      this.bgImagePreload.addEventListener('load', this.onBackgroundImageReady.bind(this))
+      this.bgImagePreload.src = this.state.backgroundImage.url
+    }
+  }
+  onBackgroundImageReady () {
+    // console.log('onBackgroundImageReady', this.bgImagePreload)
+    if (this.bgImagePreload) {
+      this.setState({
+        heroReady: 'ready'
+      })
+      this.bgImagePreload.removeEventListener('load', this.onBackgroundImageReady)
+    }
   }
   scrollDown (e) {
     // e.preventDefault()

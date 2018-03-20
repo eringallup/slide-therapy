@@ -9,6 +9,7 @@
     content: '';
     @extend .position-absolute;
     @extend .fill-parent;
+    z-index: $z-space;
     background-color: $gray-500;
     opacity: 1;
     @include transition(opacity .2s linear);
@@ -16,6 +17,7 @@
   &.ready {
     &:before {
       opacity: 0;
+      z-index: $z-metro;
     }
   }
   h2 {
@@ -25,6 +27,7 @@
   .image-credit {
     @extend .position-absolute;
     @extend .h4;
+    z-index: $z-sky;
     font-size: inherit;
     color: $gray-200;
     right: 2rem;
