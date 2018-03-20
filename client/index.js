@@ -22,6 +22,20 @@ function init () {
   ReactDOM.hydrate(<BrowserRouter><Routes /></BrowserRouter>, document.querySelector('#app'))
   document.querySelector('html').classList.remove('no-js')
   setupStripe(10)
+  setupGoogleAnalytics()
+}
+
+function setupGoogleAnalytics () {
+  const isProd = process && process.env && process.env.NODE_ENV === 'production'
+  const gTagId = isProd ? 'UA-116092135-1' : 'UA-116093458-1'
+  window.dataLayer = window.dataLayer || []
+  gtag('js', new Date())
+  gtag('config', gTagId)
+}
+
+function gtag () {
+  // console.log('gtag', arguments)
+  window.dataLayer.push(arguments)
 }
 
 function setupStripe (attempt) {
