@@ -38,7 +38,8 @@ exports.handler = (event, context, callback) => {
         oid: currentCount,
         email: event.email,
         sku: event.sku,
-        token: event.token
+        token: event.token,
+        env: event.env
       }
 
       sns.publish({

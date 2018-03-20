@@ -8,7 +8,8 @@ exports.handler = (event, context, callback) => {
     oid: event.oid,
     email: event.email,
     sku: event.sku,
-    token: event.token
+    token: event.token,
+    env: event.env
   }
   try {
     let snsData = JSON.parse(event.Records[0].Sns.Message)

@@ -2,7 +2,6 @@ const _ = require('lodash')
 const skus = require('./skus.json')
 const AWS = require('aws-sdk')
 const dynamo = new AWS.DynamoDB.DocumentClient()
-const stripe = require('stripe')(process.env.stripe_key)
 const sns = new AWS.SNS()
 
 exports.handler = (event, context, callback) => {
@@ -10,7 +9,8 @@ exports.handler = (event, context, callback) => {
     oid: event.oid,
     email: event.email,
     sku: event.sku,
-    token: event.token
+    token: event.token,
+    env: event.env
   }
   try {
     let snsData = JSON.parse(event.Records[0].Sns.Message)
@@ -30,9 +30,13 @@ exports.handler = (event, context, callback) => {
     metadata: {
       oid: payload.oid,
       sku: skuData.sku,
-      email: payload.email
+      email: payload.email,
+      env: payload.env
     }
   }
+  let stripeKey = payload.env === 'dev' ? process.env.stripe_key_test : process.env.stripe_key_prod
+  // console.log(payload.env, stripeKey)
+  const stripe = require('stripe')(stripeKey)
   stripe.charges.create(charge, (chargeError, chargeData) => {
     if (chargeError) {
       markOrderFailed(payload.oid, chargeData)

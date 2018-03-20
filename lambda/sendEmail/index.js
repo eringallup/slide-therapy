@@ -9,7 +9,8 @@ const skus = require('skus.json')
 
 exports.handler = (event, context, callback) => {
   let payload = {
-    oid: event.oid
+    oid: event.oid,
+    env: event.env
   }
   if (event.Records) {
     try {

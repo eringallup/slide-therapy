@@ -5,7 +5,8 @@ exports.handler = (event, context, callback) => {
   let payload = {
     oid: event.oid,
     email: event.email,
-    token: event.token
+    token: event.token,
+    env: event.env
   }
   if (event.Records) {
     try {

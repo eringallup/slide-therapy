@@ -5,7 +5,9 @@ import skus from '../../skus.json'
 export default class Download extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = Object.assign({}, props, {
+      isProd: process && process.env && process.env.NODE_ENV === 'production'
+    })
   }
   componentDidMount () {
     let queryParams = qs.parse(location.search.substring(1))
@@ -49,7 +51,8 @@ export default class Download extends React.Component {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
+        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc',
+        'x-st-env': this.state.isProd ? 'prod' : 'dev'
       }
     }).then(response => response.json())
   }

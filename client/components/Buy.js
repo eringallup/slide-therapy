@@ -11,7 +11,8 @@ export default class Buy extends React.Component {
       init: false,
       hasToken: false,
       checkoutClosed: false,
-      checkoutSuccess: false
+      checkoutSuccess: false,
+      isProd: process && process.env && process.env.NODE_ENV === 'production'
     }, props)
     this.setDeck()
   }
@@ -124,7 +125,8 @@ export default class Buy extends React.Component {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
+        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc',
+        'x-st-env': this.state.isProd ? 'prod' : 'dev'
       }
     }).then(response => response.json())
       .then(json => {
@@ -145,7 +147,8 @@ export default class Buy extends React.Component {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
+        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc',
+        'x-st-env': this.state.isProd ? 'prod' : 'dev'
       }
     }).then(response => response.json())
       .then(orderData => {

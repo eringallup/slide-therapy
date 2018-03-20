@@ -35,8 +35,9 @@ function setupStripe (attempt) {
     }, attempt)
     return
   }
+  const isProd = process && process.env && process.env.NODE_ENV === 'production'
   let stripeCheckout = StripeCheckout.configure({
-    key: 'pk_test_CK71Laidqlso9O9sZDktqW6a',
+    key: isProd ? 'pk_live_VCaltCKPpZ5maCPQ79s0p7Xk' : 'pk_test_CK71Laidqlso9O9sZDktqW6a',
     locale: 'auto',
     token: token => {
       // console.log('token', token)
