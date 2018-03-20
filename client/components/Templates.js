@@ -14,11 +14,11 @@ export default class Templates extends React.Component {
       }, {
         url: '/images/home/topimage2.jpg',
         position: 'top center',
-        credit: 'Image: Rawpixel/Unsplash'
+        credit: 'Image: GaudiLab/Shutterstock'
       }, {
         url: '/images/home/topimage3.jpg',
         position: 'bottom center',
-        credit: 'Image: Rawpixel/Unsplash'
+        credit: 'Image: Edwin Andrade/Unsplash'
       }],
       heroReady: ''
     })

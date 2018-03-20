@@ -145,3 +145,17 @@
     }
   }
 }
+
+#buyModal {
+  .modal-title {
+    > * {
+      margin: 0;
+      line-height: 1;
+    }
+  }
+}
+
+.loading-ellipsis {
+  @extend .d-inline-block;
+  width: 3rem;
+}

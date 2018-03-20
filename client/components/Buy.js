@@ -65,32 +65,54 @@ export default class Buy extends React.Component {
       }
     }
   }
-  showCheckout () {
+  saveEmail (email) {
+    if (global.window && window.Vault) {
+      Vault.set('slideTherapyEmail', email, {
+        expires: '+1 day'
+      })
+    }
+  }
+  getEmail () {
     let email = ''
     if (global.window && window.Vault) {
       email = Vault.get('slideTherapyEmail')
     }
+    return email
+  }
+  showCheckout () {
     this.stripeCheckout.open({
       currency: 'USD',
-      name: 'Slide Therapy',
-      description: `Single-user License for ${this.deck.title}`,
-      image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+      name: this.deck.stripe_title,
+      description: 'Single User License',
+      image: '/images/slide-therapy-logo-stripe.png',
       panelLabel: 'Buy for {{amount}}',
-      email: email,
+      // email: this.getEmail(),
       zipCode: true,
       // billingAddress: true,
       amount: this.deck.amountInCents
     })
   }
+  startEllipsis (num) {
+    let text = ''
+    for (let i = 0; i < num; i++) {
+      text += '•'
+    }
+    this.loadingEllipsis.innerText = text
+    if (num >= 3) {
+      num = 1
+    } else {
+      num++
+    }
+    setTimeout(() => {
+      this.startEllipsis(num)
+    }, 300)
+  }
   completePurchase (token) {
     this.showModal({
       processing: true
     })
-    if (global.window && window.Vault) {
-      Vault.set('slideTherapyEmail', token.email, {
-        expires: '+1 day'
-      })
-    }
+    this.startEllipsis(3)
+    // this.saveEmail(token.email)
     // console.info('completePurchase', token)
     const queryString = qs.stringify({
       email: token.email,
@@ -202,8 +224,15 @@ export default class Buy extends React.Component {
       return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-sm modal-dialog-centered" role="document">
           <div className="modal-content text-center">
-            <div className="modal-body">
-              <h5 className="modal-title">Processing payment</h5>
+            <div className="modal-body py-4 px-5">
+              <div className="modal-title">
+                <span className="d-block m-0 h3">Processing</span>
+                <span className="d-block m-0 h4">payment</span>
+                <span
+                  className="loading-ellipsis"
+                  ref={loadingEllipsis => { this.loadingEllipsis = loadingEllipsis }}
+                >...</span>
+              </div>
             </div>
           </div>
         </div>

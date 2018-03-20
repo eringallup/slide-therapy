@@ -9,6 +9,7 @@ export default class Html extends React.Component {
     return <html lang="en" className="no-js">
       <head>
         <title>{this.state.title}</title>
+        <link rel="icon" href="/images/favicon1.png" type="image/png" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
