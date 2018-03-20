@@ -65,6 +65,7 @@ function sendFile (order) {
     let url = `${process.env.webUrl}/download?t=${jwt}&d=true`
     return send(order.email, {
       sku: skus[order.sku],
+      order: order,
       url: url
     })
   })
