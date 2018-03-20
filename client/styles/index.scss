@@ -25,3 +25,9 @@ $z-space: 20;
 @import "./templates.scss";
 @import "./tips.scss";
 @import "./about.scss";
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+     -moz-transition: $transition;
+       -o-transition: $transition;
+          transition: $transition;
+}

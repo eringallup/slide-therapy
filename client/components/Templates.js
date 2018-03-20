@@ -1,17 +1,40 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import skus from 'skus.json'
-import { $ } from 'jquery'
 import dataStore from 'store'
 
 export default class Templates extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = Object.assign({}, props, {
+      backgroundImages: [{
+        url: '/images/home/topimage1.jpg',
+        position: 'top center',
+        credit: 'Image: Rawpixel/Unsplash'
+      }, {
+        url: '/images/home/topimage2.jpg',
+        position: 'top center',
+        credit: 'Image: Rawpixel/Unsplash'
+      }, {
+        url: '/images/home/topimage3.jpg',
+        position: 'bottom center',
+        credit: 'Image: Rawpixel/Unsplash'
+      }],
+      heroReady: ''
+    })
+  }
+  componentWillMount () {
+    this.unsubscribe = dataStore.subscribe(() => this.setStates())
   }
   componentDidMount () {
     this.setStates()
-    this.unsubscribe = dataStore.subscribe(() => this.setStates())
+    this.getImage()
+    // this.scrollToSection()
+  }
+  componentWillUnmount () {
+    this.unsubscribe()
+  }
+  scrollToSection () {
     // if (typeof global.document !== 'undefined') {
     //   if (location.pathname === '/start') {
     //     if (window.history.length <= 2) {
@@ -28,18 +51,21 @@ export default class Templates extends React.Component {
     //   }
     // }
   }
-  componentWillUnmount () {
-    this.unsubscribe()
-  }
   setStates () {
     let currentState = dataStore.getState()
-    if (!this.state.stripeCheckout && currentState.stripeCheckout) {
-      this.setState({
-        stripeCheckout: currentState.stripeCheckout
-      })
+    let newState = {
+      backgroundImage: currentState.backgroundImage
     }
+    if (!this.state.stripeCheckout && currentState.stripeCheckout) {
+      newState.stripeCheckout = currentState.stripeCheckout
+    }
+    if (global.window && newState.backgroundImage) {
+      newState.heroReady = 'ready'
+    }
+    this.setState(newState)
   }
-  scrollDown () {
+  scrollDown (e) {
+    // e.preventDefault()
     scrollIt(document.getElementById('start'), 200, 'easeInCubic')
   }
   showPreview (e, deck) {
@@ -64,6 +90,19 @@ export default class Templates extends React.Component {
   prevSlide (e) {
     e.preventDefault()
     $('#slide-preview').carousel('prev')
+  }
+  getImage () {
+    let currentState = dataStore.getState()
+    if (!this.state.backgroundImage && !currentState.backgroundImage) {
+      const rnd = Math.floor(Math.random() * this.state.backgroundImages.length)
+      const backgroundImage = this.state.backgroundImages[rnd]
+      if (global.window) {
+        dataStore.dispatch({
+          type: 'update',
+          backgroundImage: backgroundImage
+        })
+      }
+    }
   }
   render () {
     // console.info('render', this.state.stripeCheckout)
@@ -152,19 +191,27 @@ export default class Templates extends React.Component {
         </div>
       </div>
     })
+    let heroImage = {}
+    let imageCredit = ''
+    if (this.state.backgroundImage) {
+      heroImage = {
+        backgroundImage: `url(${this.state.backgroundImage.url})`,
+        backgroundPosition: this.state.backgroundImage.position
+      }
+      imageCredit = this.state.backgroundImage.credit
+    }
     return <section id="view-templates">
       <div
-        className="hero-layer d-flex align-items-center"
-        style={{
-          backgroundImage: 'url(/images/home/topimage1.jpg)'
-        }}
-      >
+        className={`hero-layer d-flex align-items-center ${this.state.heroReady}`}
+        suppressHydrationWarning
+        style={heroImage}
+      ><span suppressHydrationWarning className="image-credit">{imageCredit}</span>
         <div className="container">
           <div className="row">
             <div className="col-sm-12 text-center">
               <h2>Up your presentation game.</h2>
               <Link
-                onClick={this.scrollDown}
+                onClick={e => this.scrollDown(e)}
                 to="/start"
                 className="btn btn-primary text-uppercase"
               >Start now</Link>
