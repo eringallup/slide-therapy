@@ -5,6 +5,9 @@ export default class About extends React.Component {
     super(props)
     this.state = props
   }
+  componentDidMount () {
+    gtag('config', gTagId)
+  }
   render () {
     return <section id="view-about" className="py-5">
       <div className="container">

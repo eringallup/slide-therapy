@@ -29,6 +29,7 @@ export default class Templates extends React.Component {
   componentDidMount () {
     this.setStates()
     this.getImage()
+    gtag('config', gTagId)
     // this.scrollToSection()
   }
   componentWillUnmount () {
@@ -84,6 +85,9 @@ export default class Templates extends React.Component {
   scrollDown (e, elementId) {
     e.preventDefault()
     scrollIt(document.getElementById(elementId), 200, 'easeInCubic')
+    gtag('event', 'Start Now', {
+      event_category: 'cta'
+    })
   }
   showPreview (e, deck) {
     e.preventDefault()
@@ -93,20 +97,36 @@ export default class Templates extends React.Component {
     this.setState({
       preview: deck
     })
+    gtag('event', 'Show Preview', {
+      event_category: 'cta',
+      event_label: deck.title
+    })
   }
   closePreview (e, deck) {
     e.preventDefault()
     this.setState({
       preview: undefined
     })
+    gtag('event', 'Close Preview', {
+      event_category: 'cta',
+      event_label: deck.title
+    })
   }
-  nextSlide (e) {
+  nextSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('next')
+    gtag('event', 'Next Slide', {
+      event_category: 'cta',
+      event_label: deck.title
+    })
   }
-  prevSlide (e) {
+  prevSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('prev')
+    gtag('event', 'Previous Slide', {
+      event_category: 'cta',
+      event_label: deck.title
+    })
   }
   getImage () {
     let currentState = dataStore.getState()
@@ -143,7 +163,7 @@ export default class Templates extends React.Component {
             <a
               className="carousel-control-prev"
               href="#"
-              onClick={e => this.prevSlide(e)}
+              onClick={e => this.prevSlide(e, item)}
               role="button"
               data-slide="prev"
             >
@@ -153,7 +173,7 @@ export default class Templates extends React.Component {
             <a
               className="carousel-control-next"
               href="#"
-              onClick={e => this.nextSlide(e)}
+              onClick={e => this.nextSlide(e, item)}
               role="button"
               data-slide="next"
             >

@@ -6,16 +6,23 @@ import { BrowserRouter, StaticRouter } from 'react-router-dom'
 import Routes from 'components/Routes'
 import Html from 'components/Html'
 import dataStore from 'store'
+const isProd = process && process.env && process.env.NODE_ENV === 'production'
+const gTagId = isProd ? 'UA-116092135-1' : 'UA-116093458-1'
 
 if (typeof global.document !== 'undefined') {
   window.Vault = require('vault.js')
   require('whatwg-fetch')
   require('./vendor/scrollIt.js')
+  window.gtag = gtag
+  window.gTagId = gTagId
   if (document.attachEvent ? document.readyState === 'complete' : document.readyState !== 'loading') {
     init()
   } else {
     document.addEventListener('DOMContentLoaded', init)
   }
+} else {
+  global.gtag = () => {}
+  global.gTagId = gTagId
 }
 
 function init () {
@@ -26,8 +33,6 @@ function init () {
 }
 
 function setupGoogleAnalytics () {
-  const isProd = process && process.env && process.env.NODE_ENV === 'production'
-  const gTagId = isProd ? 'UA-116092135-1' : 'UA-116093458-1'
   window.dataLayer = window.dataLayer || []
   gtag('js', new Date())
   gtag('config', gTagId)

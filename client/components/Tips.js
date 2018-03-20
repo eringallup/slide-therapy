@@ -5,6 +5,9 @@ export default class Tips extends React.Component {
     super(props)
     this.state = props
   }
+  componentDidMount () {
+    gtag('config', gTagId)
+  }
   render () {
     let tipsHtml = tips.map((tip, index) => {
       return <div key={index} className="tip p-4 p-sm-5 mb-5 d-flex flex-sm-row flex-column" itemScope itemType="http://schema.org/BlogPosting">

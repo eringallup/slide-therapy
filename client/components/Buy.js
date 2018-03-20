@@ -19,6 +19,7 @@ export default class Buy extends React.Component {
   componentDidMount () {
     this.setStates()
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
+    gtag('config', gTagId)
   }
   componentWillUnmount () {
     this.unsubscribe()
@@ -42,6 +43,9 @@ export default class Buy extends React.Component {
     this.setupStripe(currentState)
     if (currentState.token) {
       this.completePurchase(currentState.token)
+    }
+    if (currentState.checkoutClosed) {
+      this.closeCheckout()
     }
   }
   setDeck () {
@@ -92,6 +96,12 @@ export default class Buy extends React.Component {
       // billingAddress: true,
       amount: this.deck.amountInCents
     })
+    gtag('event', 'add_to_cart', {
+      event_label: this.deck.title
+    })
+    gtag('event', 'begin_checkout', {
+      event_label: this.deck.title
+    })
   }
   startEllipsis (num) {
     let text = ''
@@ -132,6 +142,9 @@ export default class Buy extends React.Component {
       .then(json => {
         const orderData = json.body
         // console.log('orderData', orderData)
+        gtag('event', 'checkout_progress', {
+          event_label: this.deck.title
+        })
         this.checkOrderState(orderData.oid, token)
       })
       .catch(console.error)
@@ -172,6 +185,9 @@ export default class Buy extends React.Component {
             processing: false,
             checkoutSuccess: true
           })
+          gtag('event', 'purchase', {
+            event_label: this.deck.title
+          })
         } else {
           // console.log('unknown error')
           this.showModal({
@@ -196,6 +212,11 @@ export default class Buy extends React.Component {
         })
       })
   }
+  closeCheckout () {
+    gtag('event', 'remove_from_cart', {
+      event_label: this.deck.title
+    })
+  }
   showModal (state, store) {
     this.setState(state)
     if (store) {
@@ -206,6 +227,11 @@ export default class Buy extends React.Component {
         backdrop: 'static',
         keyboard: false
       }).modal('show')
+    }
+    if (state.error) {
+      gtag('event', 'exception', {
+        description: state.error
+      })
     }
   }
   hideModal () {

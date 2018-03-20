@@ -11,7 +11,9 @@
     "scrollIt": true,
     "fetch": true,
     "$": true,
-    "Vault": true
+    "Vault": true,
+    "gtag": true,
+    "gTagId": true
   },
   "rules": {
     "no-console": 0,

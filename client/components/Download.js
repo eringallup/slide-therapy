@@ -16,6 +16,7 @@ export default class Download extends React.Component {
     } else if (queryParams.t) {
       this.withToken(queryParams.t, queryParams.d === 'true')
     }
+    gtag('config', gTagId)
   }
   ownedDeck (oid, email) {
     const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=${oid}&e=${email}`
