@@ -145,7 +145,7 @@ export default class Buy extends React.Component {
         gtag('event', 'checkout_progress', {
           event_label: this.deck.title
         })
-        this.checkOrderState(orderData.oid, token)
+        setTimeout(() => this.checkOrderState(orderData.oid, token), 500)
       })
       .catch(console.error)
   }
@@ -179,7 +179,7 @@ export default class Buy extends React.Component {
         if (orderData.order_status === 'processing') {
           setTimeout(() => {
             this.checkOrderState(oid, token)
-          }, 500)
+          }, 1000)
         } else if (orderData.order_status === 'complete') {
           this.setState({
             processing: false,
