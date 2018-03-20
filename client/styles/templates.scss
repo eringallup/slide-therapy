@@ -1,24 +1,21 @@
 .hero-layer {
   @extend .position-relative;
   min-height: 425px;
-  background-repeat: no-repeat;
-  background-size: cover;
   background-color: $gray-500;
   color: $white;
-  &:before {
-    content: '';
-    @extend .position-absolute;
-    @extend .fill-parent;
-    z-index: $z-space;
-    background-color: $gray-500;
-    opacity: 1;
+  .hero-image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: $z-ground + 1;
+    opacity: 0;
     @include transition(opacity .2s linear);
-  }
-  &.ready {
-    &:before {
-      opacity: 0;
-      z-index: $z-metro;
+    &.ready {
+      opacity: 1;
     }
+  }
+  .hero-content {
+    @extend .position-relative;
+    z-index: $z-sky;
   }
   h2 {
     font-family: $font-family-serif;

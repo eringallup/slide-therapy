@@ -81,9 +81,9 @@ export default class Templates extends React.Component {
       this.bgImagePreload.removeEventListener('load', this.onBackgroundImageReady)
     }
   }
-  scrollDown (e) {
-    // e.preventDefault()
-    scrollIt(document.getElementById('start'), 200, 'easeInCubic')
+  scrollDown (e, elementId) {
+    e.preventDefault()
+    scrollIt(document.getElementById(elementId), 200, 'easeInCubic')
   }
   showPreview (e, deck) {
     e.preventDefault()
@@ -218,17 +218,19 @@ export default class Templates extends React.Component {
       imageCredit = this.state.backgroundImage.credit
     }
     return <section id="view-templates">
-      <div
-        className={`hero-layer d-flex align-items-center ${this.state.heroReady}`}
-        suppressHydrationWarning
-        style={heroImage}
-      ><span suppressHydrationWarning className="image-credit">{imageCredit}</span>
+      <div className="hero-layer d-flex align-items-center">
+        <div
+          className={`hero-image position-absolute fill-parent ${this.state.heroReady}`}
+          suppressHydrationWarning
+          style={heroImage}
+        />
+        <span suppressHydrationWarning className="image-credit">{imageCredit}</span>
         <div className="container">
           <div className="row">
-            <div className="col-sm-12 text-center">
+            <div className="hero-content col-sm-12 text-center">
               <h2>Up your presentation game.</h2>
               <Link
-                onClick={e => this.scrollDown(e)}
+                onClick={e => this.scrollDown(e, 'start')}
                 to="/start"
                 className="btn btn-primary text-uppercase"
               >Start now</Link>
