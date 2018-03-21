@@ -45,6 +45,7 @@
     "fs-extra": "^5.0.0",
     "jsdom": "^11.6.2",
     "json-loader": "^0.5.7",
+    "lodash": "^4.17.5",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.7",
     "standard": "^11.0.0",
@@ -57,6 +58,7 @@
   "scripts": {
     "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js",
     "ses": "AWS_PROFILE=slide-therapy node ./ses.js",
+    "products": "node ./products.js",
     "watch": "webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.dev.js",
     "build-prod": "NODE_ENV=production webpack --config webpack.prod.js"
