@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "jsonwebtoken": "^8.1.1",
+    "luxon": "^0.5.8",
     "stripe": "^5.5.0"
   }
 }

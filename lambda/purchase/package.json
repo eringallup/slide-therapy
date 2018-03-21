@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "stripe": "^4.14.0"
+    "stripe": "^5.5.0"
   },
   "repository": {
     "type": "git",
