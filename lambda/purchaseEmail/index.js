@@ -26,7 +26,7 @@ exports.handler = (event, context, callback) => {
 
   let webUrl = process.env.webUrlProd
   let stripeKey = process.env.stripe_key_prod
-  if (event.env === 'dev') {
+  if (payload.env === 'dev') {
     webUrl = process.env.webUrlDev
     stripeKey = process.env.stripe_key_test
   }

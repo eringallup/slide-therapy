@@ -47,7 +47,10 @@ exports.handler = (event, context, callback) => {
         return callback(payError)
       }
       sns.publish({
-        Message: JSON.stringify(payload),
+        Message: JSON.stringify({
+          oid: paidOrder.id,
+          env: payload.env
+        }),
         TopicArn: process.env.snsArn
       }, snsError => {
         if (snsError) {

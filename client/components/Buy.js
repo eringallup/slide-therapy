@@ -144,7 +144,10 @@ export default class Buy extends React.Component {
       .then(json => {
         const orderData = json.body
         console.log('orderData', orderData)
-        this.setState({
+        if (this.ellipsisTimeout) {
+          clearTimeout(this.ellipsisTimeout)
+        }
+        this.showModal({
           processing: false,
           checkoutSuccess: true
         })
@@ -234,14 +237,14 @@ export default class Buy extends React.Component {
     if (this.state.hasToken && this.state.checkoutSuccess) {
       this.hideModal()
       return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
-        <div className="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content text-center">
             <div className="modal-body py-4 px-5">
               <div className="modal-title">
                 <span className="d-block m-0 h4">Thanks!</span>
                 <p>You are on your way to better presentations!</p>
                 <p>Your template should start downloading momentarily and we&apos;ve also emailed you a link to download it.</p>
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">OK</button>
+                <a href="/">Ok</a>
               </div>
             </div>
           </div>

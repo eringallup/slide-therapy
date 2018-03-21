@@ -52,7 +52,9 @@ function geDownloadUrls (sku) {
   skuData.purchase_rights.forEach(purchaseRight => {
     downloadUrls[purchaseRight] = getSignedUrl(purchaseRight)
   })
-  return downloadUrls
+  return {
+    urls: downloadUrls
+  }
 }
 
 function getOrder (stripe, oid) {
@@ -68,12 +70,15 @@ function getOrder (stripe, oid) {
     if (isNaN(downloads)) {
       downloads = 0
     }
-    return stripe.orders.update(oid, {
+    let orderUpdate = {
       metadata: {
         downloads: (downloads + 1)
-      },
-      status: 'fulfilled'
-    }).then(() => {
+      }
+    }
+    if (stripeOrder.status === 'paid') {
+      orderUpdate.status = 'fulfilled'
+    }
+    return stripe.orders.update(oid, orderUpdate).then(() => {
       return orderItem
     })
   })
