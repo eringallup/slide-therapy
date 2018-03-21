@@ -1,5 +1,4 @@
 import skus from 'skus.json'
-import qs from 'qs'
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import dataStore from 'store'
@@ -128,83 +127,33 @@ export default class Buy extends React.Component {
     this.startEllipsis(3)
     // this.saveEmail(token.email)
     // console.info('completePurchase', token)
-    const queryString = qs.stringify({
-      email: token.email,
-      sku: this.deck.sku,
-      token: token.id
-    })
-    const url = `https://p41v21dj54.execute-api.us-west-2.amazonaws.com/prod/oid?${queryString}`
+    const url = 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order'
     fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc',
         'x-st-env': this.state.isProd ? 'prod' : 'dev'
-      }
+      },
+      body: JSON.stringify({
+        email: token.email,
+        sku: this.deck.sku,
+        token: token.id
+      })
     }).then(response => response.json())
       .then(json => {
         const orderData = json.body
-        // console.log('orderData', orderData)
-        gtag('event', 'checkout_progress', {
+        console.log('orderData', orderData)
+        this.setState({
+          processing: false,
+          checkoutSuccess: true
+        })
+        gtag('event', 'purchase', {
           event_label: this.deck.title
         })
-        setTimeout(() => this.checkOrderState(orderData.oid, token), 500)
-      })
-      .catch(console.error)
-  }
-  checkOrderState (oid, token) {
-    const queryString = qs.stringify({
-      o: oid,
-      e: token.email,
-      t: token.id.replace('tok_', '')
-    })
-    const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?${queryString}`
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc',
-        'x-st-env': this.state.isProd ? 'prod' : 'dev'
-      }
-    }).then(response => response.json())
-      .then(orderData => {
-        if (!orderData) {
-          console.log('no order data')
-          this.showModal({
-            processing: false,
-            error: 'no order data'
-          }, {
-            type: 'update',
-            hasToken: false,
-            token: undefined
-          })
-        }
-        if (orderData.order_status === 'processing') {
-          setTimeout(() => {
-            this.checkOrderState(oid, token)
-          }, 1000)
-        } else if (orderData.order_status === 'complete') {
-          this.setState({
-            processing: false,
-            checkoutSuccess: true
-          })
-          gtag('event', 'purchase', {
-            event_label: this.deck.title
-          })
-        } else {
-          // console.log('unknown error')
-          this.showModal({
-            processing: false,
-            error: 'unknown error'
-          }, {
-            type: 'update',
-            hasToken: false,
-            token: undefined
-          })
-        }
       })
       .catch(error => {
-        console.log('error', error)
+        console.error(error)
         this.showModal({
           processing: false,
           error: error
@@ -212,6 +161,10 @@ export default class Buy extends React.Component {
           type: 'update',
           hasToken: false,
           token: undefined
+        })
+        gtag('event', 'exception', {
+          description: error,
+          fatal: true
         })
       })
   }
@@ -230,11 +183,6 @@ export default class Buy extends React.Component {
         backdrop: 'static',
         keyboard: false
       }).modal('show')
-    }
-    if (state.error) {
-      gtag('event', 'exception', {
-        description: state.error
-      })
     }
   }
   hideModal () {
@@ -283,10 +231,24 @@ export default class Buy extends React.Component {
         </div>
       </div>
     }
-    this.hideModal()
     if (this.state.hasToken && this.state.checkoutSuccess) {
-      return <Redirect to="/thanks" />
+      this.hideModal()
+      return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
+        <div className="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div className="modal-content text-center">
+            <div className="modal-body py-4 px-5">
+              <div className="modal-title">
+                <span className="d-block m-0 h4">Thanks!</span>
+                <p>You are on your way to better presentations!</p>
+                <p>Your template should start downloading momentarily and we&apos;ve also emailed you a link to download it.</p>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     }
+    this.hideModal()
     if (this.state.checkoutClosed) {
       return <Redirect to="/" />
     }

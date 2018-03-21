@@ -12,15 +12,15 @@ exports.handler = (event, context, callback) => {
   // console.log(payload.env, stripeKey)
   const stripe = require('stripe')(stripeKey)
 
-  if (event.o) {
-    downloadOwned(stripe, event.o, event.email).then(data => {
+  if (event.oid) {
+    downloadOwned(stripe, event.oid, event.email).then(data => {
       callback(null, {
         statusCode: 200,
         body: data
       })
     }).catch(callback)
-  } else if (event.t) {
-    downloadWithToken(stripe, event.t).then(data => {
+  } else if (event.token) {
+    downloadWithToken(stripe, event.token).then(data => {
       callback(null, {
         statusCode: 200,
         body: data
@@ -71,7 +71,8 @@ function getOrder (stripe, oid) {
     return stripe.orders.update(oid, {
       metadata: {
         downloads: (downloads + 1)
-      }
+      },
+      status: 'fulfilled'
     }).then(() => {
       return orderItem
     })

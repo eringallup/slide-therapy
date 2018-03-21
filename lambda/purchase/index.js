@@ -1,6 +1,6 @@
 const skus = require('./skus.json')
-// const AWS = require('aws-sdk')
-// const sns = new AWS.SNS()
+const AWS = require('aws-sdk')
+const sns = new AWS.SNS()
 
 exports.handler = (event, context, callback) => {
   let payload = {
@@ -46,7 +46,21 @@ exports.handler = (event, context, callback) => {
       if (payError) {
         return callback(payError)
       }
-      callback(null, paidOrder)
+      sns.publish({
+        Message: JSON.stringify(payload),
+        TopicArn: process.env.snsArn
+      }, snsError => {
+        if (snsError) {
+          return callback(snsError)
+        }
+        callback(null, {
+          statusCode: 200,
+          body: {
+            oid: paidOrder.id,
+            env: payload.env
+          }
+        })
+      })
     })
   })
 }
