@@ -1,16 +1,34 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import qs from 'qs'
 
 export default class Header extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = Object.assign({}, props, {
+      downloadHref: '/download',
+      showDownload: false
+    })
+  }
+  componentDidMount () {
+    if (typeof location !== 'undefined') {
+      const queryParams = qs.parse(location.search.substring(1))
+      if (queryParams && (queryParams.o || queryParams.t || queryParams.j)) {
+        this.setState({
+          downloadHref: `/download${location.search}`,
+          showDownload: true
+        })
+      }
+    }
   }
   homeActive (match, location) {
     if (!match) {
       return false
     }
     return (match.isExact || location.pathname === '/templates' || location.pathname === '/start')
+  }
+  downloadActive (match, location) {
+    return location.pathname === '/download'
   }
   render () {
     return <header className="container">
@@ -20,6 +38,14 @@ export default class Header extends React.Component {
         </div>
         <div className="col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
           <nav className="main-nav nav">
+            <NavLink
+              to={this.state.downloadHref}
+              suppressHydrationWarning
+              activeClassName="active"
+              isActive={this.downloadActive}
+              className="nav-link"
+              hidden={!this.state.showDownload}
+            >Download</NavLink>
             <NavLink
               to="/"
               isActive={this.homeActive}

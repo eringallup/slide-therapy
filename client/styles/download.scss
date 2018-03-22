@@ -1,0 +1,11 @@
+#view-download {
+  .download-links {
+    border-top: 10px solid $light;
+    em {
+      color: #aaa;
+    }
+    a {
+      text-decoration: underline;
+    }
+  }
+}

@@ -95,7 +95,7 @@ export default class Buy extends React.Component {
       panelLabel: 'Buy for {{amount}}',
       // email: this.getEmail(),
       zipCode: true,
-      // billingAddress: true,
+      billingAddress: true,
       amount: this.deck.amountInCents
     })
     gtag('event', 'add_to_cart', {

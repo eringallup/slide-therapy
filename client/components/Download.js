@@ -25,7 +25,8 @@ export default class Download extends React.Component {
         let body = json && json.body
         if (typeof document !== 'undefined') {
           this.setState({
-            urls: body.urls
+            fetched: true,
+            urls: body && body.urls
           })
         }
       })
@@ -38,9 +39,10 @@ export default class Download extends React.Component {
         let body = json && json.body
         if (typeof document !== 'undefined') {
           this.setState({
-            urls: body.urls
+            fetched: true,
+            urls: body && body.urls
           })
-          if (autoDownload === true) {
+          if (body && body.urls && autoDownload === true) {
             document.location.href = this.state.urls[Object.keys(this.state.urls)[0]]
           }
         }
@@ -58,21 +60,31 @@ export default class Download extends React.Component {
     }).then(response => response.json())
   }
   render () {
+    let downloadHtml = ''
     let downloadLinks = []
-    if (this.state.urls) {
+    if (typeof this.state.urls === 'object') {
       for (let sku in this.state.urls) {
-        downloadLinks.push(<li key={sku}>
-          <a key={sku} href={this.state.urls[sku]}>Download {skus[sku].title}</a>
-        </li>)
+        downloadLinks.push(<a key={sku} className="d-block mt-2" href={this.state.urls[sku]}>Download Now ({skus[sku].title})</a>)
       }
     }
-    return <section id="view-download" className="py-5">
+    if (downloadLinks.length > 0) {
+      downloadHtml = <div className="download-links d-inline-block my-4 p-5">
+        <em>If not, click</em>
+        {downloadLinks}
+      </div>
+    } else if (this.state.fetched) {
+      const helpEmail = `mailto:help@slidetherapy.com&subject=Help downloading from ${location.href}`
+      downloadHtml = <div className="download-links d-inline-block my-4 py-3 px-5">
+        <p>This link is no longer valid.</p>
+        <p>If you need help, email us at <a href={helpEmail}>help@slidetherapy.com</a></p>
+      </div>
+    }
+    return <section id="view-download" className="mt-5 py-5">
       <div className="container">
         <div className="row">
-          <div className="col-sm-12">
-            <h2>Download</h2>
-            <p className="lead">Your deck should start downloading in a moment.</p>
-            <ol className="list-unstyled">{downloadLinks}</ol>
+          <div className="col text-center">
+            <h3>Your download will start automatically.</h3>
+            {downloadHtml}
           </div>
         </div>
       </div>
