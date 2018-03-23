@@ -34,7 +34,11 @@ exports.handler = (event, context, callback) => {
   const stripe = require('stripe')(stripeKey)
 
   stripe.orders.retrieve(payload.oid).then(stripeOrder => {
-    return sendFile(stripeOrder, webUrl).then(() => callback())
+    return stripe.charges.retrieve(stripeOrder.charge).then(stripeCharge => {
+      console.log('stripeOrder', stripeOrder)
+      console.log('stripeCharge', stripeCharge)
+      return sendFile(stripeOrder, stripeCharge, webUrl).then(() => callback())
+    })
   }).catch(callback)
 }
 
@@ -54,7 +58,7 @@ function encrypt (json, password, expiresIn) {
   })
 }
 
-function sendFile (stripeOrder, webUrl) {
+function sendFile (stripeOrder, stripeCharge, webUrl) {
   const orderItem = _.find(stripeOrder.items, {
     object: 'order_item'
   })
@@ -72,9 +76,12 @@ function sendFile (stripeOrder, webUrl) {
       .setLocale('en-US')
       .setZone('America/Chicago')
       .toLocaleString(DateTime.DATE_FULL)
+    stripeCharge.amountFormatted = (stripeCharge.amount / 100).toFixed(2)
+    stripeCharge.taxAmount = '0.00'
     return send(stripeOrder.email, {
       sku: skus[orderItem.parent],
       order: stripeOrder,
+      charge: stripeCharge,
       url: url
     })
   })
