@@ -15,7 +15,7 @@ export default class Header extends React.Component {
       const queryParams = qs.parse(location.search.substring(1))
       if (queryParams && (queryParams.o || queryParams.t || queryParams.j)) {
         this.setState({
-          downloadHref: `/download${location.search}`,
+          downloadHref: `/download${location.search.replace('&d=true', '')}`,
           showDownload: true
         })
       }

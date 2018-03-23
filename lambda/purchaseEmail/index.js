@@ -92,7 +92,7 @@ function send (to, context) {
       },
       Template: process.env.emailTemplate,
       TemplateData: JSON.stringify(context),
-      Source: process.env.supportEmailAddress,
+      Source: `${process.env.supportEmailName} <${process.env.supportEmailAddress}>`,
       SourceArn: process.env.emailArn,
       ConfigurationSetName: process.env.emailConfigurationSetName
     }

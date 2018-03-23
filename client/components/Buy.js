@@ -283,8 +283,8 @@ export default class Buy extends React.Component {
               ><span aria-hidden="true">&times;</span></Link>
               <div className="p-5">
                 <span className="modal-title d-block m-0 h4">Thank You!</span>
-                <p className="my-4">Your payment was successful</p>
-                <p className="my-4">Check your email for a receipt and link to download your files.</p>
+                <p className="my-3">Your payment was successful</p>
+                <p className="my-5">Check your email for a receipt and link to download your files.</p>
                 <Link
                   className="btn btn-primary btn-lg btn-wide"
                   onClick={e => this.dismissModal()}
