@@ -78,6 +78,9 @@ function sendFile (stripeOrder, stripeCharge, webUrl) {
       .toLocaleString(DateTime.DATE_FULL)
     stripeCharge.amountFormatted = (stripeCharge.amount / 100).toFixed(2)
     stripeCharge.taxAmount = '0.00'
+    if (!stripeCharge.receipt_number) {
+      stripeCharge.receipt_number = stripeOrder.id.substring(stripeOrder.id.length - 7)
+    }
     return send(stripeOrder.email, {
       sku: skus[orderItem.parent],
       order: stripeOrder,
