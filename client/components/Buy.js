@@ -204,7 +204,7 @@ export default class Buy extends React.Component {
       dataStore.dispatch(store)
     }
     if (typeof $ !== 'undefined') {
-      $('#buyModal').modal({
+      $('.buy-modal').modal({
         backdrop: 'static',
         keyboard: false
       }).modal('show')
@@ -212,7 +212,7 @@ export default class Buy extends React.Component {
   }
   hideModal () {
     if (typeof $ !== 'undefined') {
-      $('#buyModal').modal('hide').modal('dispose')
+      $('.buy-modal').modal('hide').modal('dispose')
     }
   }
   dismissModal () {
@@ -241,7 +241,7 @@ export default class Buy extends React.Component {
   render () {
     this.hideModal()
     if (this.state.processing) {
-      return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
+      return <div className="buy-modal modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-sm modal-dialog-centered" role="document">
           <div className="modal-content text-center">
             <div className="modal-body py-4 px-5">
@@ -259,7 +259,7 @@ export default class Buy extends React.Component {
       </div>
     }
     if (this.state.error) {
-      return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
+      return <div className="buy-modal modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-body p-5">
@@ -271,7 +271,7 @@ export default class Buy extends React.Component {
       </div>
     }
     if (this.state.hasToken && this.state.checkoutSuccess) {
-      return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
+      return <div className="buy-modal modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div className="modal-content text-center">
             <div className="modal-body">
