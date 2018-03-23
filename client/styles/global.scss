@@ -58,6 +58,11 @@ h6, .h6,
   pointer-events: none;
 }
 
+.btn-wide {
+  min-width: 10rem;
+  max-width: 100%;
+}
+
 .br {
   @extend .d-block;
 }

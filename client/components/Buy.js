@@ -1,6 +1,6 @@
 import skus from 'skus.json'
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import dataStore from 'store'
 
 export default class Buy extends React.Component {
@@ -38,6 +38,31 @@ export default class Buy extends React.Component {
   }
   setStates () {
     let currentState = dataStore.getState()
+
+    if (currentState.debug === 'thanks') {
+      this.setupStripe(currentState)
+      return this.showModal({
+        hasToken: true,
+        checkoutSuccess: true
+      })
+    }
+
+    if (currentState.debug === 'processing') {
+      this.setupStripe(currentState)
+      this.setState({
+        hasToken: true
+      })
+      return this.showProcessing()
+    }
+
+    if (currentState.debug === 'error') {
+      this.setupStripe(currentState)
+      return this.showModal({
+        hasToken: true,
+        error: true
+      })
+    }
+
     this.setState({
       checkoutClosed: currentState.checkoutClosed,
       hasToken: currentState.hasToken
@@ -121,10 +146,7 @@ export default class Buy extends React.Component {
     }, 300)
   }
   completePurchase (token) {
-    this.showModal({
-      processing: true
-    })
-    this.startEllipsis(3)
+    this.showProcessing()
     // this.saveEmail(token.email)
     // console.info('completePurchase', token)
     const url = 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order'
@@ -193,17 +215,32 @@ export default class Buy extends React.Component {
       $('#buyModal').modal('hide').modal('dispose')
     }
   }
+  dismissModal () {
+    this.clearError()
+    this.hideModal()
+  }
+  showProcessing () {
+    this.showModal({
+      processing: true
+    })
+    setTimeout(() => {
+      this.startEllipsis(3)
+    })
+  }
   tryAgain (e) {
     e.preventDefault()
-    this.setState({
-      error: undefined
-    })
+    this.clearError()
     this.hideModal()
     this.showCheckout()
   }
+  clearError () {
+    this.setState({
+      error: undefined
+    })
+  }
   render () {
+    this.hideModal()
     if (this.state.processing) {
-      this.hideModal()
       return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-sm modal-dialog-centered" role="document">
           <div className="modal-content text-center">
@@ -222,36 +259,43 @@ export default class Buy extends React.Component {
       </div>
     }
     if (this.state.error) {
-      this.hideModal()
       return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
-        <div className="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
-            <div className="modal-body">
-              <h5 className="modal-title pb-3">There was a problem with your payment</h5>
-              <a className="btn btn-block btn-primary" href="/" onClick={e => this.tryAgain(e)}>Try again?</a>
+            <div className="modal-body p-5">
+              <h3 className="mb-3">There was a problem with your payment</h3>
+              <Link className="btn btn-block btn-primary" to="/" onClick={e => this.tryAgain(e)}>Try again?</Link>
             </div>
           </div>
         </div>
       </div>
     }
     if (this.state.hasToken && this.state.checkoutSuccess) {
-      this.hideModal()
       return <div id="buyModal" className="modal" tabIndex="-1" role="dialog">
-        <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div className="modal-content text-center">
-            <div className="modal-body py-4 px-5">
-              <div className="modal-title">
-                <span className="d-block m-0 h4">Thanks!</span>
-                <p>You are on your way to better presentations!</p>
-                <p>Your template should start downloading momentarily and we&apos;ve also emailed you a link to download it.</p>
-                <a href="/">Ok</a>
+            <div className="modal-body">
+              <Link
+                to="/"
+                className="close"
+                aria-label="Close"
+                onClick={e => this.dismissModal()}
+              ><span aria-hidden="true">&times;</span></Link>
+              <div className="p-5">
+                <span className="modal-title d-block m-0 h4">Thank You!</span>
+                <p className="my-4">Your payment was successful</p>
+                <p className="my-4">Check your email for a receipt and link to download your files.</p>
+                <Link
+                  className="btn btn-primary btn-lg btn-wide"
+                  onClick={e => this.dismissModal()}
+                  to="/"
+                >OK</Link>
               </div>
             </div>
           </div>
         </div>
       </div>
     }
-    this.hideModal()
     if (this.state.checkoutClosed) {
       return <Redirect to="/" />
     }

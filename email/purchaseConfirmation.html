@@ -4,27 +4,39 @@
     <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
   </head>
   <body>
-    Thanks for purchasing {{sku.title}}!
-    <br>
-    <a href="{{url}}">Click here to download your deck</a>
-    <br>
-    <br>
-    <table>
-      <tbody>
+    <center>
+      <br>
+      <header>
+        <img src="http://d380dcsmppijhx.cloudfront.net/images/SlideTherapyLogo-Email2xb.png" alt="Slide Therapy" width="222" height="52" style="width:auto;height:auto;max-width:222px;" />
+      </header>
+      <br>
+      <table width="100%" style="max-width:380px;">
         <tr>
-          <td align="left">Order ID</td>
-          <td align="right">{{order.id}}</td>
+          <td bgcolor="#ccccccc"></td>
         </tr>
-        <tr>
-        <tr>
-          <td align="left">{{sku.title}}</td>
-          <td align="right">${{sku.displayPrice}}</td>
-        </tr>
-        <tr>
-          <td align="left">Date</td>
-          <td align="right">{{order.createdDate}}</td>
-        </tr>
-      </tbody>
-    </table>
+      </table>
+      <br>
+      Thanks for purchasing {{sku.title}}!
+      <br>
+      <a href="{{url}}">Click here to download your deck</a>
+      <br>
+      <br>
+      <table>
+        <tbody>
+          <tr>
+            <td align="left">Order ID</td>
+            <td align="right">{{order.id}}</td>
+          </tr>
+          <tr>
+            <td align="left">{{sku.title}}</td>
+            <td align="right">${{sku.displayPrice}}</td>
+          </tr>
+          <tr>
+            <td align="left">Date</td>
+            <td align="right">{{order.createdDate}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </center>
   </body>
 </html>

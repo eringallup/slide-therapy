@@ -71,7 +71,7 @@ function sendFile (stripeOrder, webUrl) {
     stripeOrder.createdDate = createdDate
       .setLocale('en-US')
       .setZone('America/Chicago')
-      .toLocaleString(DateTime.DATETIME_FULL)
+      .toLocaleString(DateTime.DATE_FULL)
     return send(stripeOrder.email, {
       sku: skus[orderItem.parent],
       order: stripeOrder,

@@ -222,7 +222,7 @@ export default class Templates extends React.Component {
             <span itemProp="price" content={item.displayPrice}>{item.displayPrice}</span>
           </span>
           <Link
-            className={'buy btn btn-lg btn-primary' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
+            className={'buy btn btn-lg btn-wide btn-primary' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
             to={`/buy/${item.slug}`}
           >Buy</Link>
           <div
@@ -334,7 +334,7 @@ export default class Templates extends React.Component {
           <div>
             <Link
               to="/buy/all-audiences"
-              className={'buy btn btn-lg btn-light' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
+              className={'buy btn btn-lg btn-wide btn-light' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
             >Buy</Link>
           </div>
         </div>

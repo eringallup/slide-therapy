@@ -73,9 +73,6 @@
   [itemprop="offers"] {
     @extend .pl-4;
   }
-  .btn {
-    min-width: 10rem;
-  }
 }
 
 .deck {
@@ -88,9 +85,6 @@
   }
   [itemprop="offers"] {
     @extend .d-block;
-  }
-  .btn {
-    min-width: 10rem;
   }
   .order-0 {
     font-family: $font-family-serif;
@@ -148,10 +142,8 @@
 
 #buyModal {
   .modal-title {
-    > * {
-      margin: 0;
-      line-height: 1;
-    }
+    margin: 0;
+    line-height: 1;
   }
 }
 

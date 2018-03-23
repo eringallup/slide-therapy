@@ -81,6 +81,7 @@ function setupStripe (attempt) {
   dataStore.dispatch({
     type: 'update',
     stripeCheckout: stripeCheckout
+    // debug: 'error'
   })
 }
 
