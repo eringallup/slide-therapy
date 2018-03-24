@@ -15,7 +15,11 @@ module.exports = {
     './client/index.js'
   ],
   plugins: [
-    new CleanWebpackPlugin([outputDir]),
+    new CleanWebpackPlugin([outputDir], {
+      exclude: [
+        'images'
+      ]
+    }),
     new CopyWebpackPlugin([{
       from: path.resolve(clientDir, 'images'),
       to: path.resolve(outputDir, 'images'),
