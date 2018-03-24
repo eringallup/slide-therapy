@@ -29,7 +29,8 @@ function sendTemplate (template, callback) {
   const templateData = path.parse(templatePath)
   const htmlTemplate = fs.readFileSync(templatePath, 'utf8')
   inlineCss(htmlTemplate, {
-    url: baseUrl
+    url: baseUrl,
+    removeHtmlSelectors: true
   }).then(htmlEmail => {
     console.log(htmlEmail)
     JSDOM.fromFile(templatePath, {
