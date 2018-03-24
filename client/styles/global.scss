@@ -76,6 +76,12 @@ h3, .h3 {
     font-size: $font-size-base * 2.5;
     text-transform: none;
   }
+  @include media-breakpoint-down(xs) {
+    font-size: $font-size-base * 1;
+    em {
+      font-size: $font-size-base * 2;
+    }
+  }
 }
 
 h4, .h4 {
@@ -84,6 +90,9 @@ h4, .h4 {
   font-family: $font-family-serif;
   font-size: $font-size-base * 3;
   text-transform: none !important;
+  @include media-breakpoint-down(xs) {
+    font-size: $font-size-base * 2.5;
+  }
 }
 
 #app {
