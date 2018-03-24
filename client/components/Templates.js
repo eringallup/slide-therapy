@@ -273,40 +273,44 @@ export default class Templates extends React.Component {
         <div className="container py-5">
           <div className="row">
             <div className="col text-center">
-              <h3>Communicate Clearly. Work Faster.<span className="br" />Look Elegant.</h3>
+              <h3>Communicate&nbsp;Clearly. Work&nbsp;Faster. <span className="d-none d-md-block" />Look&nbsp;Elegant.</h3>
               <p className="lead mt-3 text-left">Slide Therapy is a series of master PowerPoint files that include everything you need to make a stunning presentation:</p>
             </div>
           </div>
           <div className="row pt-3">
-            <div className="col-md col-sm-6">
-              <h4>Templates</h4>
-              <ol className="list-unstyled">
-                <li>5+ Cover slide designs</li>
-                <li>5+ Overview slide designs</li>
-                <li>10+ Content slide designs</li>
-                <li>2+ Interstitial slide designs</li>
-                <li>5+ Conclusion slide designs</li>
-                <li>500+ icon library</li>
-                <li>80+ shape library</li>
-              </ol>
+            <div className="col col-md-8 col-lg-7">
+              <div className="mx-auto mx-md-0 d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start">
+                <div className="start-list mr-md-3">
+                  <h4>Templates</h4>
+                  <ol className="list-unstyled">
+                    <li>5+ Cover slide designs</li>
+                    <li>5+ Overview slide designs</li>
+                    <li>10+ Content slide designs</li>
+                    <li>2+ Interstitial slide designs</li>
+                    <li>5+ Conclusion slide designs</li>
+                    <li>500+ icon library</li>
+                    <li>80+ shape library</li>
+                  </ol>
+                </div>
+                <div className="start-list">
+                  <h4>Tips</h4>
+                  <ol className="list-unstyled">
+                    <li>Keeping a Clean Look</li>
+                    <li>Changing Colors</li>
+                    <li>Changing Fonts</li>
+                    <li>Finding Images</li>
+                    <li>Making Graphics Using Icons</li>
+                    <li>Making Graphics Using Shapes</li>
+                    <li>Illustrating Abstract Concepts</li>
+                    <li>Formatting Graphs</li>
+                    <li>Formatting Charts</li>
+                    <li>Formatting Tables</li>
+                    <li>Adding Maps</li>
+                  </ol>
+                </div>
+              </div>
             </div>
-            <div className="col-md col-sm-6">
-              <h4>Tips</h4>
-              <ol className="list-unstyled">
-                <li>Keeping a Clean Look</li>
-                <li>Changing Colors</li>
-                <li>Changing Fonts</li>
-                <li>Finding Images</li>
-                <li>Making Graphics Using Icons</li>
-                <li>Making Graphics Using Shapes</li>
-                <li>Illustrating Abstract Concepts</li>
-                <li>Formatting Graphs</li>
-                <li>Formatting Charts</li>
-                <li>Formatting Tables</li>
-                <li>Adding Maps</li>
-              </ol>
-            </div>
-            <div className="col-md-5 d-none d-md-flex align-items-center">
+            <div className="col-md-4 col-lg-5 d-none d-md-flex align-items-start align-items-lg-center mx-auto">
               <img className="img-fluid" src="/images/home/laptop.png" alt="" />
             </div>
           </div>
