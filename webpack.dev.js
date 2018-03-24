@@ -1,5 +1,9 @@
+// const path = require('path')
+// const CopyWebpackPlugin = require('copy-webpack-plugin')
 const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
+// const clientDir = path.resolve(__dirname, 'client')
+// const outputDir = path.resolve(clientDir, 'dist')
 
 module.exports = merge(common, {
   devtool: 'inline-source-map',
@@ -13,4 +17,11 @@ module.exports = merge(common, {
       // index: 'index.html'
     }
   }
+  // plugins: [
+  //   new CopyWebpackPlugin([{
+  //     from: path.resolve(clientDir, 'images'),
+  //     to: path.resolve(outputDir, 'images'),
+  //     flatten: false
+  //   }])
+  // ]
 })

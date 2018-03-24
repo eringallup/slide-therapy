@@ -1,6 +1,5 @@
 const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const clientDir = path.resolve(__dirname, 'client')
@@ -20,11 +19,6 @@ module.exports = {
         'images'
       ]
     }),
-    new CopyWebpackPlugin([{
-      from: path.resolve(clientDir, 'images'),
-      to: path.resolve(outputDir, 'images'),
-      flatten: false
-    }]),
     new StaticSiteGeneratorPlugin({
       crawl: true,
       globals: {
@@ -34,8 +28,7 @@ module.exports = {
       },
       paths: [
         '/',
-        '/download',
-        '/thanks'
+        '/download'
       ],
       locals: {
         title: 'Slide Therapy',

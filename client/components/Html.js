@@ -13,6 +13,9 @@ export default class Html extends React.Component {
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta property="og:title" content="Slide Therapy" />
+        <meta property="og:image" content="http://preview.slidetherapy.com.s3-website-us-west-2.amazonaws.com/images/home/topimage1.jpg" />
+        <link rel="apple-touch-icon" href="http://preview.slidetherapy.com.s3-website-us-west-2.amazonaws.com/images/home/topimage1.jpg" />
         <link href={`/${this.state.css[0]}`} rel="stylesheet" type="text/css" />
       </head>
       <body>
