@@ -33,6 +33,9 @@
 }
 
 #start {
+  .start-list {
+    flex-grow: 1;
+  }
   h3 {
     letter-spacing: $letter-spacing-xl;
     line-height: $line-height-lg;
