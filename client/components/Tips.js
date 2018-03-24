@@ -10,7 +10,7 @@ export default class Tips extends React.Component {
   }
   render () {
     let tipsHtml = tips.map((tip, index) => {
-      return <div key={index} className="tip p-4 p-sm-5 mb-5 d-flex flex-sm-row flex-column" itemScope itemType="http://schema.org/BlogPosting">
+      return <div key={index} className="tip py-4 px-2 p-sm-5 mb-5 d-flex flex-sm-row flex-column" itemScope itemType="http://schema.org/BlogPosting">
         <div className="tip-image col-md-5">
           <img itemProp="image" className="img-fluid" src={tip.image} alt="" />
         </div>

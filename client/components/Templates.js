@@ -263,7 +263,7 @@ export default class Templates extends React.Component {
         </div>
       </div>
       <div className="container">
-        <div className="row p-5">
+        <div className="row py-5">
           <div className="col text-center">
             <h3>Expert-Designed PowerPoint Templates <em>with built-in mentoring</em></h3>
           </div>
