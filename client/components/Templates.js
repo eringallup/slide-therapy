@@ -252,7 +252,7 @@ export default class Templates extends React.Component {
         <div className="container">
           <div className="row">
             <div className="hero-content col-sm-12 text-center">
-              <h2>Up your presentation game.</h2>
+              <h2>Up&nbsp;your presentation&nbsp;game.</h2>
               <Link
                 onClick={e => this.scrollDown(e, 'start')}
                 to="/start"
@@ -265,7 +265,7 @@ export default class Templates extends React.Component {
       <div className="container">
         <div className="row py-5">
           <div className="col text-center">
-            <h3>Expert-Designed PowerPoint Templates <em>with built-in mentoring</em></h3>
+            <h3>Expert-Designed PowerPoint&nbsp;Templates <em>with built-in mentoring</em></h3>
           </div>
         </div>
       </div>
@@ -279,7 +279,7 @@ export default class Templates extends React.Component {
           </div>
           <div className="row pt-3">
             <div className="col col-md-8 col-lg-7">
-              <div className="mx-auto mx-md-0 d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start">
+              <div className="mx-auto mx-md-0 d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start align-items-center align-items-sm-start">
                 <div className="start-list mr-md-3">
                   <h4>Templates</h4>
                   <ol className="list-unstyled">
