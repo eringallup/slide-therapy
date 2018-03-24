@@ -61,7 +61,7 @@
     "ses": "AWS_PROFILE=slide-therapy node ./ses.js",
     "products": "node ./products.js",
     "products-prod": "NODE_ENV=production node ./products.js",
-    "preview": "AWS_PROFILE=slide-therapy aws s3 sync ./client/dist s3://preview.slidetherapy.com",
+    "preview": "npm run build && AWS_PROFILE=slide-therapy aws s3 sync ./client/dist s3://preview.slidetherapy.com",
     "watch": "webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.dev.js",
     "build-prod": "NODE_ENV=production webpack --config webpack.prod.js"
