@@ -7,15 +7,8 @@ const exec = require('child_process').exec
 const jsdom = require('jsdom')
 const { JSDOM } = jsdom
 
+const baseUrl = 'https://slidetherapy.com'
 const EMAIL_DIR = path.resolve(__dirname, 'email')
-
-let baseUrl = 'https://local.slidetherapy.com'
-if (process.env.NODE_ENV === 'production') {
-  baseUrl = 'https://slidetherapy.com'
-  console.log('---------- LIVE ----------')
-} else {
-  console.log('---------- TEST ----------')
-}
 
 fs.readdir(EMAIL_DIR, 'utf8', (dirError, files) => {
   if (dirError) {
