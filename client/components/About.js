@@ -24,7 +24,7 @@ export default class About extends React.Component {
             <h3>About Us</h3>
             <p>We are a product designer and a software engineer who teamed up to create The None Percent, a company focused on creating design solutions that keep an individual’s best interests in mind.</p>
 
-            <p>Because each of us is the 0.000000014286%.</p>
+            <p>Because each of us is the 0.000000013333%.</p>
 
             <h3>Say Hello</h3>
             <p><a href="mailto:hello@slidetherapy.com">hello@slidetherapy.com</a></p>

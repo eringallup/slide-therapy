@@ -12,7 +12,7 @@ export default class Footer extends React.Component {
           <div className="col py-4 text-center">
             <p className="mb-1 h3 font-size-base">&copy;{new Date().getFullYear()}</p>
             <a className="h3 mb-1 font-size-base" target="_blank" rel="noopener noreferrer" href="http://nonepercent.com">The Nøne Percent LLC</a>
-            <p className="d-block mt-1 mb-0 font-size-base font-family-serif font-italic">All Rights Reserved.</p>
+            <p className="d-block mt-1 mb-0 font-size-base font-family-serif font-italic">All rights reserved.</p>
           </div>
         </div>
       </div>

@@ -48,7 +48,7 @@ export default class Tips extends React.Component {
 
 const tips = [{
   title: 'Don\'t use the slide master.',
-  body: 'Aside from being hard to find and confusing to use, the slide master makes every slide have the same background, which is too visually static. It is easier to manage the visuals by keeping all objects selectable and on top of each slide.',
+  body: 'Aside from being hard to find and confusing to use, the slide master encourages a bulleted outline layout, which makes for very dull visuals. It is much easier to manage presentation layout by ignoring the slide master and instead copy-pasting elements directly onto each slide.',
   image: '/images/tips/tip1.png'
 }, {
   title: 'Don\'t use the defaults.',
@@ -69,7 +69,7 @@ const tips = [{
   image: '/images/tips/tip5.png'
 }, {
   title: 'Do keep it one thought per slide.',
-  body: 'Rather than condense all of your thoughts into a minimum of slides, spread your message out. This aids in audience comprehension and gives you room to illustrate your points.',
+  body: 'For large audiences, rather than condense all of your thoughts into a minimum of slides, spread your message out. This aids in richer storytelling and audience comprehension and gives you room to illustrate your points.',
   image: '/images/tips/tip6.png'
 }, {
   title: 'Don\'t use the automatic bullets.',
@@ -81,11 +81,11 @@ const tips = [{
   image: '/images/tips/tip8.png'
 }, {
   title: 'Do create a custom color palette.',
-  body: 'As mentioned in Tip #2, PowerPoint\'s standard and theme colors are difficult to work with. Creating your own palette is easy and using it throughout your presentation will make the design cohesive.\n\nSlide Therapy has a worksheet which guides you through the process of creating your own custom harmonious color palette.',
+  body: 'As mentioned in Tip #2, PowerPoint\'s standard and theme colors are difficult to work with. Creating your own palette is easy and using it throughout your presentation will make the design cohesive.\n\nEach Slide Therapy Template file has a worksheet which guides you through the process of creating your own custom harmonious color palette.',
   image: '/images/tips/tip9.png',
   maxImageWidth: 230
 }, {
   title: 'Do use a dark template for a dark room.',
-  body: 'If you know that the room that you will be presenting in will be very dark, consider using the dark background templates. Much like how dark backgrounds are easier for reading from your tablet in bed at night, the slides will be easier on your audience\'s eyes in a dark room.\n\nEach Slide Therapy Template and Tips file contains both dark and light background slide designs.',
+  body: 'For a large audience, if you know that the room that you will be presenting in will be very dark, consider using the dark background templates. Much like how dark backgrounds are easier for reading from your tablet in bed at night, the slides will be easier on your audience\'s eyes in a dark room.\n\nThe Large Audience Slide Therapy Template and Tips file contains both dark and light background slide designs.',
   image: '/images/tips/tip10.png'
 }]
