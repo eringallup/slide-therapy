@@ -14,6 +14,11 @@
     line-height: $line-height-xs;
     font-size: $font-size-base * 2.5;
   }
+  @include media-breakpoint-between(sm, md) {
+    .img-fluid.img-custom-max-width {
+      max-width: 100% !important;
+    }
+  }
   @include media-breakpoint-up(md) {
     .tip:nth-child(even) {
       flex-direction: row-reverse !important;

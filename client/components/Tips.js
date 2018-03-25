@@ -10,15 +10,21 @@ export default class Tips extends React.Component {
   }
   render () {
     let tipsHtml = tips.map((tip, index) => {
+      let imgClass = ''
+      let imgStyle = {}
+      if (tip.maxImageWidth) {
+        imgClass = 'img-custom-max-width'
+        imgStyle = {
+          maxWidth: tip.maxImageWidth + 'px'
+        }
+      }
       return <div key={index} className="tip py-4 px-2 p-sm-5 mb-5 d-flex flex-sm-row flex-column-reverse" itemScope itemType="http://schema.org/BlogPosting">
         <div className="tip-image col-md-5 text-center">
           <img
             itemProp="image"
-            className="img-fluid mx-auto"
+            className={`img-fluid mx-auto ${imgClass}`}
             src={tip.image}
-            style={{
-              maxWidth: tip.maxImageWidth || '100%'
-            }}
+            style={imgStyle}
             alt=""
           />
         </div>
@@ -51,7 +57,8 @@ const tips = [{
 }, {
   title: 'Do use copyright-safe images.',
   body: 'Googling an image is easy but finding one that is copyright-safe is difficult. It is better to use trusted sources to either buy an image license or find images that are copyright-free.\n\nFor more tips on sourcing images, go to the Finding Images section of Templates and Tips.',
-  image: '/images/tips/tip3.png'
+  image: '/images/tips/tip3.png',
+  maxImageWidth: 300
 }, {
   title: 'Don\'t brand every slide with your logo.',
   body: 'A logo on every slide not only makes your deck look dated, it takes up valuable space for your message. Your audience should be introduced to your company on the Cover Slide and reminded again on the Conclusion Slide.',
@@ -76,7 +83,7 @@ const tips = [{
   title: 'Do create a custom color palette.',
   body: 'As mentioned in Tip #2, PowerPoint\'s standard and theme colors are difficult to work with. Creating your own palette is easy and using it throughout your presentation will make the design cohesive.\n\nSlide Therapy has a worksheet which guides you through the process of creating your own custom harmonious color palette.',
   image: '/images/tips/tip9.png',
-  maxImageWidth: '230px'
+  maxImageWidth: 230
 }, {
   title: 'Do use a dark template for a dark room.',
   body: 'If you know that the room that you will be presenting in will be very dark, consider using the dark background templates. Much like how dark backgrounds are easier for reading from your tablet in bed at night, the slides will be easier on your audience\'s eyes in a dark room.\n\nEach Slide Therapy Template and Tips file contains both dark and light background slide designs.',
