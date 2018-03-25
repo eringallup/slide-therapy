@@ -13,7 +13,7 @@ export default class About extends React.Component {
       <div className="container">
         <div className="d-flex align-items-center row">
           <div className="col-md-5 d-none d-md-block">
-            <h4>Pro treatment for presentation problems</h4>
+            <h4>Pro treatment for presentation&nbsp;problems</h4>
           </div>
           <div className="col-md-6 offset-md-1">
             <h3>About Slide Therapy</h3>
