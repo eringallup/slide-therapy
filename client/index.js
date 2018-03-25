@@ -15,7 +15,6 @@ if (typeof document !== 'undefined') {
   require('bootstrap')
   require('whatwg-fetch')
   require('./vendor/scrollIt.js')
-  window.gtag = gtag
   if (document.attachEvent ? document.readyState === 'complete' : document.readyState !== 'loading') {
     init()
   } else {
@@ -26,21 +25,20 @@ if (typeof document !== 'undefined') {
 function init () {
   const htmlTag = document.querySelector('html')
   htmlTag.classList.remove('no-js')
-  window.gTagId = htmlTag.getAttribute('gtagid')
-  setupGoogleAnalytics()
+  setupAnalytics()
   setupStripe(10)
   ReactDOM.hydrate(<BrowserRouter><Routes /></BrowserRouter>, document.querySelector('#app'))
 }
 
-function setupGoogleAnalytics () {
-  window.dataLayer = window.dataLayer || []
-  gtag('js', new Date())
-  gtag('config', gTagId)
-}
-
-function gtag () {
-  // console.log('gtag', arguments)
-  window.dataLayer.push(arguments)
+function setupAnalytics () {
+  if (typeof window === 'undefined') {
+    return
+  }
+  /* eslint-disable */
+  var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics.integrationOptions=e};analytics.SNIPPET_VERSION="4.0.1";
+    analytics.load('NmYeVJ3VplWfQs5243b4cD9BvcqmF6nF');
+  }
+  /* eslint-enable */
 }
 
 function setupStripe (attempt) {
@@ -88,8 +86,6 @@ export default locals => {
   const assets = Object.keys(locals.webpackStats.compilation.assets)
   const css = assets.filter(value => value.match(/\.css$/))
   const js = assets.filter(value => value.match(/\.js$/))
-  global.gTagId = locals.gTagId
-  global.gtag = () => {}
   return ReactDOMServer.renderToString(
     <StaticRouter location={locals.path} context={locals}>
       <Html js={js} css={css} title={locals.title} context={locals}><Routes context={locals} /></Html>

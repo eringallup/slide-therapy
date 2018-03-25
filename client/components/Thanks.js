@@ -6,7 +6,7 @@ export default class Thanks extends React.Component {
     this.state = props
   }
   componentDidMount () {
-    gtag('config', gTagId)
+    analytics.page()
   }
   render () {
     return <section id="view-thanks" className="py-5">

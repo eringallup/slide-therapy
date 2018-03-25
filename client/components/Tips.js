@@ -6,7 +6,7 @@ export default class Tips extends React.Component {
     this.state = props
   }
   componentDidMount () {
-    gtag('config', gTagId)
+    analytics.page()
   }
   render () {
     let tipsHtml = tips.map((tip, index) => {

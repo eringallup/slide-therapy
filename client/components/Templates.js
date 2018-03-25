@@ -30,7 +30,7 @@ export default class Templates extends React.Component {
     this.setStates()
     this.getImage()
     setTimeout(() => {
-      gtag('config', gTagId, {
+      analytics.page(null, {
         hero_image: this.state.backgroundImage.url
       })
     })
@@ -94,9 +94,7 @@ export default class Templates extends React.Component {
   scrollDown (e, elementId) {
     e.preventDefault()
     scrollIt(document.getElementById(elementId), 200, 'easeInCubic')
-    gtag('event', 'Start Now', {
-      event_category: 'cta'
-    })
+    analytics.track('Start Now')
   }
   showPreview (e, deck) {
     e.preventDefault()
@@ -106,9 +104,8 @@ export default class Templates extends React.Component {
     this.setState({
       preview: deck
     })
-    gtag('event', 'Show Preview', {
-      event_category: 'cta',
-      event_label: deck.title
+    analytics.track('Show Preview', {
+      deck: deck.title
     })
   }
   onSlide (e) {
@@ -138,25 +135,22 @@ export default class Templates extends React.Component {
     this.setState({
       preview: undefined
     })
-    gtag('event', 'Close Preview', {
-      event_category: 'cta',
-      event_label: deck.title
+    analytics.track('Close Preview', {
+      deck: deck.title
     })
   }
   nextSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('next')
-    gtag('event', 'Next Slide', {
-      event_category: 'cta',
-      event_label: deck.title
+    analytics.track('Next Slide', {
+      deck: deck.title
     })
   }
   prevSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('prev')
-    gtag('event', 'Previous Slide', {
-      event_category: 'cta',
-      event_label: deck.title
+    analytics.track('Previous Preview', {
+      deck: deck.title
     })
   }
   getImage () {

@@ -6,7 +6,7 @@ export default class Html extends React.Component {
     this.state = props
   }
   render () {
-    return <html lang="en" className="no-js" gtagid={global.gTagId}>
+    return <html lang="en" className="no-js">
       <head>
         <title>{this.state.title}</title>
         <link rel="icon" href="/images/favicon1.png" type="image/png" />
@@ -20,7 +20,6 @@ export default class Html extends React.Component {
       </head>
       <body>
         <div id="app" className="d-flex flex-column">{this.state.children}</div>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${global.gTagId}`} />
         <script src="https://checkout.stripe.com/checkout.js" async />
         <script src={`/${this.state.js[0]}`} async />
       </body>

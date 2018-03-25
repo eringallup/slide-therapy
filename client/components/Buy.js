@@ -18,7 +18,7 @@ export default class Buy extends React.Component {
   componentDidMount () {
     this.setStates()
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
-    gtag('config', gTagId)
+    analytics.page()
   }
   componentWillUnmount () {
     if (this.ellipsisTimeout) {
@@ -80,6 +80,17 @@ export default class Buy extends React.Component {
     for (sku in skus) {
       if (skus[sku].slug === this.state.match.params.slug) {
         this.deck = skus[sku]
+        this.ecommerceTrackingData = {
+          name: this.deck.title,
+          price: this.deck.displayPrice,
+          product_id: this.deck.sku,
+          sku: this.deck.sku
+        }
+        this.orderTrackingData = {
+          value: this.deck.displayPrice,
+          revenue: this.getRevenue(this.deck.displayPrice),
+          products: [this.ecommerceTrackingData]
+        }
       }
     }
   }
@@ -123,12 +134,12 @@ export default class Buy extends React.Component {
       billingAddress: true,
       amount: this.deck.amountInCents
     })
-    gtag('event', 'add_to_cart', {
-      event_label: this.deck.title
-    })
-    gtag('event', 'begin_checkout', {
-      event_label: this.deck.title
-    })
+    analytics.track('Checkout Started', this.orderTrackingData)
+  }
+  getRevenue (amount) {
+    const fee = (amount * 0.029) + 0.30
+    const revenue = (amount - fee).toFixed(2) * 1
+    return revenue
   }
   startEllipsis (num) {
     let text = ''
@@ -147,6 +158,7 @@ export default class Buy extends React.Component {
   }
   completePurchase (token) {
     this.showProcessing()
+    analytics.track('Payment Info Entered')
     // this.saveEmail(token.email)
     // console.info('completePurchase', token)
     const url = 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order'
@@ -173,9 +185,7 @@ export default class Buy extends React.Component {
           processing: false,
           checkoutSuccess: true
         })
-        gtag('event', 'purchase', {
-          event_label: this.deck.title
-        })
+        analytics.track('Order Completed', this.orderTrackingData)
       })
       .catch(error => {
         console.error(error)
@@ -187,16 +197,13 @@ export default class Buy extends React.Component {
           hasToken: false,
           token: undefined
         })
-        gtag('event', 'exception', {
-          description: error,
-          fatal: true
+        analytics.track('Ecommerce Error', {
+          error: error
         })
       })
   }
   closeCheckout () {
-    gtag('event', 'remove_from_cart', {
-      event_label: this.deck.title
-    })
+    analytics.track('Order Cancelled', this.orderTrackingData)
   }
   showModal (state, store) {
     this.setState(state)
