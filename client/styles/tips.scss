@@ -1,24 +1,29 @@
-.tip {
-  background: $white;
-  border-radius: 15px;
-  justify-content: space-between;
-}
-.tip-image {
-  flex-grow: 1;
-}
-.tip-content {
-  flex-grow: 2;
-  .h4 {
-    font-size: $font-size-base * 2.5;
+#view-tips {
+  .tip {
+    background: $white;
+    border-radius: 15px;
+    justify-content: space-between;
   }
-}
-@include media-breakpoint-up(md) {
-  .tip:nth-child(even) {
-    flex-direction: row-reverse !important;
+  .tip-image {
+    flex-grow: 1;
   }
   .tip-content {
+    flex-grow: 2;
     .h4 {
-      font-size: $font-size-base * 3;
+      font-size: $font-size-base * 2.5;
+    }
+  }
+  .h4 {
+    line-height: $line-height-xs;
+  }
+  @include media-breakpoint-up(md) {
+    .tip:nth-child(even) {
+      flex-direction: row-reverse !important;
+    }
+    .tip-content {
+      .h4 {
+        font-size: $font-size-base * 3;
+      }
     }
   }
 }

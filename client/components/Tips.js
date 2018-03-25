@@ -11,12 +11,20 @@ export default class Tips extends React.Component {
   render () {
     let tipsHtml = tips.map((tip, index) => {
       return <div key={index} className="tip py-4 px-2 p-sm-5 mb-5 d-flex flex-sm-row flex-column-reverse" itemScope itemType="http://schema.org/BlogPosting">
-        <div className="tip-image col-md-5">
-          <img itemProp="image" className="img-fluid" src={tip.image} alt="" />
+        <div className="tip-image col-md-5 text-center">
+          <img
+            itemProp="image"
+            className="img-fluid mx-auto"
+            src={tip.image}
+            style={{
+              maxWidth: tip.maxImageWidth || '100%'
+            }}
+            alt=""
+          />
         </div>
         <div className="tip-content pb-3 pb-md-0 col-md-6">
           <span className="h3">Pro Tip #{index + 1}</span>
-          <h3 className="h4" itemProp="headline">{tip.title}</h3>
+          <h3 className="h4 mt-2" itemProp="headline">{tip.title}</h3>
           <div itemProp="articleBody" dangerouslySetInnerHTML={{
             __html: tip.body.replace(/\n/g, '<br />')
           }} />
@@ -67,7 +75,8 @@ const tips = [{
 }, {
   title: 'Do create a custom color palette.',
   body: 'As mentioned in Tip #2, PowerPoint\'s standard and theme colors are difficult to work with. Creating your own palette is easy and using it throughout your presentation will make the design cohesive.\n\nSlide Therapy has a worksheet which guides you through the process of creating your own custom harmonious color palette.',
-  image: '/images/tips/tip9.png'
+  image: '/images/tips/tip9.png',
+  maxImageWidth: '230px'
 }, {
   title: 'Do use a dark template for a dark room.',
   body: 'If you know that the room that you will be presenting in will be very dark, consider using the dark background templates. Much like how dark backgrounds are easier for reading from your tablet in bed at night, the slides will be easier on your audience\'s eyes in a dark room.\n\nEach Slide Therapy Template and Tips file contains both dark and light background slide designs.',
