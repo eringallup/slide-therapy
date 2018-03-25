@@ -83,10 +83,12 @@ export default class Buy extends React.Component {
         this.ecommerceTrackingData = {
           name: this.deck.title,
           price: this.deck.displayPrice,
+          quantity: 1,
           product_id: this.deck.sku,
           sku: this.deck.sku
         }
         this.orderTrackingData = {
+          currency: 'usd',
           value: this.deck.displayPrice,
           revenue: this.getRevenue(this.deck.displayPrice),
           products: [this.ecommerceTrackingData]
@@ -177,7 +179,7 @@ export default class Buy extends React.Component {
     }).then(response => response.json())
       .then(json => {
         const orderData = json.body
-        console.log('orderData', orderData)
+        // console.log('orderData', orderData)
         if (this.ellipsisTimeout) {
           clearTimeout(this.ellipsisTimeout)
         }
@@ -185,7 +187,9 @@ export default class Buy extends React.Component {
           processing: false,
           checkoutSuccess: true
         })
-        analytics.track('Order Completed', this.orderTrackingData)
+        analytics.track('Order Completed', Object.assign({}, this.orderTrackingData, {
+          orderId: orderData.oid
+        }))
       })
       .catch(error => {
         console.error(error)
