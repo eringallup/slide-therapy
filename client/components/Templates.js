@@ -13,7 +13,7 @@ export default class Templates extends React.Component {
         credit: 'Image: Rawpixel/Unsplash'
       }, {
         url: '/images/home/topimage2.jpg',
-        position: 'top center',
+        position: 'center center',
         credit: 'Image: GaudiLab/Shutterstock'
       }, {
         url: '/images/home/topimage3.jpg',
@@ -256,7 +256,7 @@ export default class Templates extends React.Component {
               <Link
                 onClick={e => this.scrollDown(e, 'start')}
                 to="/start"
-                className="btn btn-primary text-uppercase"
+                className="btn btn-primary"
               >Start now</Link>
             </div>
           </div>
@@ -274,7 +274,7 @@ export default class Templates extends React.Component {
           <div className="row">
             <div className="col text-center">
               <h3>Communicate&nbsp;Clearly. Work&nbsp;Faster. <span className="d-none d-md-block" />Look&nbsp;Elegant.</h3>
-              <p className="lead mt-3 text-left">Slide Therapy is a series of master PowerPoint files that include everything you need to make a stunning presentation:</p>
+              <p className="lead mt-3 text-left">Slide Therapy is a series of master PowerPoint files for Mac and PC that include everything you need to make a stunning presentation:</p>
             </div>
           </div>
           <div className="row pt-3">
@@ -283,13 +283,14 @@ export default class Templates extends React.Component {
                 <div className="start-list mr-md-3">
                   <h4>Templates</h4>
                   <ol className="list-unstyled">
-                    <li>5+ Cover slide designs</li>
-                    <li>5+ Overview slide designs</li>
-                    <li>10+ Content slide designs</li>
-                    <li>2+ Interstitial slide designs</li>
-                    <li>5+ Conclusion slide designs</li>
-                    <li>500+ icon library</li>
-                    <li>80+ shape library</li>
+                    <li>Cover slides</li>
+                    <li>Overview slides</li>
+                    <li>Content slides</li>
+                    <li>Interstitial slides</li>
+                    <li>Conclusion slides</li>
+                    <li>Icon library</li>
+                    <li>Shape library</li>
+                    <li>Diagram library</li>
                   </ol>
                 </div>
                 <div className="start-list">

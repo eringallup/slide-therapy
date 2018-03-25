@@ -24,11 +24,9 @@ body {
   left: 0;
 }
 
-.lead {
-  font-size: $font-size-base;
-  @include media-breakpoint-up(sm) {
-    font-size: $font-size-base * 1.25;
-  }
+.lead,
+.font-size-base {
+  font-size: $font-size-base !important;
 }
 
 .img-placeholder {
@@ -37,6 +35,14 @@ body {
 
 .color-inherit {
   color: inherit;
+}
+
+.font-family-serif {
+  font-family: $font-family-serif;
+}
+
+.font-family-san-serif {
+  font-family: $font-family-sans-serif;
 }
 
 @each $breakpoint in map-keys($grid-breakpoints) {
@@ -49,13 +55,49 @@ body {
 }
 
 h1, .h1,
-h2, .h2,
-h3, .h3,
 h4, .h4,
 h5, .h5,
-h6, .h6,
-.btn {
+h6, .h6 {
   letter-spacing: $letter-spacing-md;
+}
+
+h2 {
+  font-family: $font-family-serif;
+  letter-spacing: $letter-spacing-xs;
+  @extend .h1;
+  font-size: 2.2rem;
+  @include media-breakpoint-up(sm) {
+    font-size: 3rem;
+  }
+}
+
+h3, .h3 {
+  @extend .text-uppercase;
+  font-family: $font-family-serif;
+  font-size: $font-size-base * 1.15;
+  letter-spacing: $letter-spacing-lg;
+  em {
+    @extend .d-block;
+    font-size: $font-size-base * 2.15;
+    letter-spacing: $letter-spacing-xs;
+    text-transform: none;
+  }
+}
+
+h4, .h4 {
+  @extend .mb-2;
+  @extend .font-italic;
+  font-family: $font-family-serif;
+  letter-spacing: $letter-spacing-xs;
+  font-size: $font-size-base * 2.15;
+  text-transform: none !important;
+}
+
+.btn {
+  @extend .text-uppercase;
+  font-size: $font-size-base;
+  letter-spacing: $letter-spacing-md;
+  border-radius: 0;
 }
 
 .btn-disabled {
@@ -74,34 +116,6 @@ h6, .h6,
   @extend .d-block;
 }
 
-h3, .h3 {
-  @extend .text-uppercase;
-  font-family: $font-family-serif;
-  font-size: $font-size-base * 1.25;
-  em {
-    @extend .d-block;
-    font-size: $font-size-base * 2;
-    text-transform: none;
-  }
-  @include media-breakpoint-up(sm) {
-    font-size: $font-size-base * 1.5;
-    em {
-      font-size: $font-size-base * 2.5;
-    }
-  }
-}
-
-h4, .h4 {
-  @extend .mb-2;
-  @extend .font-italic;
-  font-family: $font-family-serif;
-  font-size: $font-size-base * 2.5;
-  text-transform: none !important;
-  @include media-breakpoint-up(sm) {
-    font-size: $font-size-base * 3;
-  }
-}
-
 #app {
   min-height: 100vh;
 }
@@ -113,7 +127,7 @@ h4, .h4 {
 .st-uppercase {
   @extend .text-dark;
   @extend .text-uppercase;
-  font-size: $font-size-base * 1.1;
+  font-size: $font-size-base;
   letter-spacing: 1.78;
 }
 
@@ -145,10 +159,4 @@ h4, .h4 {
       }
     }
   }
-}
-
-footer {
-  @extend .h3;
-  font-size: $font-size-base !important;
-  line-height: $line-height-lg;
 }

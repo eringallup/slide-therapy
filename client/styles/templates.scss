@@ -17,20 +17,13 @@
     @extend .position-relative;
     z-index: $z-sky;
   }
-  h2 {
-    font-family: $font-family-serif;
-    @extend .h1;
-    font-size: 2.2rem;
-    @include media-breakpoint-up(sm) {
-      font-size: 3rem;
-    }
-  }
   .image-credit {
     @extend .position-absolute;
     @extend .h4;
+    letter-spacing: $letter-spacing-xs;
     z-index: $z-sky;
     font-size: inherit;
-    color: $gray-200;
+    color: rgba(255, 255, 255, .5);
     right: 2rem;
     bottom: 1rem;
   }
@@ -42,10 +35,6 @@
     min-width: 13rem;
   }
   h3 {
-    letter-spacing: $letter-spacing-lg * .7;
-    @include media-breakpoint-up(sm) {
-      letter-spacing: $letter-spacing-xl;
-    }
     line-height: $line-height-lg;
   }
   ol li {
