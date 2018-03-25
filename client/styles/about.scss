@@ -11,8 +11,9 @@
     @extend .text-center;
     border: 1px solid $light;
     border-width: 12px 0;
-    @include media-breakpoint-down(md) {
-      font-size: $font-size-base * 2.5;
+    font-size: $font-size-base * 2.5;
+    @include media-breakpoint-up(lg) {
+      font-size: $font-size-base * 3;
     }
   }
 }

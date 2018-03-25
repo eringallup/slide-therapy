@@ -20,8 +20,9 @@
   h2 {
     font-family: $font-family-serif;
     @extend .h1;
-    @include media-breakpoint-down(xs) {
-      font-size: 2.2rem;
+    font-size: 2.2rem;
+    @include media-breakpoint-up(sm) {
+      font-size: 3rem;
     }
   }
   .image-credit {
@@ -38,9 +39,13 @@
 #start {
   .start-list {
     flex-grow: 1;
+    min-width: 13rem;
   }
   h3 {
-    letter-spacing: $letter-spacing-xl;
+    letter-spacing: $letter-spacing-lg * .7;
+    @include media-breakpoint-up(sm) {
+      letter-spacing: $letter-spacing-xl;
+    }
     line-height: $line-height-lg;
   }
   ol li {

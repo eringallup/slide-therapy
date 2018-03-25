@@ -37,14 +37,13 @@ export default class Header extends React.Component {
           <h1 className="m-0 text-center text-md-left"><Link to="/"><img className="img-fluid" src="/images/slide-therapy-logo.png" alt="Slide Therapy" width="222" height="39" /></Link></h1>
         </div>
         <div className="col-md-7 d-flex justify-content-center justify-content-md-end">
-          <nav className="main-nav nav align-items-center justify-content-center">
+          <nav className={`main-nav nav align-items-center justify-content-center ${this.state.showDownload ? ' has-download' : ''}`}>
             <NavLink
               to={this.state.downloadHref}
               suppressHydrationWarning
               activeClassName="active"
               isActive={this.downloadActive}
-              className="nav-link"
-              hidden={!this.state.showDownload}
+              className={`nav-link d-none ${this.state.showDownload ? ' d-sm-inline-block' : ''}`}
             >Download</NavLink>
             <NavLink
               to="/"
