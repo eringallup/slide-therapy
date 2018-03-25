@@ -21,7 +21,7 @@ export default class Html extends React.Component {
       <body>
         <div id="app" className="d-flex flex-column">{this.state.children}</div>
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${global.gTagId}`} />
-        <script src="//checkout.stripe.com/checkout.js" async />
+        <script src="https://checkout.stripe.com/checkout.js" async />
         <script src={`/${this.state.js[0]}`} async />
       </body>
     </html>
