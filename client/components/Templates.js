@@ -16,7 +16,7 @@ export default class Templates extends React.Component {
         position: 'center center',
         credit: 'Image: GaudiLab/Shutterstock'
       }, {
-        url: '/images/home/topimage3.jpg',
+        url: '/images/home/topimage3d.jpg',
         position: 'bottom center',
         credit: 'Image: Edwin Andrade/Unsplash'
       }],
