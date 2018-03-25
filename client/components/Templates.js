@@ -34,9 +34,14 @@ export default class Templates extends React.Component {
         hero_image: this.state.backgroundImage.url
       })
     })
+    this._onSlide = this.onSlide.bind(this)
+    $(document).on('slide.bs.carousel', '#slide-preview', this._onSlide)
     // this.scrollToSection()
   }
   componentWillUnmount () {
+    if (this._onSlide) {
+      $(document).off('slide.bs.carousel', '#slide-preview', this._onSlide)
+    }
     this.unsubscribe()
   }
   scrollToSection () {
@@ -106,6 +111,28 @@ export default class Templates extends React.Component {
       event_label: deck.title
     })
   }
+  onSlide (e) {
+    // console.log('onSlide')
+    if (e.relatedTarget) {
+      this.loadLazyImage(e.relatedTarget)
+      const dir = e.direction === 'left' ? 'next' : 'prev'
+      const $nextSlide = $(e.relatedTarget)[dir]()
+      // console.log(dir, $nextSlide)
+      if ($nextSlide) {
+        this.loadLazyImage($nextSlide)
+      }
+    }
+  }
+  loadLazyImage ($slide) {
+    const $img = $($slide).find('img')
+    if ($img) {
+      const dataSrc = $img.attr('data-src')
+      // console.log($img, dataSrc)
+      if (dataSrc) {
+        $img.attr('src', dataSrc).removeAttr('data-src')
+      }
+    }
+  }
   closePreview (e, deck) {
     e.preventDefault()
     this.setState({
@@ -154,16 +181,19 @@ export default class Templates extends React.Component {
         for (let i = 1; i <= 50; i++) {
           slides.push(<div
             key={`slide-${i}`}
-            className={'carousel-item' + (i === 1 ? ' active' : '')}
+            className={'carousel-item aspect-16x9 w-100' + (i === 1 ? ' active' : '')}
           >
             <img
-              className="d-block w-100" src={`/images/previews/${item.slug}/preview-${i}.png`} alt=""
+              className="d-block position-absolute w-100 fill-parent"
+              data-src={i > 3 ? `/images/previews/${item.slug}/preview-${i}.png` : ''}
+              src={i < 4 ? `/images/previews/${item.slug}/preview-${i}.png` : ''}
+              alt=""
             />
           </div>)
         }
         preview.push(<div key={item.sku} className="preview py-3 px-4 py-md-5 px-md-5">
           <div id="slide-preview" className="carousel slide position-static">
-            <div className="carousel-inner">{slides}</div>
+            <div className="carousel-inner m-auto">{slides}</div>
             <a
               className="carousel-control-prev"
               href="#"
@@ -196,7 +226,7 @@ export default class Templates extends React.Component {
         itemScope itemType="http://schema.org/Product"
       >
         <span className="order-0 d-none d-lg-block">{item.sku}</span>
-        <div className="order-2">
+        <div className="order-2 w-100">
           <div className="aspect-md-16x9 position-relative">
             {preview}
             <div className="description">

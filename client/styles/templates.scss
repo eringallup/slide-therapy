@@ -52,9 +52,6 @@
   > * {
     @extend .px-3;
   }
-  h4 {
-    letter-spacing: 1;
-  }
   s {
     @extend .position-relative;
     font-family: $font-family-serif;
@@ -113,7 +110,8 @@
     }
   }
   .preview + .description {
-    @extend .d-none;
+    @extend .position-absolute;
+    z-index: $z-metro;
   }
   @include media-breakpoint-up(md) {
     .preview,
@@ -127,9 +125,6 @@
       bottom: 1.5rem;
       left: 1.5rem;
     }
-  }
-  .carousel-inner {
-    @extend .m-auto;
   }
   .carousel-control-prev,
   .carousel-control-next {
