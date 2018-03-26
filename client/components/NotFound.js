@@ -5,6 +5,9 @@ export default class NotFound extends React.Component {
     super(props)
     this.state = props
   }
+  componentDidMount () {
+    analytics.page('Not Found')
+  }
   render () {
     return <div className="container">
       <div className="row">

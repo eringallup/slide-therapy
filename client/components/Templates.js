@@ -30,7 +30,7 @@ export default class Templates extends React.Component {
     this.setStates()
     this.getImage()
     setTimeout(() => {
-      analytics.page(null, {
+      analytics.page('Home', {
         hero_image: this.state.backgroundImage.url
       })
     })

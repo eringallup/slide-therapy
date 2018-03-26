@@ -18,7 +18,7 @@ export default class Buy extends React.Component {
   componentDidMount () {
     this.setStates()
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
-    analytics.page()
+    analytics.page('Buy')
   }
   componentWillUnmount () {
     if (this.ellipsisTimeout) {

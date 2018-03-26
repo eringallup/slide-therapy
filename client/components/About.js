@@ -6,7 +6,7 @@ export default class About extends React.Component {
     this.state = props
   }
   componentDidMount () {
-    analytics.page()
+    analytics.page('About')
   }
   render () {
     return <section id="view-about" className="py-5">

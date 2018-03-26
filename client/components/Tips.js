@@ -6,7 +6,7 @@ export default class Tips extends React.Component {
     this.state = props
   }
   componentDidMount () {
-    analytics.page()
+    analytics.page('Tips')
   }
   render () {
     let tipsHtml = tips.map((tip, index) => {

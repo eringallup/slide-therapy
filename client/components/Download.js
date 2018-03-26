@@ -11,12 +11,15 @@ export default class Download extends React.Component {
   }
   componentDidMount () {
     let queryParams = qs.parse(location.search.substring(1))
+    let trackConfig = {}
     if (queryParams.o && queryParams.e) {
       this.ownedDeck(queryParams.o, queryParams.e)
+      trackConfig.type = 'order_id'
     } else if (queryParams.t) {
       this.withToken(queryParams.t, queryParams.d === 'true')
+      trackConfig.type = 'email'
     }
-    analytics.page()
+    analytics.page('Download', trackConfig)
   }
   ownedDeck (oid, email) {
     const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=${oid}&e=${email}`
