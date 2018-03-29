@@ -8,7 +8,8 @@
     "sku": 1,
     "purchase_rights": [1],
     "amountInCents": 3900,
-    "displayPrice": 39
+    "displayPrice": 39,
+    "download_path": "/large-audiences.ppt"
   },
   "2": {
     "slug": "small-audiences",
@@ -19,7 +20,8 @@
     "sku": 2,
     "purchase_rights": [2],
     "amountInCents": 3900,
-    "displayPrice": 39
+    "displayPrice": 39,
+    "download_path": "/small-audiences.ppt"
   },
   "3": {
     "slug": "solitary-audiences",
@@ -30,7 +32,8 @@
     "sku": 3,
     "purchase_rights": [3],
     "amountInCents": 3900,
-    "displayPrice": 39
+    "displayPrice": 39,
+    "download_path": "/solitary-audiences.ppt"
   },
   "4": {
     "slug": "all-audiences",
@@ -38,8 +41,9 @@
     "stripe_title": "All Audience Templates",
     "description": "Be ready for any audience.<br />Get all 3 together.",
     "sku": 4,
-    "purchase_rights": [1, 2, 3],
+    "purchase_rights": [4],
     "amountInCents": 9900,
-    "displayPrice": 99
+    "displayPrice": 99,
+    "download_path": "/all-audiences.zip"
   }
 }

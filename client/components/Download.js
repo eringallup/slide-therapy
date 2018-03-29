@@ -1,6 +1,6 @@
 import React from 'react'
 import qs from 'qs'
-import skus from '../../skus.json'
+// import skus from '../../skus.json'
 
 export default class Download extends React.Component {
   constructor (props) {
@@ -25,11 +25,11 @@ export default class Download extends React.Component {
     const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=${oid}&e=${email}`
     this.http(url)
       .then(json => {
-        let body = json && json.body
+        let downloadUrl = json && json.body
         if (typeof document !== 'undefined') {
           this.setState({
             fetched: true,
-            urls: body && body.urls
+            downloadUrl: downloadUrl
           })
         }
       })
@@ -39,14 +39,14 @@ export default class Download extends React.Component {
     const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?t=${token}`
     this.http(url)
       .then(json => {
-        let body = json && json.body
+        let downloadUrl = json && json.body
         if (typeof document !== 'undefined') {
           this.setState({
             fetched: true,
-            urls: body && body.urls
+            downloadUrl: downloadUrl
           })
-          if (body && body.urls && autoDownload === true) {
-            document.location.href = this.state.urls[Object.keys(this.state.urls)[0]]
+          if (downloadUrl && autoDownload === true) {
+            document.location.href = downloadUrl
           }
         }
       })
@@ -64,16 +64,10 @@ export default class Download extends React.Component {
   }
   render () {
     let downloadHtml = ''
-    let downloadLinks = []
-    if (typeof this.state.urls === 'object') {
-      for (let sku in this.state.urls) {
-        downloadLinks.push(<a key={sku} className="d-block mt-2" href={this.state.urls[sku]}>Download Now ({skus[sku].title})</a>)
-      }
-    }
-    if (downloadLinks.length > 0) {
+    if (this.state.downloadUrl && this.state.downloadUrl.length > 0) {
       downloadHtml = <div className="download-links d-inline-block my-4 p-5">
         <em>If not, click</em>
-        {downloadLinks}
+        <a className="d-block mt-2" href={this.state.downloadUrl}>Download Now</a>
       </div>
     } else if (this.state.fetched) {
       const helpEmail = `mailto:help@slidetherapy.com&subject=Help downloading from ${location.href}`

@@ -33,7 +33,7 @@ exports.handler = (event, context, callback) => {
 
 function downloadOwned (stripe, oid, email) {
   return getOrder(stripe, oid).then(orderItem => {
-    return geDownloadUrls(orderItem.parent)
+    return getSignedUrl(orderItem.parent)
   })
 }
 
@@ -41,20 +41,9 @@ function downloadWithToken (stripe, token) {
   return decrypt(token).then(jsonToken => {
     // console.log('jsonToken', jsonToken);
     return getOrder(stripe, jsonToken.oid).then(orderItem => {
-      return geDownloadUrls(orderItem.parent)
+      return getSignedUrl(orderItem.parent)
     })
   })
-}
-
-function geDownloadUrls (sku) {
-  const skuData = skus[sku]
-  let downloadUrls = {}
-  skuData.purchase_rights.forEach(purchaseRight => {
-    downloadUrls[purchaseRight] = getSignedUrl(purchaseRight)
-  })
-  return {
-    urls: downloadUrls
-  }
 }
 
 function getOrder (stripe, oid) {
@@ -98,7 +87,8 @@ function decrypt (token, password) {
 
 function getSignedUrl (sku) {
   console.log('getSignedUrl', sku)
-  let baseUrl = 'https://' + process.env.download + '/test.txt?sku=' + sku
+  const skuData = skus[sku]
+  let baseUrl = 'https://' + process.env.download + '/test.txt?path=' + skuData.download_path
   let now = new Date()
   let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 15)) / 1000)
   let expires = '&Expires=' + expiresUtc
