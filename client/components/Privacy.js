@@ -12,7 +12,8 @@ export default class Privacy extends React.Component {
     return <div id="privacy" className="container">
       <div className="row">
         <div className="col my-3">
-          <h4>Privacy Policy</h4>
+          <h2 className="text-uppercase">Slide Therapy Privacy Policy</h2>
+          <p><cite style={{fontStyle: 'normal'}}>Effective: February 7, 2018</cite></p>
           <p>This privacy policy has been compiled to better serve those who are concerned with how their &apos;Personally Identifiable Information&apos; (PII) is being used online. PII, as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.</p>
           <h5>What personal information do we collect from the people that visit our blog, website or app?</h5>
           <p>When ordering or registering on our site, as appropriate, you may be asked to enter your name, email address, mailing address, credit card information or other details to help you with your experience.</p>

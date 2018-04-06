@@ -8,6 +8,7 @@ import Tips from 'components/Tips'
 import About from 'components/About'
 import Download from 'components/Download'
 import Privacy from 'components/Privacy'
+import Terms from 'components/Terms'
 import Footer from 'components/Footer'
 
 export default class Routes extends React.Component {
@@ -26,6 +27,7 @@ export default class Routes extends React.Component {
         <Route path="/about" component={About} context={this.state.context} />
         <Route path="/download" component={Download} context={this.state.context} />
         <Route path="/privacy" component={Privacy} context={this.state.context} />
+        <Route path="/terms" component={Terms} context={this.state.context} />
       </div>
       <Footer />
     </React.Fragment>
