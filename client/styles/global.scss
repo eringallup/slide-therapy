@@ -124,8 +124,9 @@ h4, .h4 {
   flex-grow: 1;
 }
 
-#privacy h5 {
-  letter-spacing: $letter-spacing-xs;
+#terms h3,
+#privacy h3 {
+  letter-spacing: $letter-spacing-sm;
 }
 
 .st-uppercase {

@@ -13,7 +13,7 @@ export default class Terms extends React.Component {
     const companyName = 'The None Percent'
     const productName = 'Slide Therapy'
     const companyState = 'Illinois'
-    return <div id="privacy" className="container">
+    return <div id="terms" className="container">
       <div className="row">
         <div className="col my-3">
           <h2 className="text-uppercase">{productName} TERMS OF USE</h2>
