@@ -50,7 +50,7 @@ export default class Terms extends React.Component {
           <h3>SITE POLICIES, MODIFICATION, AND SEVERABILITY</h3>
           <p>Please review our other policies, such as our Privacy and Returns policy, posted on this site. These policies also govern your visit to {productName}. We reserve the right to make changes to our site, policies, and these Conditions of Use at any time. If any of these conditions shall be deemed invalid, void, or for any reason unenforceable, that condition shall be deemed severable and shall not affect the validity and enforceability of any remaining condition.</p>
           <h3>QUESTIONS:</h3>
-          <p>Questions regarding our Conditions of Usage, Privacy Policy, or other policy related material can be directed to our support staff by emailing us at: hello@slidetherapy.com</p>
+          <p>Questions regarding our Conditions of Usage, Privacy Policy, or other policy related material can be directed to our support staff by emailing us at: help@slidetherapy.com</p>
         </div>
       </div>
     </div>
