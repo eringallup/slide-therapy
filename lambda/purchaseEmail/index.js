@@ -70,7 +70,7 @@ function sendFile (stripeOrder, stripeCharge, webUrl) {
     charge: stripeOrder.charge,
     created: stripeOrder.created
   }).then(jwt => {
-    let url = `${webUrl}/download?t=${jwt}&d=true`
+    let url = `${webUrl}/download/index.html?t=${jwt}&d=true`
     let createdDate = DateTime.fromMillis(stripeOrder.created * 1000)
     stripeOrder.createdDate = createdDate
       .setLocale('en-US')
