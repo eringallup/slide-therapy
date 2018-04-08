@@ -173,7 +173,7 @@ export default class Templates extends React.Component {
       let preview = []
       if (this.state.preview && this.state.preview.sku === item.sku) {
         let slides = []
-        for (let i = 1; i <= 50; i++) {
+        for (let i = 1; i <= item.previewSlideCount; i++) {
           slides.push(<div
             key={`slide-${i}`}
             className={'carousel-item aspect-16x9 w-100' + (i === 1 ? ' active' : '')}

@@ -8,7 +8,8 @@
     "sku": 1,
     "amountInCents": 3900,
     "displayPrice": 39,
-    "download_path": "/large-audiences.ppt"
+    "download_path": "/large-audiences.ppt",
+    "previewSlideCount": 31
   },
   "2": {
     "slug": "small-audiences",
@@ -19,7 +20,8 @@
     "sku": 2,
     "amountInCents": 3900,
     "displayPrice": 39,
-    "download_path": "/small-audiences.ppt"
+    "download_path": "/small-audiences.ppt",
+    "previewSlideCount": 27
   },
   "3": {
     "slug": "solitary-audiences",
@@ -30,7 +32,8 @@
     "sku": 3,
     "amountInCents": 3900,
     "displayPrice": 39,
-    "download_path": "/solitary-audiences.ppt"
+    "download_path": "/solitary-audiences.ppt",
+    "previewSlideCount": 28
   },
   "4": {
     "slug": "all-audiences",
