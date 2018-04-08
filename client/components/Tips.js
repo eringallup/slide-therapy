@@ -21,8 +21,8 @@ export default class Tips extends React.Component {
           maxWidth: tip.maxImageWidth + 'px'
         }
       }
-      return <div key={index} className="tip py-4 px-2 p-sm-5 mb-5 d-flex flex-sm-row flex-column-reverse" itemScope itemType="http://schema.org/BlogPosting">
-        <div className="tip-image col-md-5 text-center">
+      return <div key={index} className="tip py-4 px-2 p-sm-5 mb-5 d-flex flex-md-row flex-column-reverse" itemScope itemType="http://schema.org/BlogPosting">
+        <div className="tip-image col-md-5 text-center align-self-center">
           <img
             itemProp="image"
             className={`img-fluid mx-auto ${imgClass}`}

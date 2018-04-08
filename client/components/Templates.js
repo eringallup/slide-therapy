@@ -298,13 +298,13 @@ export default class Templates extends React.Component {
         <div className="container py-5">
           <div className="row">
             <div className="col text-center">
-              <h3>Communicate&nbsp;Clearly. Work&nbsp;Faster. <span className="d-none d-md-block" />Look&nbsp;Elegant.</h3>
-              <p className="lead mt-3 text-left">Slide Therapy is a series of master PowerPoint files for Mac and PC that include everything you need to make a stunning presentation:</p>
+              <h3>Communicate&nbsp;Clearly. Work&nbsp;Faster. <span className="d-none d-md-block" />Look&nbsp;Refined.</h3>
+              <p className="lead mt-3 text-left text-lg-center">Slide Therapy is a series of master PowerPoint files for Mac and PC that include everything you need to make a stunning presentation:</p>
             </div>
           </div>
-          <div className="row pt-3">
-            <div className="col col-md-8 col-lg-7">
-              <div className="mx-auto mx-md-0 d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start align-items-center align-items-sm-start">
+          <div className="row pt-3 px-5">
+            <div className="col">
+              <div className="mx-auto mx-md-0 d-flex flex-column flex-sm-row justify-content-center align-items-center align-items-sm-start">
                 <div className="start-list mr-md-3">
                   <h4>Templates</h4>
                   <ol className="list-unstyled">
@@ -334,10 +334,12 @@ export default class Templates extends React.Component {
                     <li>Adding Maps</li>
                   </ol>
                 </div>
+                <div className="pl-5 d-none d-md-block align-items-start align-items-lg-center">
+                  <img style={{
+                    maxWidth: '30vw'
+                  }} className="img-fluid" src="/images/home/laptop.png" alt="" />
+                </div>
               </div>
-            </div>
-            <div className="col-md-4 col-lg-5 d-none d-md-flex align-items-start align-items-lg-center mx-auto">
-              <img className="img-fluid" src="/images/home/laptop.png" alt="" />
             </div>
           </div>
         </div>

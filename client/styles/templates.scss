@@ -31,8 +31,11 @@
 
 #start {
   .start-list {
-    flex-grow: 1;
     min-width: 13rem;
+    @extend .text-nowrap;
+    @include media-breakpoint-up(md) {
+      min-width: 10rem;
+    }
   }
   h3 {
     line-height: $line-height-lg;

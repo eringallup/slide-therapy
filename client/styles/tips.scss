@@ -14,6 +14,9 @@
     line-height: $line-height-xs;
     font-size: $font-size-base * 2.5;
   }
+  [itemProp="articleBody"] {
+    line-height: $line-height-xl;
+  }
   @include media-breakpoint-between(sm, md) {
     .img-fluid.img-custom-max-width {
       max-width: 100% !important;
