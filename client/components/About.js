@@ -1,5 +1,5 @@
 import React from 'react'
-import titles from 'pages.json'
+import pageData from 'pages.json'
 
 export default class About extends React.Component {
   constructor (props) {
@@ -8,7 +8,7 @@ export default class About extends React.Component {
   }
   componentWillMount () {
     if (typeof document !== 'undefined') {
-      document.title = titles[this.state.location.pathname]
+      document.title = pageData[this.state.location.pathname].title
     }
   }
   componentDidMount () {

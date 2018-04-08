@@ -1,6 +1,6 @@
 import React from 'react'
 import qs from 'qs'
-import titles from 'pages.json'
+import pageData from 'pages.json'
 // import skus from '../../skus.json'
 
 export default class Download extends React.Component {
@@ -12,7 +12,7 @@ export default class Download extends React.Component {
   }
   componentWillMount () {
     if (typeof document !== 'undefined') {
-      document.title = titles[this.state.location.pathname]
+      document.title = pageData[this.state.location.pathname].title
     }
   }
   componentDidMount () {

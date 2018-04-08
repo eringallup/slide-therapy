@@ -66,7 +66,7 @@
     "sync-prod": "npm run build-prod && AWS_PROFILE=slide-therapy aws s3 sync ./client/dist s3://slidetherapy.com",
     "watch": "webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.dev.js",
-    "build-preview": "webpack --config webpack.preview.js",
+    "build-preview": "NODE_ENV=preview webpack --config webpack.preview.js",
     "build-prod": "NODE_ENV=production webpack --config webpack.prod.js"
   },
   "repository": {

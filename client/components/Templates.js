@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import skus from 'skus.json'
 import dataStore from 'store'
-import titles from 'pages.json'
+import pageData from 'pages.json'
 
 export default class Templates extends React.Component {
   constructor (props) {
@@ -27,7 +27,8 @@ export default class Templates extends React.Component {
   componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
     if (typeof document !== 'undefined') {
-      document.title = titles[this.state.location.pathname] || 'Slide Therapy'
+      const page = pageData[this.state.location.pathname]
+      document.title = (page && page.title) || 'Slide Therapy'
     }
   }
   componentDidMount () {

@@ -5,7 +5,14 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const clientDir = path.resolve(__dirname, 'client')
 const outputDir = path.resolve(clientDir, 'dist')
 
-const isProd = process && process.env && process.env.NODE_ENV === 'production'
+const nodeEnv = process && process.env && process.env.NODE_ENV
+const isProd = nodeEnv === 'production'
+let domain = 'https://local.slidetherapy.com'
+if (nodeEnv === 'preview') {
+  domain = 'http://preview.slidetherapy.com.s3-website-us-west-2.amazonaws.com'
+} else if (nodeEnv === 'production') {
+  domain = 'https://slidetherapy.com'
+}
 
 module.exports = {
   entry: [
@@ -15,7 +22,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin([outputDir], {
       exclude: [
-        'images'
+        // 'images'
       ]
     }),
     new StaticSiteGeneratorPlugin({
@@ -31,6 +38,7 @@ module.exports = {
       ],
       locals: {
         title: 'Slide Therapy',
+        domain: domain,
         isProd: isProd
       }
     }),

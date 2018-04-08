@@ -1,8 +1,34 @@
 {
-  "/": "Slide Therapy",
-  "/about": "Slide Therapy: About",
-  "/tips": "Slide Therapy: Tips",
-  "/terms": "Slide Therapy: Terms of Use",
-  "/privacy": "Slide Therapy: Privacy Policy",
-  "/download": "Slide Therapy: Download"
+  "/": {
+    "title": "Slide Therapy",
+    "canonicalUrl": "/"
+  },
+  "/buy/large-audiences": {
+    "title": "Slide Therapy: Large Audiences",
+    "canonicalUrl": "/"
+  },
+  "/buy/small-audiences": {
+    "title": "Slide Therapy: Small Audiences",
+    "canonicalUrl": "/"
+  },
+  "/buy/solitary-audiences": {
+    "title": "Slide Therapy: Solitary Audiences",
+    "canonicalUrl": "/"
+  },
+  "/about": {
+    "title": "Slide Therapy: About"
+  },
+  "/tips": {
+    "title": "Slide Therapy: Tips"
+  },
+  "/terms": {
+    "title": "Slide Therapy: Terms of Use"
+  },
+  "/privacy": {
+    "title": "Slide Therapy: Privacy Policy"
+  },
+  "/download": {
+    "title": "Slide Therapy: Download",
+    "noIndex": true
+  }
 }
