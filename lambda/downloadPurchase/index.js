@@ -33,6 +33,9 @@ exports.handler = (event, context, callback) => {
 
 function downloadOwned (stripe, oid, email) {
   return getOrder(stripe, oid).then(orderItem => {
+    if (!orderItem || !orderItem.parent) {
+      return new Error('no orderItem data')
+    }
     return getSignedUrl(orderItem.parent)
   })
 }
@@ -41,6 +44,9 @@ function downloadWithToken (stripe, token) {
   return decrypt(token).then(jsonToken => {
     // console.log('jsonToken', jsonToken);
     return getOrder(stripe, jsonToken.oid).then(orderItem => {
+      if (!orderItem || !orderItem.parent) {
+        return new Error('no orderItem data')
+      }
       return getSignedUrl(orderItem.parent)
     })
   })
@@ -66,6 +72,8 @@ function getOrder (stripe, oid) {
     }
     if (stripeOrder.status === 'paid') {
       orderUpdate.status = 'fulfilled'
+    } else if (stripeOrder.status !== 'fulfilled') {
+      return new Error('Only paid orders can be downloaded')
     }
     return stripe.orders.update(oid, orderUpdate).then(() => {
       return orderItem
@@ -87,6 +95,9 @@ function decrypt (token, password) {
 
 function getSignedUrl (sku) {
   console.log('getSignedUrl', sku)
+  if (!sku) {
+    return ''
+  }
   const skuData = skus[sku]
   let baseUrl = `https://${process.env.download}${skuData.download_path}`
   let now = new Date()
