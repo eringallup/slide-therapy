@@ -15,6 +15,7 @@ export default class Html extends React.Component {
     const docTitle = page.title || 'Slide Therapy'
     const ogImage = page.ogImage || 'http://preview.slidetherapy.com.s3-website-us-west-2.amazonaws.com/images/home/topimage1.jpg'
     const ogType = page.ogType || 'website'
+    const ogDescription = page.ogDescription !== undefined ? page.ogDescription : 'Expert-Designed PowerPoint Templates with built-in mentoring'
     const ogUrl = this.state.context.domain + this.state.context.path
     let canonicalUrl = ogUrl
     if (page.canonicalUrl) {
@@ -38,6 +39,8 @@ export default class Html extends React.Component {
         <meta property="og:image" content={ogImage} />
         <meta property="og:type" content={ogType} />
         <meta property="og:url" content={ogUrl} />
+        <meta property="og:description" content={ogDescription} />
+        <meta name="description" content={ogDescription} />
         <link href={`/${this.state.css[0]}`} rel="stylesheet" type="text/css" />
       </head>
       <body>
