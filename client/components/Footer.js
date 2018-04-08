@@ -15,9 +15,9 @@ export default class Footer extends React.Component {
             <p className="d-block my-1 font-size-base font-family-serif font-italic">All rights reserved.</p>
             <p className="d-block mb-0">
               <small>
-                <a href="/terms/index.html">Terms of Use</a>
+                <a href="/terms">Terms of Use</a>
                 <span className="text-secondary">&nbsp;&bull;&nbsp;</span>
-                <a href="/privacy/index.html">Privacy Policy</a>
+                <a href="/privacy">Privacy Policy</a>
               </small>
             </p>
           </div>

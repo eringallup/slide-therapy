@@ -53,13 +53,13 @@ export default class Header extends React.Component {
               className="nav-link"
             >Templates</NavLink>
             <NavLink
-              to="/tips/index.html"
+              to="/tips"
               suppressHydrationWarning
               activeClassName="active"
               className="nav-link"
             >Tips</NavLink>
             <NavLink
-              to="/about/index.html"
+              to="/about"
               suppressHydrationWarning
               activeClassName="active"
               className="nav-link"
