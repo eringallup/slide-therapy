@@ -2,11 +2,15 @@ const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const clientDir = path.resolve(__dirname, 'client')
 const outputDir = path.resolve(clientDir, 'dist')
 
-const nodeEnv = process && process.env && process.env.NODE_ENV
+const processEnv = process && process.env
+const nodeEnv = processEnv.NODE_ENV
+const processImages = processEnv.ST_IMAGES === 'true'
 const isProd = nodeEnv === 'production'
+
 let domain = 'https://local.slidetherapy.com'
 if (nodeEnv === 'preview') {
   domain = 'http://preview.slidetherapy.com.s3-website-us-west-2.amazonaws.com'
@@ -14,36 +18,44 @@ if (nodeEnv === 'preview') {
   domain = 'https://slidetherapy.com'
 }
 
+let plugins = [
+  new CleanWebpackPlugin([outputDir], {
+    exclude: processImages ? [] : ['images']
+  }),
+  new StaticSiteGeneratorPlugin({
+    crawl: true,
+    globals: {
+      StripeCheckout: {
+        configure: () => {}
+      }
+    },
+    paths: [
+      '/',
+      '/download'
+    ],
+    locals: {
+      title: 'Slide Therapy',
+      domain: domain,
+      isProd: isProd
+    }
+  }),
+  new ExtractTextPlugin('styles-[contenthash].css')
+]
+
+if (processImages) {
+  plugins.push(new CopyWebpackPlugin([{
+    from: path.resolve(clientDir, 'images'),
+    to: path.resolve(outputDir, 'images'),
+    flatten: false
+  }]))
+}
+
 module.exports = {
   entry: [
     'whatwg-fetch',
     './client/index.js'
   ],
-  plugins: [
-    new CleanWebpackPlugin([outputDir], {
-      exclude: [
-        // 'images'
-      ]
-    }),
-    new StaticSiteGeneratorPlugin({
-      crawl: true,
-      globals: {
-        StripeCheckout: {
-          configure: () => {}
-        }
-      },
-      paths: [
-        '/',
-        '/download'
-      ],
-      locals: {
-        title: 'Slide Therapy',
-        domain: domain,
-        isProd: isProd
-      }
-    }),
-    new ExtractTextPlugin('styles-[contenthash].css')
-  ],
+  plugins: plugins,
   output: {
     filename: 'bundle-[chunkhash].js',
     path: outputDir,
