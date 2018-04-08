@@ -5,6 +5,7 @@ import ReactDOMServer from 'react-dom/server'
 import { BrowserRouter, StaticRouter } from 'react-router-dom'
 import Routes from 'components/Routes'
 import Html from 'components/Html'
+import pageData from 'pages.json'
 import dataStore from 'store'
 
 const isProd = process && process.env && process.env.NODE_ENV === 'production'
@@ -12,6 +13,7 @@ const isProd = process && process.env && process.env.NODE_ENV === 'production'
 if (typeof document !== 'undefined') {
   window.Vault = require('vault.js')
   window.$ = require('jquery')
+  window.setPageTitle = setPageTitle
   require('bootstrap')
   require('whatwg-fetch')
   require('./vendor/scrollIt.js')
@@ -28,6 +30,16 @@ function init () {
   setupAnalytics()
   setupStripe(10)
   ReactDOM.hydrate(<BrowserRouter><Routes /></BrowserRouter>, document.querySelector('#app'))
+}
+
+function setPageTitle (state, title) {
+  if (title) {
+    document.title = title
+  } else if (state) {
+    const pathname = state.location.pathname.replace(/.+\/$/, '')
+    const page = pageData[pathname]
+    document.title = (page && page.title) || 'Slide Therapy'
+  }
 }
 
 function setupAnalytics () {
@@ -91,6 +103,7 @@ function setupStripe (attempt) {
 }
 
 export default locals => {
+  global.setPageTitle = () => {}
   const assets = Object.keys(locals.webpackStats.compilation.assets)
   const css = assets.filter(value => value.match(/\.css$/))
   const js = assets.filter(value => value.match(/\.js$/))

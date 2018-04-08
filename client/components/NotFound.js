@@ -6,9 +6,7 @@ export default class NotFound extends React.Component {
     this.state = props
   }
   componentWillMount () {
-    if (typeof document !== 'undefined') {
-      document.title = 'Slide Therapy: Page Not Found'
-    }
+    setPageTitle(null, 'Slide Therapy: Page Not Found')
   }
   componentDidMount () {
     analytics.page('Not Found')

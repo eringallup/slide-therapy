@@ -1,5 +1,4 @@
 import React from 'react'
-import pageData from 'pages.json'
 
 export default class Terms extends React.Component {
   constructor (props) {
@@ -7,9 +6,7 @@ export default class Terms extends React.Component {
     this.state = props
   }
   componentWillMount () {
-    if (typeof document !== 'undefined') {
-      document.title = pageData[this.state.location.pathname].title
-    }
+    setPageTitle(this.state)
   }
   componentDidMount () {
     analytics.page('Terms')

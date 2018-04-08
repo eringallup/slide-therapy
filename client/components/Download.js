@@ -1,6 +1,5 @@
 import React from 'react'
 import qs from 'qs'
-import pageData from 'pages.json'
 // import skus from '../../skus.json'
 
 export default class Download extends React.Component {
@@ -11,9 +10,7 @@ export default class Download extends React.Component {
     })
   }
   componentWillMount () {
-    if (typeof document !== 'undefined') {
-      document.title = pageData[this.state.location.pathname].title
-    }
+    setPageTitle(this.state)
   }
   componentDidMount () {
     let queryParams = qs.parse(location.search.substring(1))

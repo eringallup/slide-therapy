@@ -12,7 +12,8 @@
     "fetch": true,
     "$": true,
     "Vault": true,
-    "analytics": true
+    "analytics": true,
+    "setPageTitle": true
   },
   "rules": {
     "no-console": 0,
