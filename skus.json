@@ -8,7 +8,7 @@
     "sku": 1,
     "amountInCents": 3900,
     "displayPrice": 39,
-    "download_path": "/large-audiences.ppt",
+    "download_path": "/Slide_Therapy-Large_Audiences.zip",
     "previewSlideCount": 31
   },
   "2": {
@@ -20,7 +20,7 @@
     "sku": 2,
     "amountInCents": 3900,
     "displayPrice": 39,
-    "download_path": "/small-audiences.ppt",
+    "download_path": "/Slide_Therapy-Small_Audiences.zip",
     "previewSlideCount": 27
   },
   "3": {
@@ -32,7 +32,7 @@
     "sku": 3,
     "amountInCents": 3900,
     "displayPrice": 39,
-    "download_path": "/solitary-audiences.ppt",
+    "download_path": "/Slide_Therapy-Solitary_Audiences.zip",
     "previewSlideCount": 28
   },
   "4": {
@@ -43,6 +43,6 @@
     "sku": 4,
     "amountInCents": 9900,
     "displayPrice": 99,
-    "download_path": "/all-audiences.zip"
+    "download_path": "/Slide_Therapy-All_Audiences.zip"
   }
 }
