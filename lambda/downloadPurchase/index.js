@@ -88,10 +88,10 @@ function decrypt (token, password) {
 function getSignedUrl (sku) {
   console.log('getSignedUrl', sku)
   const skuData = skus[sku]
-  let baseUrl = 'https://' + process.env.download + '/test.txt?path=' + skuData.download_path
+  let baseUrl = `https://${process.env.download}${skuData.download_path}`
   let now = new Date()
   let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 15)) / 1000)
-  let expires = '&Expires=' + expiresUtc
+  let expires = '?Expires=' + expiresUtc
 
   let policyStatementJson = JSON.stringify({
     Statement: [{
