@@ -180,8 +180,8 @@ export default class Templates extends React.Component {
           >
             <img
               className="d-block position-absolute w-100 fill-parent"
-              data-src={i > 3 ? `/images/previews/${item.slug}/preview-${i}.png` : ''}
-              src={i < 4 ? `/images/previews/${item.slug}/preview-${i}.png` : ''}
+              data-src={i > 3 ? `/images/previews/${item.slug}/Preview-${i}.png` : ''}
+              src={i < 4 ? `/images/previews/${item.slug}/Preview-${i}.png` : ''}
               alt=""
             />
           </div>)
