@@ -1,9 +1,15 @@
 import React from 'react'
+import titles from 'pages.json'
 
 export default class Privacy extends React.Component {
   constructor (props) {
     super(props)
     this.state = props
+  }
+  componentWillMount () {
+    if (typeof document !== 'undefined') {
+      document.title = titles[this.state.location.pathname]
+    }
   }
   componentDidMount () {
     analytics.page('Privacy')

@@ -1,5 +1,6 @@
 import React from 'react'
 import qs from 'qs'
+import titles from 'pages.json'
 // import skus from '../../skus.json'
 
 export default class Download extends React.Component {
@@ -8,6 +9,11 @@ export default class Download extends React.Component {
     this.state = Object.assign({}, props, {
       isProd: process && process.env && process.env.NODE_ENV === 'production'
     })
+  }
+  componentWillMount () {
+    if (typeof document !== 'undefined') {
+      document.title = titles[this.state.location.pathname]
+    }
   }
   componentDidMount () {
     let queryParams = qs.parse(location.search.substring(1))

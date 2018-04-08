@@ -96,6 +96,6 @@ export default locals => {
   const js = assets.filter(value => value.match(/\.js$/))
   return ReactDOMServer.renderToString(
     <StaticRouter location={locals.path} context={locals}>
-      <Html js={js} css={css} title={locals.title} context={locals}><Routes context={locals} /></Html>
+      <Html js={js} css={css} context={locals}><Routes context={locals} /></Html>
     </StaticRouter>)
 }

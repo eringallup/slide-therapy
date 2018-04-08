@@ -1,14 +1,19 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import titles from 'pages.json'
 
 export default class Html extends React.Component {
   constructor (props) {
     super(props)
+    if (props.context) {
+      props.context.title = titles[props.context.path] || 'Slide Therapy'
+    }
     this.state = props
   }
   render () {
     return <html lang="en" className="no-js">
       <head>
-        <title>{this.state.title}</title>
+        <title>{this.state.context.title}</title>
         <link rel="icon" href="/images/favicon1.png" type="image/png" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -25,4 +30,8 @@ export default class Html extends React.Component {
       </body>
     </html>
   }
+}
+
+Html.propTypes = {
+  context: PropTypes.object
 }
