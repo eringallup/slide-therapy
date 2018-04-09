@@ -295,7 +295,7 @@ export default class Templates extends React.Component {
         </div>
       </div>
       <div id="start" className="bg-light">
-        <div className="container py-5">
+        <div className="container pt-5">
           <div className="row">
             <div className="col text-center">
               <h3>Communicate&nbsp;Clearly. Work&nbsp;Faster. <span className="d-none d-md-block" />Look&nbsp;Refined.</h3>
@@ -343,6 +343,7 @@ export default class Templates extends React.Component {
             </div>
           </div>
         </div>
+        <div className="bg-light container">{templates}</div>
         <div
           id="templates"
           itemScope itemType="http://schema.org/Product"
@@ -370,7 +371,6 @@ export default class Templates extends React.Component {
             >Buy</Link>
           </div>
         </div>
-        <div className="bg-light container pb-5">{templates}</div>
       </div>
     </section>
   }
