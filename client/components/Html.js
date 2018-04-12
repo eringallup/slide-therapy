@@ -41,6 +41,7 @@ export default class Html extends React.Component {
         <meta property="og:url" content={ogUrl} />
         <meta property="og:description" content={ogDescription} />
         <meta name="description" content={ogDescription} />
+        <meta name="google-site-verification" content="mteVRfk1wHWDnObgrF2MVv1Yzy8BqbKO5KB_DAU3cPM" />
         <link href={`/${this.state.css[0]}`} rel="stylesheet" type="text/css" />
       </head>
       <body>
