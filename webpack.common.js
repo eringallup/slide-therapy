@@ -1,6 +1,7 @@
 const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const CriticalPlugin = require('webpack-plugin-critical').CriticalPlugin
+// const CriticalPlugin = require('webpack-plugin-critical').CriticalPlugin
+const HtmlCriticalPlugin = require('html-critical-webpack-plugin')
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -45,11 +46,24 @@ let plugins = [
 ]
 
 if (isPreview || isProd) {
-  plugins.push(new CriticalPlugin({
+  // plugins.push(new CriticalPlugin({
+  //   src: 'index.html',
+  //   inline: true,
+  //   minify: true,
+  //   dest: 'index.html'
+  // }))
+  plugins.push(new HtmlCriticalPlugin({
+    base: outputDir,
     src: 'index.html',
+    dest: 'index.html',
     inline: true,
     minify: true,
-    dest: 'index.html'
+    // extract: true,
+    width: 2000,
+    height: 3000,
+    penthouse: {
+      blockJSRequests: false
+    }
   }))
 }
 
