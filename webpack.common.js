@@ -1,5 +1,7 @@
 const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+// const HtmlCriticalPlugin = require('html-critical-webpack-plugin')
+const CriticalPlugin = require('webpack-plugin-critical').CriticalPlugin
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -10,11 +12,12 @@ const processEnv = process && process.env
 const nodeEnv = processEnv.NODE_ENV
 const processImages = processEnv.ST_IMAGES === 'true'
 const isProd = nodeEnv === 'production'
+const isPreview = nodeEnv === 'preview'
 
 let domain = 'https://local.slidetherapy.com'
-if (nodeEnv === 'preview') {
+if (isPreview) {
   domain = 'http://preview.slidetherapy.com.s3-website-us-west-2.amazonaws.com'
-} else if (nodeEnv === 'production') {
+} else if (isProd) {
   domain = 'https://slidetherapy.com'
 }
 
@@ -41,6 +44,15 @@ let plugins = [
   }),
   new ExtractTextPlugin('styles-[contenthash].css')
 ]
+
+if (isPreview || isProd) {
+  plugins.push(new CriticalPlugin({
+    src: 'index.html',
+    inline: true,
+    minify: true,
+    dest: 'index.html'
+  }))
+}
 
 if (processImages) {
   plugins.push(new CopyWebpackPlugin([{
@@ -77,7 +89,10 @@ module.exports = {
       use: ExtractTextPlugin.extract({
         fallback: 'style-loader',
         use: [{
-          loader: 'css-loader'
+          loader: 'css-loader',
+          options: {
+            minimize: false
+          }
         }, {
           loader: 'sass-loader'
         }]

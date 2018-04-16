@@ -34,7 +34,9 @@ export default class Header extends React.Component {
     return <header className="container">
       <div className="row">
         <div className="col-md-5 pt-3 py-md-3">
-          <h1 className="m-0 text-center text-md-left"><Link to="/"><img className="img-fluid" src="/images/slide-therapy-logo.png" alt="Slide Therapy" width="222" height="39" /></Link></h1>
+          <h1 className="m-0 text-center text-md-left" style={{
+            minHeight: '39px'
+          }}><Link to="/"><img className="img-fluid" src="/images/slide-therapy-logo.png" alt="Slide Therapy" width="222" height="39" /></Link></h1>
         </div>
         <div className="col-md-7 d-flex justify-content-center justify-content-md-end">
           <nav className={`main-nav nav align-items-center justify-content-center ${this.state.showDownload ? ' has-download' : ''}`}>
