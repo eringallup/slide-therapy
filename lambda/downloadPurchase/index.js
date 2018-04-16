@@ -101,7 +101,8 @@ function getSignedUrl (sku) {
   const skuData = skus[sku]
   let baseUrl = `https://${process.env.download}${skuData.download_path}`
   let now = new Date()
-  let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 15)) / 1000)
+  // expire in 5 minutes
+  let expiresUtc = Math.round(new Date(now.valueOf() + (1000 * 300)) / 1000)
   let expires = '?Expires=' + expiresUtc
 
   let policyStatementJson = JSON.stringify({
