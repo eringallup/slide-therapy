@@ -72,7 +72,7 @@ const tips = [{
   image: '/images/tips/tip5.png'
 }, {
   title: 'Do keep it one thought per slide.',
-  body: 'For large audiences, rather than condense all of your thoughts into a minimum of slides, spread your message out. This aids in richer storytelling and audience comprehension and gives you room to illustrate your points.',
+  body: 'For large audiences, rather than condense all of your thoughts into a minimum of slides, spread your message out. This aids in richer storytelling, audience comprehension and gives you room to illustrate your points.',
   image: '/images/tips/tip6.png'
 }, {
   title: 'Don\'t use the automatic bullets.',

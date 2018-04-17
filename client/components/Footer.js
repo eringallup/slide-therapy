@@ -13,11 +13,13 @@ export default class Footer extends React.Component {
             <p className="mb-1 h3 font-size-base">&copy;{new Date().getFullYear()}</p>
             <a className="h3 mb-1 font-size-base" target="_blank" rel="noopener noreferrer" href="http://nonepercent.com">The Nøne Percent LLC</a>
             <p className="d-block my-1 font-size-base font-family-serif font-italic">All rights reserved.</p>
-            <p className="d-block mb-0">
+            <p className="d-block my-1">
               <small>
                 <a href="/terms">Terms of Use</a>
                 <span className="text-secondary">&nbsp;&bull;&nbsp;</span>
                 <a href="/privacy">Privacy Policy</a>
+                <span className="text-secondary">&nbsp;&bull;&nbsp;</span>
+                <a href="mailto:hello@slidetherapy.com">Contact Us</a>
               </small>
             </p>
           </div>

@@ -31,7 +31,7 @@ export default class Html extends React.Component {
         <link rel="icon" href="/images/favicon3.png" type="image/png" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
         {noIndexTag}
         <link rel="canonical" href={canonicalUrl} />
         <link rel="apple-touch-icon" href={ogImage} />

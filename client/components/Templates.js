@@ -371,6 +371,10 @@ export default class Templates extends React.Component {
             >Buy</Link>
           </div>
         </div>
+        <div id="enterprise" className="text-center p-4">
+          <h3>Multi-User Licenses</h3>
+          please email us at <a href="mailto:hello@slidetherapy.com">hello@slidetherapy.com</a>
+        </div>
       </div>
     </section>
   }
