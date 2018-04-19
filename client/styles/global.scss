@@ -24,6 +24,10 @@ body {
   left: 0;
 }
 
+.break-word {
+  word-wrap: break-word;
+}
+
 .lead,
 .font-size-base {
   font-size: $font-size-base !important;
@@ -124,9 +128,14 @@ h4, .h4 {
   flex-grow: 1;
 }
 
-#terms h3,
-#privacy h3 {
-  letter-spacing: $letter-spacing-sm;
+#terms,
+#privacy {
+  h3 {
+    letter-spacing: $letter-spacing-sm;
+  }
+  a {
+    text-decoration: underline;
+  }
 }
 
 .st-uppercase {
