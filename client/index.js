@@ -31,7 +31,21 @@ function init () {
   htmlTag.classList.remove('no-js')
   setupAnalytics()
   setupStripe(10)
+  setupYouTube()
   ReactDOM.hydrate(<BrowserRouter><Routes /></BrowserRouter>, document.querySelector('#app'))
+}
+
+function setupYouTube () {
+  window.onYouTubeIframeAPIReady = () => {
+    dataStore.dispatch({
+      type: 'update',
+      youTubeReady: true
+    })
+  }
+  let tag = document.createElement('script')
+  tag.src = 'https://www.youtube.com/iframe_api'
+  const firstScriptTag = document.getElementsByTagName('script')[0]
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
 }
 
 function setPageTitle (state, title) {

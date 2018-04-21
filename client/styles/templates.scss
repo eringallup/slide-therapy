@@ -17,6 +17,14 @@
     @extend .position-relative;
     z-index: $z-sky;
   }
+  #video-player-cx {
+    z-index: $z-space;
+  }
+  .close-video-player {
+    @extend .position-absolute;
+    top: 1rem;
+    right: 1rem;
+  }
   .image-credit {
     @extend .position-absolute;
     @extend .h4;

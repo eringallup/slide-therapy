@@ -13,7 +13,8 @@
     "$": true,
     "Vault": true,
     "analytics": true,
-    "setPageTitle": true
+    "setPageTitle": true,
+    "YT": true
   },
   "rules": {
     "no-console": 0,

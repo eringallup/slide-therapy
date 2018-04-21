@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import skus from 'skus.json'
 import dataStore from 'store'
 
+// <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/3lMnxrDWejw" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen />
+
 export default class Templates extends React.Component {
   constructor (props) {
     super(props)
@@ -69,6 +71,9 @@ export default class Templates extends React.Component {
     }
     if (!this.state.stripeCheckout && currentState.stripeCheckout) {
       newState.stripeCheckout = currentState.stripeCheckout
+    }
+    if (!this.state.youTubeReady && currentState.youTubeReady) {
+      this.loadVideo()
     }
     this.setState(newState)
     if (window && newState.backgroundImage) {
@@ -165,6 +170,56 @@ export default class Templates extends React.Component {
           backgroundImage: backgroundImage
         })
       }
+    }
+  }
+  loadVideo () {
+    if (this.player || typeof document === 'undefined') {
+      return
+    }
+
+    this.videoPlayerCx = document.getElementById('video-player-cx')
+
+    if (!this.videoPlayerCx) {
+      setTimeout(() => this.loadVideo(), 500)
+      return
+    }
+
+    this.player = new YT.Player('video-player', {
+      width: '100%',
+      videoId: '3lMnxrDWejw',
+      playerVars: {
+        enablejsapi: 1,
+        modestbranding: 1,
+        autoplay: 0,
+        controls: 0
+      },
+      events: {
+        'onReady': e => {
+          analytics.track('Video Ready')
+          this.videoReady = true
+        },
+        'onStateChange': e => {
+          if (event.data === YT.PlayerState.PLAYING && !this.videoDone) {
+            this.videoDone = true
+            analytics.track('Video Done')
+          }
+        }
+      }
+    })
+  }
+  playVideo () {
+    // https://developers.google.com/youtube/player_parameters#Parameters
+    if (this.player) {
+      this.showVideo = true
+      this.player.playVideo()
+      analytics.track('Play Video')
+    }
+  }
+  stopVideo () {
+    if (this.player) {
+      this.player.stopVideo()
+      this.showVideo = false
+      analytics.track('Stop Video')
     }
   }
   render () {
@@ -283,7 +338,16 @@ export default class Templates extends React.Component {
                 to="/start"
                 className="btn btn-primary"
               >Start now</Link>
+              <div
+                className="d-block clickable mt-2"
+                hidden={!this.videoReady}
+                onClick={e => this.playVideo()}
+              >Play</div>
             </div>
+          </div>
+          <div id="video-player-cx" className={'position-absolute fill-parent align-content-center align-items-center ' + (this.showVideo ? 'd-flex' : 'd-none')}>
+            <span className="close-video-player" onClick={e => this.stopVideo()}>&times;</span>
+            <div id="video-player" />
           </div>
         </div>
       </div>
