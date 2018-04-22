@@ -167,25 +167,75 @@ export default class Templates extends React.Component {
       }
     }
   }
-  setupFullscreen () {
-    this.fullscreenConfig = {
-      fullscreenchange: 'fullscreenElement',
-      msfullscreenchange: 'msFullscreenElement',
-      mozfullscreenchange: 'mozFullScreen',
-      webkitfullscreenchange: 'webkitIsFullScreen'
+  fullscreenConfig () {
+    let element = document.body
+    if (element.requestFullScreen) {
+      return {
+        request: element.requestFullScreen,
+        change: 'fullscreenchange',
+        element: 'fullscreenElement',
+        exit: document.exitFullscreen
+      }
     }
-    for (var eventName in this.fullscreenConfig) {
+    if (element.webkitRequestFullScreen) {
+      return {
+        request: element.webkitRequestFullScreen,
+        change: 'webkitfullscreenchange',
+        element: 'webkitIsFullScreen',
+        exit: document.webkitExitFullscreen
+      }
+    }
+    if (element.mozRequestFullScreen) {
+      return {
+        request: element.mozRequestFullScreen,
+        change: 'mozfullscreenchange',
+        element: 'mozFullScreen',
+        exit: document.mozCancelFullScreen
+      }
+    }
+    if (element.msRequestFullScreen) {
+      return {
+        request: element.msRequestFullScreen,
+        change: 'msfullscreenchange',
+        element: 'msFullscreenElement',
+        exit: document.msExitFullscreen
+      }
+    }
+  }
+  setupFullscreen () {
+    if (typeof document !== 'undefined') {
+      const config = this.fullscreenConfig()
       let _onFullscreen = this.onFullscreen.bind(this)
-      document.addEventListener(eventName, _onFullscreen, false)
+      document.addEventListener(config.change, _onFullscreen, false)
       this.detach.push(() => {
-        document.removeEventListener(eventName, _onFullscreen, false)
+        document.removeEventListener(config.change, _onFullscreen, false)
       })
     }
   }
   onFullscreen (e, eventName) {
-    console.log('onFullscreen')
-    const element = this.fullscreenConfig[eventName]
-    this.isFullscreen = document[element]
+    if (typeof document !== 'undefined') {
+      // console.log('onFullscreen')
+      const config = this.fullscreenConfig()
+      this.isFullscreen = document[config.element]
+    }
+  }
+  exitFullscreen () {
+    if (typeof document === 'undefined') {
+      return
+    }
+    return new Promise((resolve, reject) => {
+      if (!this.isFullscreen) {
+        return true
+      }
+      const config = this.fullscreenConfig()
+      try {
+        config.exit()
+        return true
+      } catch (e) {
+        console.warn(e)
+        return e
+      }
+    })
   }
   loadVideo () {
     if (this.player || typeof document === 'undefined') {
@@ -202,7 +252,7 @@ export default class Templates extends React.Component {
     // https://developers.google.com/youtube/iframe_api_reference
     this.player = new YT.Player('video-player', {
       width: '100%',
-      videoId: 'dad-CTn7sgE',
+      videoId: 'elNu8aNyQRQ',
       playerVars: {
         enablejsapi: 1,
         modestbranding: 1,
@@ -226,11 +276,11 @@ export default class Templates extends React.Component {
             if (e.data === YT.PlayerState.ENDED) {
               // console.log('Video Done')
               analytics.track('Video Done', this.getVideoStats())
-              if (!this.isFullscreen) {
+              this.exitFullscreen().then(() => {
                 this.setState({
                   showVideo: false
                 })
-              }
+              })
             } else {
               this.trackTimer = setTimeout(() => this.trackScrub(e), 500)
             }
