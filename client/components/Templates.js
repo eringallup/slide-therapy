@@ -34,7 +34,6 @@ export default class Templates extends React.Component {
       this.detach.push(() => {
         window.removeEventListener('keydown', _onKeydown)
       })
-      this.setupFullscreen()
     }
     setPageTitle(this.state)
   }
@@ -202,35 +201,19 @@ export default class Templates extends React.Component {
       }
     }
   }
-  setupFullscreen () {
-    if (typeof document !== 'undefined') {
-      const config = this.fullscreenConfig()
-      let _onFullscreen = this.onFullscreen.bind(this)
-      document.addEventListener(config.change, _onFullscreen, false)
-      this.detach.push(() => {
-        document.removeEventListener(config.change, _onFullscreen, false)
-      })
-    }
-  }
-  onFullscreen (e, eventName) {
-    if (typeof document !== 'undefined') {
-      // console.log('onFullscreen')
-      const config = this.fullscreenConfig()
-      this.isFullscreen = document[config.element]
-    }
-  }
   exitFullscreen () {
     if (typeof document === 'undefined') {
       return
     }
     return new Promise((resolve, reject) => {
-      if (!this.isFullscreen) {
-        return true
-      }
       const config = this.fullscreenConfig()
+      // console.log(config.element, document[config.element])
+      if (!document[config.element]) {
+        return resolve()
+      }
       try {
         config.exit()
-        return true
+        return resolve()
       } catch (e) {
         console.warn(e)
         return e
@@ -272,7 +255,7 @@ export default class Templates extends React.Component {
             if (this.trackTimer) {
               clearTimeout(this.trackTimer)
             }
-            // console.log(e.data, YT.PlayerState.ENDED, this.isFullscreen)
+            // console.log(e.data, YT.PlayerState.ENDED)
             if (e.data === YT.PlayerState.ENDED) {
               // console.log('Video Done')
               analytics.track('Video Done', this.getVideoStats())
