@@ -27,6 +27,10 @@ export default class Templates extends React.Component {
   }
   componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
+    if (typeof window !== 'undefined') {
+      window.addEventListener('keydown', this.onKeydown.bind(this))
+      this.setupFullscreen()
+    }
     setPageTitle(this.state)
   }
   componentDidMount () {
@@ -44,6 +48,12 @@ export default class Templates extends React.Component {
   componentWillUnmount () {
     if (this._onSlide) {
       $(document).off('slide.bs.carousel', '#slide-preview', this._onSlide)
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('keydown', this.onKeydown.bind(this))
+        for (var eventName in this.fullscreenConfig) {
+          document.removeEventListener(eventName)
+        }
+      }
     }
     this.unsubscribe()
   }
@@ -172,6 +182,20 @@ export default class Templates extends React.Component {
       }
     }
   }
+  setupFullscreen () {
+    this.fullscreenConfig = {
+      fullscreenchange: 'fullscreenElement',
+      msfullscreenchange: 'msFullscreenElement',
+      mozfullscreenchange: 'mozFullScreen',
+      webkitfullscreenchange: 'webkitIsFullScreen'
+    }
+    for (var eventName in this.fullscreenConfig) {
+      document.addEventListener(eventName, () => {
+        const element = this.fullscreenConfig[eventName]
+        this.isFullscreen = document[element]
+      }, false)
+    }
+  }
   loadVideo () {
     if (this.player || typeof document === 'undefined') {
       return
@@ -191,35 +215,92 @@ export default class Templates extends React.Component {
         enablejsapi: 1,
         modestbranding: 1,
         autoplay: 0,
-        controls: 0
+        controls: 1
       },
       events: {
-        'onReady': e => {
+        onReady: e => {
           analytics.track('Video Ready')
-          this.videoReady = true
+          this.setState({
+            videoReady: true
+          })
         },
-        'onStateChange': e => {
-          if (event.data === YT.PlayerState.PLAYING && !this.videoDone) {
-            this.videoDone = true
-            analytics.track('Video Done')
+        onStateChange: e => {
+          if (e) {
+            if (this.trackTimer) {
+              clearTimeout(this.trackTimer)
+            }
+            // console.log(e.data, YT.PlayerState.ENDED, this.isFullscreen)
+            if (e.data === YT.PlayerState.ENDED) {
+              // console.log('Video Done')
+              analytics.track('Video Done', this.getVideoStats())
+              if (!this.isFullscreen) {
+                this.setState({
+                  showVideo: false
+                })
+              }
+            } else {
+              this.trackTimer = setTimeout(() => this.trackScrub(e), 500)
+            }
           }
         }
       }
     })
   }
-  playVideo () {
-    // https://developers.google.com/youtube/player_parameters#Parameters
-    if (this.player) {
-      this.showVideo = true
-      this.player.playVideo()
-      analytics.track('Play Video')
+  trackScrub (e) {
+    // console.log(e.data, YT.PlayerState)
+    switch (e.data) {
+    case YT.PlayerState.PLAYING:
+      if (this.player.getCurrentTime() >= 1) {
+        if (this.previousVideoState === 'paused') {
+          // console.log('Video Resume')
+          analytics.track('Video Resume', this.getVideoStats())
+        } else {
+          // console.log('Video Seek')
+          analytics.track('Video Seek', this.getVideoStats())
+        }
+      }
+      this.previousVideoState = 'playing'
+      break
+    case YT.PlayerState.PAUSED:
+      // console.log('Video Paused')
+      analytics.track('Video Paused', this.getVideoStats())
+      this.previousVideoState = 'paused'
+      break
     }
   }
-  stopVideo () {
-    if (this.player) {
+  getVideoStats () {
+    this.currentVideoTime = this.player.getCurrentTime().toFixed(0)
+    this.percentageWatched = ((this.currentVideoTime / this.player.getDuration()) * 100).toFixed(0)
+    if (this.percentageWatched === null) {
+      return
+    }
+    return {
+      'Seconds Played': this.currentVideoTime * 1,
+      'Percentage Watched': this.percentageWatched * 1
+    }
+  }
+  onKeydown (e) {
+    if (e && e.keyCode === 27) { // escape key
+      this.closeVideo()
+    }
+  }
+  startVideo () {
+    // https://developers.google.com/youtube/player_parameters#Parameters
+    if (this.player && !this.state.showVideo) {
+      this.setState({
+        showVideo: true
+      })
+      this.player.playVideo()
+      analytics.track('Start Video', this.getVideoStats())
+    }
+  }
+  closeVideo () {
+    if (this.player && this.state.showVideo) {
       this.player.stopVideo()
-      this.showVideo = false
-      analytics.track('Stop Video')
+      this.setState({
+        showVideo: false
+      })
+      analytics.track('Close Video', this.getVideoStats())
     }
   }
   render () {
@@ -337,16 +418,16 @@ export default class Templates extends React.Component {
                 onClick={e => this.scrollDown(e, 'start')}
                 to="/start"
                 className="btn btn-primary"
+                hidden
               >Start now</Link>
               <div
-                className="d-block clickable mt-2"
-                hidden={!this.videoReady}
-                onClick={e => this.playVideo()}
-              >Play</div>
+                className={'btn btn-primary' + (this.state.videoReady ? '' : ' link-disabled')}
+                onClick={e => this.startVideo()}
+              ><svg width="12" height="12" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" fill="white"><path d="M1576 927l-1328 738q-23 13-39.5 3t-16.5-36v-1472q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z" /></svg> See How</div>
             </div>
           </div>
-          <div id="video-player-cx" className={'position-absolute fill-parent align-content-center align-items-center ' + (this.showVideo ? 'd-flex' : 'd-none')}>
-            <span className="close-video-player" onClick={e => this.stopVideo()}>&times;</span>
+          <div id="video-player-cx" className="position-absolute fill-parent align-content-center align-items-center d-flex" hidden={!this.state.showVideo}>
+            <span className="close-video-player clickable" onClick={e => this.closeVideo()}>&times;</span>
             <div id="video-player" />
           </div>
         </div>

@@ -35,6 +35,7 @@ function init () {
   ReactDOM.hydrate(<BrowserRouter><Routes /></BrowserRouter>, document.querySelector('#app'))
 }
 
+// https://developers.google.com/youtube/iframe_api_reference
 function setupYouTube () {
   window.onYouTubeIframeAPIReady = () => {
     dataStore.dispatch({

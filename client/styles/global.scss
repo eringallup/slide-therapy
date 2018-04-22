@@ -28,6 +28,11 @@ body {
   word-wrap: break-word;
 }
 
+.link-disabled {
+  pointer-events: none;
+  opacity: .9;
+}
+
 .lead,
 .font-size-base {
   font-size: $font-size-base !important;
@@ -101,6 +106,8 @@ h4, .h4 {
   @extend .text-uppercase;
   font-size: $font-size-base;
   letter-spacing: $letter-spacing-md;
+  line-height: 1;
+  padding: .9rem 2rem;
   border-radius: 0;
 }
 

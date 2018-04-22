@@ -18,12 +18,14 @@
     z-index: $z-sky;
   }
   #video-player-cx {
+    background: $black;
     z-index: $z-space;
   }
   .close-video-player {
     @extend .position-absolute;
     top: 1rem;
     right: 1rem;
+    font-size: 1.5rem;
   }
   .image-credit {
     @extend .position-absolute;
