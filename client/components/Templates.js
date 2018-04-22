@@ -24,11 +24,16 @@ export default class Templates extends React.Component {
       }],
       heroReady: ''
     })
+    this.detach = []
   }
   componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
     if (typeof window !== 'undefined') {
-      window.addEventListener('keydown', this.onKeydown.bind(this))
+      let _onKeydown = this.onKeydown.bind(this)
+      window.addEventListener('keydown', _onKeydown)
+      this.detach.push(() => {
+        window.removeEventListener('keydown', _onKeydown)
+      })
       this.setupFullscreen()
     }
     setPageTitle(this.state)
@@ -36,43 +41,13 @@ export default class Templates extends React.Component {
   componentDidMount () {
     this.setStates()
     this.getImage()
-    setTimeout(() => {
-      analytics.page('Home', {
-        hero_image: this.state.backgroundImage.url
-      })
-    })
-    this._onSlide = this.onSlide.bind(this)
-    $(document).on('slide.bs.carousel', '#slide-preview', this._onSlide)
-    // this.scrollToSection()
+    this.setupCarousels()
   }
   componentWillUnmount () {
     if (this._onSlide) {
-      $(document).off('slide.bs.carousel', '#slide-preview', this._onSlide)
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('keydown', this.onKeydown.bind(this))
-        for (var eventName in this.fullscreenConfig) {
-          document.removeEventListener(eventName)
-        }
-      }
+      this.detach.forEach(fn => fn())
     }
     this.unsubscribe()
-  }
-  scrollToSection () {
-    // if (typeof document !== 'undefined') {
-    //   if (location.pathname === '/start') {
-    //     if (window.history.length <= 2) {
-    //       scrollIt(document.getElementById('start'), 200, 'easeInCubic')
-    //     }
-    //   } else if (/templates|buy/i.test(location.pathname)) {
-    //     if (window.pageYOffset < 10) {
-    //       scrollIt(document.getElementById('templates'), 200, 'easeInCubic')
-    //     }
-    //   } else if (location.pathname === '/') {
-    //     if (window.history.length > 1) {
-    //       scrollIt(document.body, 100, 'easeInCubic')
-    //     }
-    //   }
-    // }
   }
   setStates () {
     let currentState = dataStore.getState()
@@ -85,17 +60,20 @@ export default class Templates extends React.Component {
     if (!this.state.youTubeReady && currentState.youTubeReady) {
       this.loadVideo()
     }
-    this.setState(newState)
-    if (window && newState.backgroundImage) {
-      setTimeout(() => this.setBackgroundImage())
+    if (!this.state.backgroundImage && newState.backgroundImage) {
+      this.setBackgroundImage(newState)
     }
+    this.setState(newState)
   }
-  setBackgroundImage () {
-    // console.log('setBackgroundImage', this.state.backgroundImage)
-    if (this.state.backgroundImage) {
+  setBackgroundImage (state) {
+    // console.log('setBackgroundImage', state.backgroundImage)
+    if (typeof window !== 'undefined' && state && state.backgroundImage) {
       this.bgImagePreload = new Image()
       this.bgImagePreload.addEventListener('load', this.onBackgroundImageReady.bind(this))
-      this.bgImagePreload.src = this.state.backgroundImage.url
+      this.bgImagePreload.src = state.backgroundImage.url
+      analytics.page('Home', {
+        hero_image: state.backgroundImage.url
+      })
     }
   }
   onBackgroundImageReady () {
@@ -155,6 +133,13 @@ export default class Templates extends React.Component {
       deck: deck.title
     })
   }
+  setupCarousels () {
+    this._onSlide = this.onSlide.bind(this)
+    $(document).on('slide.bs.carousel', '#slide-preview', this._onSlide)
+    this.detach.push(() => {
+      $(document).off('slide.bs.carousel', '#slide-preview', this._onSlide)
+    })
+  }
   nextSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('next')
@@ -190,11 +175,17 @@ export default class Templates extends React.Component {
       webkitfullscreenchange: 'webkitIsFullScreen'
     }
     for (var eventName in this.fullscreenConfig) {
-      document.addEventListener(eventName, () => {
-        const element = this.fullscreenConfig[eventName]
-        this.isFullscreen = document[element]
-      }, false)
+      let _onFullscreen = this.onFullscreen.bind(this)
+      document.addEventListener(eventName, _onFullscreen, false)
+      this.detach.push(() => {
+        document.removeEventListener(eventName, _onFullscreen, false)
+      })
     }
+  }
+  onFullscreen (e, eventName) {
+    console.log('onFullscreen')
+    const element = this.fullscreenConfig[eventName]
+    this.isFullscreen = document[element]
   }
   loadVideo () {
     if (this.player || typeof document === 'undefined') {
@@ -217,7 +208,7 @@ export default class Templates extends React.Component {
         modestbranding: 1,
         autoplay: 0,
         controls: 1,
-        fs: 0
+        fs: 1
       },
       events: {
         onReady: e => {
