@@ -201,21 +201,23 @@ export default class Templates extends React.Component {
       return
     }
 
-    this.videoPlayerCx = document.getElementById('video-player-cx')
+    this.videoPlayerCx = document.getElementById('video-player-layer')
 
     if (!this.videoPlayerCx) {
       setTimeout(() => this.loadVideo(), 500)
       return
     }
 
+    // https://developers.google.com/youtube/iframe_api_reference
     this.player = new YT.Player('video-player', {
       width: '100%',
-      videoId: '3lMnxrDWejw',
+      videoId: 'dad-CTn7sgE',
       playerVars: {
         enablejsapi: 1,
         modestbranding: 1,
         autoplay: 0,
-        controls: 1
+        controls: 1,
+        fs: 0
       },
       events: {
         onReady: e => {
@@ -421,14 +423,31 @@ export default class Templates extends React.Component {
                 hidden
               >Start now</Link>
               <div
-                className={'btn btn-primary' + (this.state.videoReady ? '' : ' link-disabled')}
+                className={'btn-start-video btn btn-primary' + (this.state.videoReady ? '' : ' link-disabled')}
                 onClick={e => this.startVideo()}
               ><svg width="12" height="12" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" fill="white"><path d="M1576 927l-1328 738q-23 13-39.5 3t-16.5-36v-1472q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z" /></svg> See How</div>
             </div>
           </div>
-          <div id="video-player-cx" className="position-absolute fill-parent align-content-center align-items-center d-flex" hidden={!this.state.showVideo}>
+          <div id="video-player-layer" className="position-absolute fill-parent justify-content-center align-items-center d-flex" hidden={!this.state.showVideo}>
             <span className="close-video-player clickable" onClick={e => this.closeVideo()}>&times;</span>
-            <div id="video-player" />
+            <div id="video-player-cx" className="position-relative">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                width="1600"
+                height="900"
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '100%',
+                  background: '#dedede'
+                }}
+              ><rect width="1600" height="900" style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '100%',
+                  fill: '#DEDEDE'
+                }} /></svg>
+              <div id="video-player" />
+            </div>
           </div>
         </div>
       </div>

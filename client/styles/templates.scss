@@ -16,16 +16,48 @@
   .hero-content {
     @extend .position-relative;
     z-index: $z-sky;
+    .btn-start-video {
+      opacity: 1;
+      @include transition(opacity .2s linear);
+      &.link-disabled {
+        opacity: 0;
+      }
+    }
+  }
+  #video-player-layer {
+    background: rgba($black, .9);
+    @include media-breakpoint-up(sm) {
+      background: rgba($black, .6);
+    }
+    z-index: $z-space;
   }
   #video-player-cx {
-    background: $black;
-    z-index: $z-space;
+    width: 100%;
+    @include media-breakpoint-up(sm) {
+      width: 640px;
+    }
+    svg {
+      display: none;
+      @include media-breakpoint-up(sm) {
+        display: block;
+      }
+    }
+  }
+  #video-player {
+    @include media-breakpoint-up(sm) {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
   }
   .close-video-player {
     @extend .position-absolute;
-    top: 1rem;
+    top: 0;
     right: 1rem;
     font-size: 1.5rem;
+    @include media-breakpoint-up(sm) {
+      top: 1rem;
+    }
   }
   .image-credit {
     @extend .position-absolute;
