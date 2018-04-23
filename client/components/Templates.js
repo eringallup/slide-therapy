@@ -507,7 +507,7 @@ export default class Templates extends React.Component {
           </div>
           <div className="row pt-3 px-5">
             <div className="col">
-              <div className="mx-auto mx-md-0 d-flex flex-column flex-sm-row justify-content-center align-items-center align-items-sm-start">
+              <div className="mx-auto mx-md-0 d-flex flex-column flex-sm-row justify-content-center align-items-center align-items-stretch align-items-sm-start">
                 <div className="start-list mr-md-3">
                   <h4>Templates</h4>
                   <ol className="list-unstyled">
@@ -537,11 +537,9 @@ export default class Templates extends React.Component {
                     <li>Adding Maps</li>
                   </ol>
                 </div>
-                <div className="pl-5 d-none d-md-block align-items-start align-items-lg-center">
-                  <img style={{
-                    maxWidth: '30vw'
-                  }} className="img-fluid" src="/images/home/laptop3.png" alt="" />
-                </div>
+                <div className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
+                  backgroundImage: 'url(/images/home/laptop3.png)'
+                }} />
               </div>
             </div>
           </div>

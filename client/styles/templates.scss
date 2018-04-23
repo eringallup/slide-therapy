@@ -79,6 +79,17 @@
       min-width: 10rem;
     }
   }
+  .start-image {
+    background: url(/images/home/laptop3.png) top center no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 12rem;
+    min-width: 20rem;
+    max-width: 30vw;
+    @include media-breakpoint-up(lg) {
+      height: 18rem;
+    }
+  }
   h3 {
     line-height: $line-height-lg;
   }
