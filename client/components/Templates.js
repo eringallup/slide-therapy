@@ -540,7 +540,7 @@ export default class Templates extends React.Component {
                 <div className="pl-5 d-none d-md-block align-items-start align-items-lg-center">
                   <img style={{
                     maxWidth: '30vw'
-                  }} className="img-fluid" src="/images/home/laptop.png" alt="" />
+                  }} className="img-fluid" src="/images/home/laptop3.png" alt="" />
                 </div>
               </div>
             </div>
