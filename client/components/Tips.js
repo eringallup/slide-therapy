@@ -1,4 +1,5 @@
 import React from 'react'
+import LazyLoad from 'react-lazyload'
 
 export default class Tips extends React.Component {
   constructor (props) {
@@ -23,13 +24,15 @@ export default class Tips extends React.Component {
       }
       return <div key={index} className="tip py-4 px-2 p-sm-5 mb-5 d-flex flex-md-row flex-column-reverse" itemScope itemType="http://schema.org/BlogPosting">
         <div className="tip-image col-md-5 text-center align-self-center">
-          <img
-            itemProp="image"
-            className={`img-fluid mx-auto ${imgClass}`}
-            src={tip.image}
-            style={imgStyle}
-            alt=""
-          />
+          <LazyLoad height={200} offset={100} once>
+            <img
+              itemProp="image"
+              className={`img-fluid mx-auto ${imgClass}`}
+              src={tip.image}
+              style={imgStyle}
+              alt=""
+            />
+          </LazyLoad>
         </div>
         <div className="tip-content pb-3 pb-md-0 col-md-6">
           <span className="h3">Pro Tip #{index + 1}</span>
