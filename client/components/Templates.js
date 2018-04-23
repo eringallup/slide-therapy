@@ -22,7 +22,7 @@ export default class Templates extends React.Component {
         link: 'https://unsplash.com/@flenjoore'
       }, {
         url: '/images/home/topimage5.jpg',
-        position: 'bottom center',
+        position: 'center center',
         credit: 'Image: Davide Ragusa/Unsplash',
         link: 'https://unsplash.com/@davideragusa'
       }],
