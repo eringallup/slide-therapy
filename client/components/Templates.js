@@ -13,15 +13,18 @@ export default class Templates extends React.Component {
       backgroundImages: [{
         url: '/images/home/topimage1.jpg',
         position: 'top center',
-        credit: 'Image: Rawpixel/Unsplash'
+        credit: 'Image: Rawpixel/Unsplash',
+        link: 'https://unsplash.com/@rawpixel'
       }, {
         url: '/images/home/topimage4.jpg',
         position: 'center center',
-        credit: 'Image: Olu Eletu/Unsplash'
+        credit: 'Image: Olu Eletu/Unsplash',
+        link: 'https://unsplash.com/@flenjoore'
       }, {
-        url: '/images/home/topimage3d.jpg',
+        url: '/images/home/topimage5.jpg',
         position: 'bottom center',
-        credit: 'Image: Edwin Andrade/Unsplash'
+        credit: 'Image: Davide Ragusa/Unsplash',
+        link: 'https://unsplash.com/@davideragusa'
       }],
       heroReady: ''
     })
@@ -431,12 +434,14 @@ export default class Templates extends React.Component {
     })
     let heroImage = {}
     let imageCredit = ''
+    let imageLink = ''
     if (this.state.backgroundImage) {
       heroImage = {
         backgroundImage: `url(${this.state.backgroundImage.url})`,
         backgroundPosition: this.state.backgroundImage.position
       }
       imageCredit = this.state.backgroundImage.credit
+      imageLink = this.state.backgroundImage.link
     }
     return <section id="view-templates">
       <div className="hero-layer d-flex align-items-center">
@@ -445,7 +450,7 @@ export default class Templates extends React.Component {
           suppressHydrationWarning
           style={heroImage}
         />
-        <span suppressHydrationWarning className="image-credit">{imageCredit}</span>
+        <a target="_blank" href={imageLink} suppressHydrationWarning className="image-credit">{imageCredit}</a>
         <div className="container">
           <div className="row">
             <div className="hero-content col-sm-12 text-center">
