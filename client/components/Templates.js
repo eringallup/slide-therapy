@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import qs from 'qs'
 import skus from 'skus.json'
 import dataStore from 'store'
 
@@ -14,9 +15,9 @@ export default class Templates extends React.Component {
         position: 'top center',
         credit: 'Image: Rawpixel/Unsplash'
       }, {
-        url: '/images/home/topimage2.jpg',
+        url: '/images/home/topimage4.jpg',
         position: 'center center',
-        credit: 'Image: GaudiLab/Shutterstock'
+        credit: 'Image: Olu Eletu/Unsplash'
       }, {
         url: '/images/home/topimage3d.jpg',
         position: 'bottom center',
@@ -157,7 +158,16 @@ export default class Templates extends React.Component {
     let currentState = dataStore.getState()
     if (!this.state.backgroundImage && !currentState.backgroundImage) {
       const rnd = Math.floor(Math.random() * this.state.backgroundImages.length)
-      const backgroundImage = this.state.backgroundImages[rnd]
+      let backgroundImage = this.state.backgroundImages[rnd]
+      if (location && location.search) {
+        const queryParams = qs.parse(location.search.substring(1))
+        if (!isNaN(queryParams.bgImageIndex)) {
+          const bgImage = this.state.backgroundImages[queryParams.bgImageIndex]
+          if (bgImage) {
+            backgroundImage = bgImage
+          }
+        }
+      }
       if (typeof window !== 'undefined') {
         dataStore.dispatch({
           type: 'update',
