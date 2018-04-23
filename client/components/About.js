@@ -11,6 +11,9 @@ export default class About extends React.Component {
   componentDidMount () {
     analytics.page('About')
   }
+  billion (num) {
+    return num * 1000000000
+  }
   render () {
     return <section id="view-about" className="py-5">
       <div className="container">
@@ -27,7 +30,7 @@ export default class About extends React.Component {
             <h3>About Us</h3>
             <p>We are a product designer and a software engineer who teamed up to create The None Percent, a company focused on creating design solutions that keep an individual’s best interests in mind.</p>
 
-            <p>Because each of us is the 0.000000013333%.</p>
+            <p>Because each of us is the {((1 / this.billion(7.5)) * 100).toFixed(12)}&#37;.</p>
 
             <h3>Say Hello</h3>
             <p><a href="mailto:hello@slidetherapy.com">hello@slidetherapy.com</a></p>
