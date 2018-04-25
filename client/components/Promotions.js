@@ -25,7 +25,8 @@ export default class Promotions extends React.Component {
       .then(json => {
         console.log(json)
         this.setState({
-          formDisabled: false
+          formDisabled: false,
+          showPromotions: true
         })
       })
       .catch(console.error)
@@ -44,7 +45,7 @@ export default class Promotions extends React.Component {
   render () {
     return <section id="view-promotions" className="mt-5 py-5">
       <div className="container">
-        <div className="row">
+        <div className="row" hidden={this.state.showPromotions}>
           <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
             <h4>Promotions</h4>
             <p className="lead">Enter your contact information and get access to a free set of color palettes.</p>
@@ -84,6 +85,11 @@ export default class Promotions extends React.Component {
               </fieldset>
             </form>
             <p className="text-center" hidden={!this.state.formDisabled}>Just a moment...</p>
+          </div>
+        </div>
+        <div className="row" hidden={!this.state.showPromotions}>
+          <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
+            <h3><a href="/promotions/free-color-palettes">Free Color Palettes</a></h3>
           </div>
         </div>
       </div>
