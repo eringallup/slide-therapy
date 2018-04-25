@@ -34,7 +34,8 @@ let plugins = [
     },
     paths: [
       '/',
-      '/download'
+      '/download',
+      '/promotions'
     ],
     locals: {
       title: 'Slide Therapy',
