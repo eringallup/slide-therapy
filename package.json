@@ -50,6 +50,7 @@
     "jsdom": "^11.6.2",
     "json-loader": "^0.5.7",
     "lodash": "^4.17.5",
+    "minimist": "^1.2.0",
     "node-sass": "^4.7.2",
     "ppt-png": "^0.1.8",
     "sass-loader": "^6.0.7",
@@ -62,7 +63,7 @@
     "webpack-plugin-critical": "^1.0.0"
   },
   "scripts": {
-    "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js",
+    "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js --upload",
     "ses": "AWS_PROFILE=slide-therapy node ./ses.js",
     "products": "node ./products.js",
     "products-prod": "NODE_ENV=production node ./products.js",
