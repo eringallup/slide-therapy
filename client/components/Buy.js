@@ -6,12 +6,13 @@ import dataStore from 'store'
 export default class Buy extends React.Component {
   constructor (props) {
     super(props)
+    const isProd = process && process.env && process.env.NODE_ENV === 'production'
     this.state = Object.assign({}, {
       init: false,
       hasToken: false,
       checkoutClosed: false,
       checkoutSuccess: false,
-      isProd: process && process.env && process.env.NODE_ENV === 'production'
+      apiStage: isProd ? 'prod' : 'dev'
     }, props)
     this.setDeck()
   }
@@ -163,19 +164,25 @@ export default class Buy extends React.Component {
     analytics.track('Payment Info Entered')
     // this.saveEmail(token.email)
     // console.info('completePurchase', token)
-    const url = 'https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order'
+    const names = token.card && token.card.name && token.card.name.split(' ')
+    const firstName = names.shift()
+    const lastName = names.join(' ')
+    const url = `https://0423df6x19.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}`
+    const jsonData = {
+      email: token.email,
+      firstName: firstName,
+      lastName: lastName,
+      sku: this.deck.sku,
+      token: token.id
+    }
+    // console.log(url, jsonData)
     fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc',
-        'x-st-env': this.state.isProd ? 'prod' : 'dev'
+        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
       },
-      body: JSON.stringify({
-        email: token.email,
-        sku: this.deck.sku,
-        token: token.id
-      })
+      body: JSON.stringify(jsonData)
     }).then(response => response.json())
       .then(json => {
         const orderData = json.body
