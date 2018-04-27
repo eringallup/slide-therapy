@@ -11,11 +11,16 @@ import dataStore from 'store'
 
 const isProd = process && process.env && process.env.NODE_ENV === 'production'
 const segmentKey = isProd ? 'tplTpmOXufbHiEvqFxEvRhNRL7XQs6bE' : 'NmYeVJ3VplWfQs5243b4cD9BvcqmF6nF'
+let analyticsToTrack = []
 
 if (typeof document !== 'undefined') {
   window.Vault = require('vault.js')
   window.$ = require('jquery')
   window.setPageTitle = setPageTitle
+  window.stAnalytics = {
+    track: (name, properties) => handleAnalytics('track', name, properties),
+    page: (name, properties) => handleAnalytics('page', name, properties)
+  }
   require('bootstrap')
   require('whatwg-fetch')
   require('./vendor/scrollIt.js')
@@ -29,10 +34,31 @@ if (typeof document !== 'undefined') {
 function init () {
   const htmlTag = document.querySelector('html')
   htmlTag.classList.remove('no-js')
-  setupAnalytics()
-  setupStripe(10)
-  setupYouTube()
   ReactDOM.hydrate(<BrowserRouter><Routes /></BrowserRouter>, document.querySelector('#app'))
+  setupAnalytics(analyticsToTrack)
+  setupYouTube()
+  setupStripe(10)
+}
+
+function handleAnalytics (type, name, properties) {
+  // console.log('handleAnalytics', window.analytics !== undefined, type, name, properties)
+  if (window.analytics && window.analytics[type]) {
+    window.analytics[type](name, properties)
+    sendQueuedAnalytics()
+  } else {
+    analyticsToTrack.push({
+      type: type,
+      name: name,
+      properties: properties
+    })
+  }
+}
+
+function sendQueuedAnalytics () {
+  while (analyticsToTrack.length) {
+    const item = analyticsToTrack.shift()
+    handleAnalytics(item.type, item.name, item.properties)
+  }
 }
 
 // https://developers.google.com/youtube/iframe_api_reference
@@ -62,7 +88,7 @@ function setPageTitle (state, title) {
   }
 }
 
-function setupAnalytics () {
+function setupAnalytics (analyticsToTrack) {
   if (typeof window === 'undefined') {
     return
   }
@@ -79,6 +105,7 @@ function setupAnalytics () {
     analytics.load(segmentKey);
   }
   /* eslint-enable */
+  analytics.ready(() => sendQueuedAnalytics())
 }
 
 function setupStripe (attempt) {
