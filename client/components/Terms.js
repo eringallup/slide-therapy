@@ -9,7 +9,7 @@ export default class Terms extends React.Component {
     setPageTitle(this.state)
   }
   componentDidMount () {
-    analytics.page('Terms')
+    stAnalytics.page('Terms')
   }
   render () {
     // https://support.ecwid.com/hc/en-us/articles/207100249-English-Terms-and-Conditions-templates

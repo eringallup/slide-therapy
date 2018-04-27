@@ -9,7 +9,7 @@ export default class About extends React.Component {
     setPageTitle(this.state)
   }
   componentDidMount () {
-    analytics.page('About')
+    stAnalytics.page('About')
   }
   billion (num) {
     return num * 1000000000

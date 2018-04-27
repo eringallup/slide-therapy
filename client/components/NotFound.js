@@ -9,7 +9,7 @@ export default class NotFound extends React.Component {
     setPageTitle(null, 'Slide Therapy: Page Not Found')
   }
   componentDidMount () {
-    analytics.page('Not Found')
+    stAnalytics.page('Not Found')
   }
   render () {
     return <div className="container">

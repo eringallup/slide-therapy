@@ -19,7 +19,7 @@ export default class Buy extends React.Component {
   componentDidMount () {
     this.setStates()
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
-    analytics.page('Buy')
+    stAnalytics.page('Buy')
   }
   componentWillUnmount () {
     if (this.ellipsisTimeout) {
@@ -137,7 +137,7 @@ export default class Buy extends React.Component {
       billingAddress: true,
       amount: this.deck.amountInCents
     })
-    analytics.track('Checkout Started', this.orderTrackingData)
+    stAnalytics.track('Checkout Started', this.orderTrackingData)
   }
   getRevenue (amount) {
     const fee = (amount * 0.029) + 0.30
@@ -161,7 +161,7 @@ export default class Buy extends React.Component {
   }
   completePurchase (token) {
     this.showProcessing()
-    analytics.track('Payment Info Entered')
+    stAnalytics.track('Payment Info Entered')
     // this.saveEmail(token.email)
     // console.info('completePurchase', token)
     const names = token.card && token.card.name && token.card.name.split(' ')
@@ -194,7 +194,7 @@ export default class Buy extends React.Component {
           processing: false,
           checkoutSuccess: true
         })
-        analytics.track('Order Completed', Object.assign({}, this.orderTrackingData, {
+        stAnalytics.track('Order Completed', Object.assign({}, this.orderTrackingData, {
           orderId: orderData.oid
         }))
       })
@@ -208,13 +208,13 @@ export default class Buy extends React.Component {
           hasToken: false,
           token: undefined
         })
-        analytics.track('Ecommerce Error', {
+        stAnalytics.track('Ecommerce Error', {
           error: error
         })
       })
   }
   closeCheckout () {
-    analytics.track('Order Cancelled', this.orderTrackingData)
+    stAnalytics.track('Order Cancelled', this.orderTrackingData)
   }
   showModal (state, store) {
     this.setState(state)

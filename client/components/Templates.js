@@ -74,7 +74,7 @@ export default class Templates extends React.Component {
       this.bgImagePreload = new Image()
       this.bgImagePreload.addEventListener('load', this.onBackgroundImageReady.bind(this))
       this.bgImagePreload.src = state.backgroundImage.url
-      analytics.page('Home', {
+      stAnalytics.page('Home', {
         hero_image: state.backgroundImage.url
       })
     }
@@ -91,7 +91,7 @@ export default class Templates extends React.Component {
   scrollDown (e, elementId) {
     e.preventDefault()
     scrollIt(document.getElementById(elementId), 200, 'easeInCubic')
-    analytics.track('Start Now')
+    stAnalytics.track('Start Now')
   }
   showPreview (e, deck) {
     e.preventDefault()
@@ -101,7 +101,7 @@ export default class Templates extends React.Component {
     this.setState({
       preview: deck
     })
-    analytics.track('Show Preview', {
+    stAnalytics.track('Show Preview', {
       deck: deck.title
     })
   }
@@ -132,7 +132,7 @@ export default class Templates extends React.Component {
     this.setState({
       preview: undefined
     })
-    analytics.track('Close Preview', {
+    stAnalytics.track('Close Preview', {
       deck: deck.title
     })
   }
@@ -146,15 +146,17 @@ export default class Templates extends React.Component {
   nextSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('next')
-    analytics.track('Next Slide', {
-      deck: deck.title
+    stAnalytics.track('Next Slide', {
+      deck: deck.title,
+      slide: $('#slide-preview .carousel-item-next').index('#slide-preview .carousel-item')
     })
   }
   prevSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('prev')
-    analytics.track('Previous Preview', {
-      deck: deck.title
+    stAnalytics.track('Previous Slide', {
+      deck: deck.title,
+      slide: $('#slide-preview .carousel-item-prev').index('#slide-preview .carousel-item')
     })
   }
   getImage () {
@@ -258,7 +260,7 @@ export default class Templates extends React.Component {
       },
       events: {
         onReady: e => {
-          analytics.track('Video Ready')
+          stAnalytics.track('Video Ready')
           this.setState({
             videoReady: true
           })
@@ -274,7 +276,7 @@ export default class Templates extends React.Component {
             // console.log(e.data, YT.PlayerState.ENDED)
             if (e.data === YT.PlayerState.ENDED) {
               // console.log('Video Done')
-              analytics.track('Video Done', this.getVideoStats())
+              stAnalytics.track('Video Done', this.getVideoStats())
               this.exitFullscreen().then(() => {
                 this.setState({
                   showVideo: false
@@ -295,17 +297,17 @@ export default class Templates extends React.Component {
       if (this.player.getCurrentTime() >= 1) {
         if (this.previousVideoState === 'paused') {
           // console.log('Video Resume')
-          analytics.track('Video Resume', this.getVideoStats())
+          stAnalytics.track('Video Resume', this.getVideoStats())
         } else {
           // console.log('Video Seek')
-          analytics.track('Video Seek', this.getVideoStats())
+          stAnalytics.track('Video Seek', this.getVideoStats())
         }
       }
       this.previousVideoState = 'playing'
       break
     case YT.PlayerState.PAUSED:
       // console.log('Video Paused')
-      analytics.track('Video Paused', this.getVideoStats())
+      stAnalytics.track('Video Paused', this.getVideoStats())
       this.previousVideoState = 'paused'
       break
     }
@@ -341,7 +343,7 @@ export default class Templates extends React.Component {
           startVideoWhenReady: false
         })
         this.player.playVideo()
-        analytics.track('Start Video', this.getVideoStats())
+        stAnalytics.track('Start Video', this.getVideoStats())
       }
     } else {
       this.setState({
@@ -355,7 +357,7 @@ export default class Templates extends React.Component {
       this.setState({
         showVideo: false
       })
-      analytics.track('Close Video', this.getVideoStats())
+      stAnalytics.track('Close Video', this.getVideoStats())
     }
   }
   render () {

@@ -23,7 +23,7 @@ export default class Download extends React.Component {
       this.withToken(queryParams.t, queryParams.d === 'true')
       trackConfig.type = 'email'
     }
-    analytics.page('Download', trackConfig)
+    stAnalytics.page('Download', trackConfig)
   }
   ownedDeck (oid, email) {
     const url = `https://0423df6x19.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}?o=${oid}&e=${email}`

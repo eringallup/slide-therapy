@@ -12,7 +12,7 @@ export default class Promotions extends React.Component {
     setPageTitle(this.state)
   }
   componentDidMount () {
-    analytics.page('Promotions')
+    stAnalytics.page('Promotions')
     if (window.Vault) {
       const promotionsData = Vault.get('promotionsData')
       if (promotionsData) {

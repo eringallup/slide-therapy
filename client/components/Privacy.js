@@ -9,7 +9,7 @@ export default class Privacy extends React.Component {
     setPageTitle(this.state)
   }
   componentDidMount () {
-    analytics.page('Privacy')
+    stAnalytics.page('Privacy')
   }
   render () {
     // https://termsfeed.com/blog/privacy-policy-google-analytics/

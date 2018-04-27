@@ -13,6 +13,7 @@
     "$": true,
     "Vault": true,
     "analytics": true,
+    "stAnalytics": true,
     "setPageTitle": true,
     "YT": true
   },
