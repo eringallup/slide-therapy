@@ -1,0 +1,19 @@
+{
+  "name": "slide-therapy-lambda-purchase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "stripe": "^5.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jimmybyrum/slide-therapy.git"
+  },
+  "author": "James Byrum <me@jimmybyrum.com> (http://jimmybyrum.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jimmybyrum/slide-therapy/issues"
+  },
+  "homepage": "https://github.com/jimmybyrum/slide-therapy"
+}
