@@ -8,7 +8,10 @@ export default class Html extends React.Component {
     if (props.context) {
       props.context.page = pageData[props.context.path]
     }
-    this.state = props
+    const env = process && process.env && process.env.NODE_ENV
+    this.state = Object.assign({}, {
+      env: env || 'dev'
+    }, props)
   }
   render () {
     const page = this.state.context.page || {}
@@ -25,7 +28,7 @@ export default class Html extends React.Component {
     if (page.noIndex) {
       noIndexTag = <meta name="robots" content="noindex" />
     }
-    return <html lang="en" className="no-js">
+    return <html lang="en" className="no-js" data-env={this.state.env}>
       <head>
         <title>{docTitle}</title>
         <link rel="icon" href="/images/favicon3.png" type="image/png" />

@@ -152,6 +152,28 @@ h4, .h4 {
   letter-spacing: 1.78;
 }
 
+[data-env="preview"] header h1 a,
+[data-env="dev"] header h1 a{
+  @extend .position-relative;
+  &:after {
+    content: 'dev';
+    @extend .position-absolute;
+    @extend .d-inline-block;
+    letter-spacing: $letter-spacing-sm;
+    right: 40px;
+    bottom: -6px;
+    font-size: 10px;
+    padding: 2px 3px;
+    border-radius: 3px;
+    color: $white;
+    background: rgba(255, 0, 0, .8);
+  }
+}
+[data-env="preview"] header h1 a:after {
+  content: 'preview';
+  background: rgba(0, 0, 255, .8);
+}
+
 .main-nav {
   .nav-link {
     $navLinkSpacing: 1rem;
