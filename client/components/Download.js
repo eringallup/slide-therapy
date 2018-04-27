@@ -5,8 +5,9 @@ import qs from 'qs'
 export default class Download extends React.Component {
   constructor (props) {
     super(props)
+    const isProd = process && process.env && process.env.NODE_ENV === 'production'
     this.state = Object.assign({}, props, {
-      isProd: process && process.env && process.env.NODE_ENV === 'production'
+      apiStage: isProd ? 'prod' : 'dev'
     })
   }
   componentWillMount () {
@@ -25,7 +26,7 @@ export default class Download extends React.Component {
     analytics.page('Download', trackConfig)
   }
   ownedDeck (oid, email) {
-    const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?o=${oid}&e=${email}`
+    const url = `https://0423df6x19.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}?o=${oid}&e=${email}`
     this.http(url)
       .then(json => {
         let downloadUrl = json && json.body
@@ -39,7 +40,7 @@ export default class Download extends React.Component {
       .catch(console.error)
   }
   withToken (token, autoDownload) {
-    const url = `https://vgqi0l2sad.execute-api.us-west-2.amazonaws.com/prod/order?t=${token}`
+    const url = `https://0423df6x19.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}?t=${token}`
     this.http(url)
       .then(json => {
         let downloadUrl = json && json.body
@@ -60,8 +61,7 @@ export default class Download extends React.Component {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc',
-        'x-st-env': this.state.isProd ? 'prod' : 'dev'
+        'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
       }
     }).then(response => response.json())
   }
