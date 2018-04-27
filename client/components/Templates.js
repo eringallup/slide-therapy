@@ -262,6 +262,9 @@ export default class Templates extends React.Component {
           this.setState({
             videoReady: true
           })
+          if (this.state.startVideoWhenReady) {
+            this.startVideo()
+          }
         },
         onStateChange: e => {
           if (e) {
@@ -324,13 +327,26 @@ export default class Templates extends React.Component {
     }
   }
   startVideo () {
+    // console.info('startVideo')
     // https://developers.google.com/youtube/player_parameters#Parameters
-    if (this.player && !this.state.showVideo) {
+    if (this.player) {
+      if (typeof this.player.playVideo !== 'function') {
+        // seems like sometimes we get into a state where this.player
+        // is defined but this.player.playVideo isn't ready yet.
+        // Fine. We'll just try again in a few moments.
+        setTimeout(() => this.startVideo(), 100)
+      } else if (!this.state.showVideo) {
+        this.setState({
+          showVideo: true,
+          startVideoWhenReady: false
+        })
+        this.player.playVideo()
+        analytics.track('Start Video', this.getVideoStats())
+      }
+    } else {
       this.setState({
-        showVideo: true
+        startVideoWhenReady: true
       })
-      this.player.playVideo()
-      analytics.track('Start Video', this.getVideoStats())
     }
   }
   closeVideo () {
@@ -462,7 +478,7 @@ export default class Templates extends React.Component {
                 hidden
               >Start now</Link>
               <div
-                className={'btn-start-video btn btn-primary' + (this.state.videoReady ? '' : ' link-disabled')}
+                className="btn-start-video btn btn-primary"
                 onClick={e => this.startVideo()}
               ><svg width="12" height="12" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" fill="white"><path d="M1576 927l-1328 738q-23 13-39.5 3t-16.5-36v-1472q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z" /></svg> See How</div>
             </div>
