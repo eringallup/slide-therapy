@@ -5,6 +5,7 @@ exports.handler = (event, context, callback) => {
     email: event.email,
     first_name: event.first_name,
     last_name: event.last_name,
+    industry: event.industry,
     env: event.env
   }
 
@@ -30,7 +31,13 @@ async function customer (stripe, payload) {
   try {
     const existingCustomer = await getCustomerByEmail(stripe, payload)
     if (existingCustomer) {
-      return existingCustomer
+      return stripe.customers.update(existingCustomer.id, {
+        metadata: {
+          first_name: payload.first_name,
+          last_name: payload.last_name,
+          industry: payload.industry
+        }
+      })
     }
     return await createCustomer(stripe, payload)
   } catch (e) {
@@ -55,7 +62,8 @@ async function createCustomer (stripe, payload) {
     email: payload.email,
     metadata: {
       first_name: payload.first_name,
-      last_name: payload.last_name
+      last_name: payload.last_name,
+      industry: payload.industry
     }
   })
 }
