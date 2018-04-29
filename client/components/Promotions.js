@@ -17,9 +17,27 @@ export default class Promotions extends React.Component {
       const promotionsData = Vault.get('promotionsData')
       if (promotionsData) {
         this.email.value = promotionsData.email
-        this.firstName.value = promotionsData.first_name
-        this.lastName.value = promotionsData.last_name
+        this.firstName.value = promotionsData.firstName
+        this.lastName.value = promotionsData.lastName
+        this.industry.value = promotionsData.industry
+        this.industryOther.value = promotionsData.industryOther
+        this.setState(promotionsData)
       }
+    }
+  }
+  saveData () {
+    if (window.Vault) {
+      Vault.set('promotionsData', this.getData())
+    }
+    this.setState(this.getData())
+  }
+  getData () {
+    return {
+      email: this.email.value,
+      firstName: this.firstName.value,
+      lastName: this.lastName.value,
+      industry: this.industry.value,
+      industryOther: this.industryOther.value
     }
   }
   captureUser (e) {
@@ -28,13 +46,10 @@ export default class Promotions extends React.Component {
     })
     e.preventDefault()
     const url = `https://2t9ywzbd10.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}`
-    const postData = {
-      email: this.email.value,
-      first_name: this.firstName.value,
-      last_name: this.lastName.value
-    }
-    if (window.Vault) {
-      Vault.set('promotionsData', postData)
+    const postData = this.getData()
+    if (postData.industry === 'other') {
+      postData.industry = postData.industryOther
+      postData.industryOther = undefined
     }
     // console.log(url, postData)
     this.http(url, postData)
@@ -75,6 +90,7 @@ export default class Promotions extends React.Component {
                 <input
                   id="email"
                   ref={email => { this.email = email }}
+                  onBlur={e => this.saveData()}
                   className="form-control mb-3"
                   type="email"
                   placeholder="Email"
@@ -84,8 +100,9 @@ export default class Promotions extends React.Component {
                 <div className="form-group row">
                   <div className="col">
                     <input
-                      id="first_name"
+                      id="firstName"
                       ref={firstName => { this.firstName = firstName }}
+                      onBlur={e => this.saveData()}
                       className="form-control"
                       placeholder="First Name"
                       aria-label="First Name"
@@ -95,8 +112,9 @@ export default class Promotions extends React.Component {
                   </div>
                   <div className="col">
                     <input
-                      id="last_name"
+                      id="lastName"
                       ref={lastName => { this.lastName = lastName }}
+                      onBlur={e => this.saveData()}
                       className="form-control"
                       placeholder="Last Name"
                       aria-label="Last Name"
@@ -105,6 +123,36 @@ export default class Promotions extends React.Component {
                     />
                   </div>
                 </div>
+                <select
+                  id="industry"
+                  ref={industry => { this.industry = industry }}
+                  onChange={e => this.saveData()}
+                  className={'form-control mb-3'}
+                  placeholder="Industry"
+                  aria-label="Industry"
+                  required
+                >
+                  <option selected value="" className="text-muted">Industry</option>
+                  <option value="aerospace">Aerospace</option>
+                  <option value="business">Business</option>
+                  <option value="science-and-health">Science &amp; Health</option>
+                  <option value="beauty-and-fashion">Beauty &amp; Fashion</option>
+                  <option value="hospitality-and-travel">Hospitality &amp; Travel</option>
+                  <option value="home-and-wellness">Home &amp; Wellness</option>
+                  <option value="environmental">Environmental</option>
+                  <option value="other">Other</option>
+                </select>
+                <input
+                  id="industryOther"
+                  ref={industryOther => { this.industryOther = industryOther }}
+                  onBlur={e => this.saveData()}
+                  className="form-control mb-3"
+                  placeholder="Enter your industry"
+                  aria-label="Enter your industry"
+                  autoCapitalize="word"
+                  hidden={this.state.industry !== 'other'}
+                  required
+                />
                 <input type="submit" className="btn btn-primary btn-block" value="Submit" />
               </fieldset>
             </form>
