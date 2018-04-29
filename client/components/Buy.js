@@ -20,6 +20,9 @@ export default class Buy extends React.Component {
     this.setStates()
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
     stAnalytics.page('Buy')
+    stAnalytics.track('Viewed Checkout Step', {
+      step: 1
+    })
   }
   componentWillUnmount () {
     if (this.ellipsisTimeout) {
@@ -137,7 +140,13 @@ export default class Buy extends React.Component {
       billingAddress: true,
       amount: this.deck.amountInCents
     })
+    stAnalytics.track('Completed Checkout Step', {
+      step: 1
+    })
     stAnalytics.track('Checkout Started', this.orderTrackingData)
+    stAnalytics.track('Viewed Checkout Step', {
+      step: 2
+    })
   }
   getRevenue (amount) {
     const fee = (amount * 0.029) + 0.30
@@ -161,7 +170,13 @@ export default class Buy extends React.Component {
   }
   completePurchase (token) {
     this.showProcessing()
+    stAnalytics.track('Completed Checkout Step', {
+      step: 2
+    })
     stAnalytics.track('Payment Info Entered')
+    stAnalytics.track('Viewed Checkout Step', {
+      step: 3
+    })
     // this.saveEmail(token.email)
     // console.info('completePurchase', token)
     const names = token.card && token.card.name && token.card.name.split(' ')
@@ -197,6 +212,9 @@ export default class Buy extends React.Component {
         stAnalytics.track('Order Completed', Object.assign({}, this.orderTrackingData, {
           orderId: orderData.oid
         }))
+        stAnalytics.track('Completed Checkout Step', {
+          step: 3
+        })
       })
       .catch(error => {
         console.error(error)
