@@ -9,7 +9,21 @@
     "amountInCents": 3900,
     "displayPrice": 39,
     "download_path": "/Slide_Therapy-Large_Audiences.zip",
-    "previewSlideCount": 31
+    "previewSlideCount": 31,
+    "productAttributes": [
+      "code"
+    ],
+    "attributes": {
+      "code": "FULLPRICE"
+    },
+    "discountedSkus": [{
+      "sku": 5,
+      "amountInCents": 2900,
+      "displayPrice": 29,
+      "attributes": {
+        "code": "LA10OFF"
+      }
+    }]
   },
   "2": {
     "slug": "small-audiences",
@@ -21,7 +35,13 @@
     "amountInCents": 3900,
     "displayPrice": 39,
     "download_path": "/Slide_Therapy-Small_Audiences.zip",
-    "previewSlideCount": 27
+    "previewSlideCount": 27,
+    "productAttributes": [
+      "code"
+    ],
+    "attributes": {
+      "code": "FULLPRICE"
+    }
   },
   "3": {
     "slug": "solitary-audiences",
@@ -33,7 +53,13 @@
     "amountInCents": 3900,
     "displayPrice": 39,
     "download_path": "/Slide_Therapy-Solitary_Audiences.zip",
-    "previewSlideCount": 28
+    "previewSlideCount": 28,
+    "productAttributes": [
+      "code"
+    ],
+    "attributes": {
+      "code": "FULLPRICE"
+    }
   },
   "4": {
     "slug": "all-audiences",
@@ -43,6 +69,12 @@
     "sku": 4,
     "amountInCents": 9900,
     "displayPrice": 99,
-    "download_path": "/Slide_Therapy-All_Audiences.zip"
+    "download_path": "/Slide_Therapy-All_Audiences.zip",
+    "productAttributes": [
+      "code"
+    ],
+    "attributes": {
+      "code": "FULLPRICE"
+    }
   }
 }
