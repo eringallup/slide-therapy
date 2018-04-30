@@ -41,9 +41,7 @@ exports.handler = (event, context, callback) => {
     response.on('data', chunk => {
       console.log(`BODY: ${chunk}`)
     })
-    response.on('end', () => callback(null, {
-      statusCode: 200
-    }))
+    response.on('end', () => callback(null, cfRequest))
   })
 
   request.on('error', reqError => callback(reqError))
