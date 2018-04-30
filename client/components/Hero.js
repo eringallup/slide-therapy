@@ -277,11 +277,6 @@ export default class Home extends React.Component {
       stAnalytics.track('Close Video', this.getVideoStats())
     }
   }
-  trackDownload (e, type) {
-    stAnalytics.track('Free Download', {
-      type: type
-    })
-  }
   homepageHero () {
     let heroImage = {}
     let imageCredit = ''

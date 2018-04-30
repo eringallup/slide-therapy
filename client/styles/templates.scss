@@ -205,3 +205,15 @@
   @extend .d-inline-block;
   width: 3rem;
 }
+
+#view-free-color-palettes {
+  .hero-image {
+    background-image: url(/images/free/freecolorpalette2.jpg);
+    background-position: -114px -50px;
+    background-size: auto 900px;
+    @include media-breakpoint-up(xl) {
+      background-position: center -46px;
+      background-size: cover;
+    }
+  }
+}

@@ -64,6 +64,7 @@
   },
   "scripts": {
     "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js --upload",
+    "lambda-east": "AWS_PROFILE=slide-therapy-east node ./lambda.js --upload",
     "ses": "AWS_PROFILE=slide-therapy node ./ses.js",
     "products": "node ./products.js",
     "products-prod": "NODE_ENV=production node ./products.js",

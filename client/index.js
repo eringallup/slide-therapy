@@ -83,10 +83,13 @@ function setPageTitle (state, title) {
   if (title) {
     document.title = title
   } else if (state) {
-    let pathname = state.location.pathname.replace(/.+\/$/, '')
-    pathname = pathname.replace(/\/index\.html$/, '')
-    const page = pageData[pathname]
-    document.title = (page && page.title) || 'Slide Therapy'
+    const statePathname = state && state.location && state.location.pathname
+    if (statePathname) {
+      let pathname = statePathname.replace(/.+\/$/, '')
+      pathname = pathname.replace(/\/index\.html$/, '')
+      const page = pageData[pathname]
+      document.title = (page && page.title) || 'Slide Therapy'
+    }
   }
 }
 

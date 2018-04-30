@@ -1,19 +1,32 @@
 import React from 'react'
+import FreeColorPalettes from 'components/FreeColorPalettes'
+import qs from 'qs'
 
 export default class Promotions extends React.Component {
   constructor (props) {
     super(props)
-    const isProd = process && process.env && process.env.NODE_ENV === 'production'
-    this.state = Object.assign({}, props, {
-      apiStage: isProd ? 'prod' : 'dev'
-    })
+    this.state = props
   }
   componentWillMount () {
     setPageTitle(this.state)
+    let showPromotions = false
+    let pathname = this.state.staticContext && this.state.staticContext.path
+    if (typeof location !== 'undefined') {
+      pathname = location.pathname
+    }
+    const pathnameRegex = /\/free\/.+$/
+    showPromotions = pathnameRegex.test(pathname)
+    if (!showPromotions && typeof location !== 'undefined') {
+      const queryParams = qs.parse(location.search.substring(1))
+      showPromotions = queryParams.f !== undefined
+    }
+    this.setState({
+      showPromotions: showPromotions
+    })
   }
   componentDidMount () {
-    stAnalytics.page('Promotions')
-    if (window.Vault) {
+    if (!this.state.showPromotions && window.Vault) {
+      stAnalytics.page('Promotions')
       const promotionsData = Vault.get('promotionsData')
       if (promotionsData) {
         this.email.value = promotionsData.email
@@ -79,6 +92,9 @@ export default class Promotions extends React.Component {
     return fetch(url, config).then(response => response.json())
   }
   render () {
+    if (this.state.showPromotions) {
+      return <FreeColorPalettes />
+    }
     return <section id="view-promotions" className="py-5 bg-light">
       <div className="container">
         <div className="row" hidden={this.state.showPromotions}>
@@ -157,11 +173,6 @@ export default class Promotions extends React.Component {
               </fieldset>
             </form>
             <p className="text-center" hidden={!this.state.formDisabled}>Just a moment...</p>
-          </div>
-        </div>
-        <div className="row" hidden={!this.state.showPromotions}>
-          <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
-            <h3><a href="/free/color-palettes">Free Color Palettes</a></h3>
           </div>
         </div>
       </div>

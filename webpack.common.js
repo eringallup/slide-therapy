@@ -36,7 +36,8 @@ let plugins = [
       '/',
       '/download',
       '/promotions',
-      '/free'
+      '/free',
+      '/free/color-palettes'
     ],
     locals: {
       title: 'Slide Therapy',
