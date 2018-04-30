@@ -41,7 +41,9 @@ function init () {
 }
 
 function handleAnalytics (type, name, properties) {
-  // console.log('handleAnalytics', window.analytics !== undefined, type, name, properties)
+  if (!isProd && typeof window !== 'undefined' && window.Vault.get('debugAnalytics')) {
+    console.info('handleAnalytics', window.analytics !== undefined, type, name, properties)
+  }
   if (window.analytics && window.analytics[type]) {
     window.analytics[type](name, properties)
     sendQueuedAnalytics()
@@ -90,6 +92,10 @@ function setPageTitle (state, title) {
 
 function setupAnalytics (analyticsToTrack) {
   if (typeof window === 'undefined') {
+    return
+  }
+  if (!isProd) {
+    console.info('No analytics on not prod.')
     return
   }
   if (navigator.doNotTrack === '1') {
