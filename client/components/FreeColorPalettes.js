@@ -11,7 +11,7 @@ export default class FreeColorPalettes extends React.Component {
     setPageTitle(this.state)
   }
   componentDidMount () {
-    stAnalytics.page('Home')
+    stAnalytics.page('Free Color Palettes')
   }
   render () {
     return <section id="view-home">
