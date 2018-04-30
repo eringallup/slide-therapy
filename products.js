@@ -26,7 +26,7 @@ async.parallel({
     return _exit(errors)
   }
 
-  async.each(skus, (item, nextItem) => {
+  async.eachSeries(skus, (item, nextItem) => {
     const existingProduct = _.find(stripeData.products.data, stripeProduct => {
       return stripeProduct.metadata.slug === item.slug
     })
@@ -34,22 +34,36 @@ async.parallel({
     if (existingProduct) {
       updateProduct(existingProduct, item)
         .then(_product => onProduct(_product, item, stripeData))
-        .then(() => {
-          nextItem()
-        })
+        .then(() => nextItem())
         .catch(nextItem)
     } else {
       createProduct(item)
         .then(_product => onProduct(_product, item, stripeData))
-        .then(() => {
-          nextItem()
-        })
+        .then(() => nextItem())
         .catch(nextItem)
     }
   }, _exit)
 })
 
 function onProduct (stripeProduct, item, stripeData) {
+  return getOrCreateSku(item, stripeData, stripeProduct)
+    .then(() => addDiscountedSkus(item, stripeData, stripeProduct))
+}
+
+function addDiscountedSkus (item, stripeData, stripeProduct) {
+  return new Promise((resolve, reject) => {
+    async.eachSeries(item.discountedSkus, (discountedSku, nextDiscountedSku) => {
+      getOrCreateSku(discountedSku, stripeData, stripeProduct).then(() => nextDiscountedSku()).catch(nextDiscountedSku)
+    }, errors => {
+      if (errors) {
+        return reject(errors)
+      }
+      resolve()
+    })
+  })
+}
+
+function getOrCreateSku (item, stripeData, stripeProduct) {
   const existingSku = _.find(stripeData.skus.data, stripeSku => {
     return parseInt(stripeSku.id, 10) === item.sku
   })
@@ -69,7 +83,8 @@ function createSku (item, stripeProduct) {
       type: 'infinite'
     },
     price: item.amountInCents,
-    product: stripeProduct.id
+    product: stripeProduct.id,
+    attributes: item.attributes
   }
   console.log('++ create sku', createData.id)
   return stripe.skus.create(createData)
@@ -79,7 +94,8 @@ function updateSku (existingSku, item, stripeProduct) {
   const updateData = {
     currency: 'usd',
     price: item.amountInCents,
-    product: stripeProduct.id
+    product: stripeProduct.id,
+    attributes: item.attributes
   }
   console.log('~~ update sku', existingSku.id)
   return stripe.skus.update(existingSku.id, updateData)
@@ -89,9 +105,11 @@ function createProduct (item) {
   const createData = {
     name: item.title,
     description: item.description,
+    images: [`https://slidetherapy.com${item.image}`],
     type: 'good',
     url: `${baseUrl}/templates/${item.slug}`,
     shippable: false,
+    attributes: item.productAttributes,
     metadata: {
       slug: item.slug
     }
@@ -104,7 +122,9 @@ function updateProduct (existingProduct, item) {
   const updateData = {
     name: item.title,
     description: item.description,
+    images: [`https://slidetherapy.com${item.image}`],
     url: `${baseUrl}/templates/${item.slug}`,
+    attributes: item.productAttributes,
     metadata: {
       slug: item.slug
     }
