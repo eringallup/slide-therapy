@@ -7,6 +7,10 @@ export default class Templates extends React.Component {
   constructor (props) {
     super(props)
     this.state = props
+    this.detach = []
+    if (typeof document !== 'undefined') {
+      this.setupCarousels()
+    }
   }
   componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())

@@ -161,7 +161,7 @@ export default class Promotions extends React.Component {
         </div>
         <div className="row" hidden={!this.state.showPromotions}>
           <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
-            <h3><a href="/promotions/free-color-palettes">Free Color Palettes</a></h3>
+            <h3><a href="/free/color-palettes">Free Color Palettes</a></h3>
           </div>
         </div>
       </div>
