@@ -142,36 +142,41 @@ export default class Promotions extends React.Component {
                     />
                   </div>
                 </div>
-                <select
-                  id="industry"
-                  ref={industry => { this.industry = industry }}
-                  onChange={e => this.saveData()}
-                  className={'form-control mb-3'}
-                  placeholder="Industry"
-                  aria-label="Industry"
-                  required
-                >
-                  <option selected value="" className="text-muted">Industry</option>
-                  <option value="aerospace">Aerospace</option>
-                  <option value="business">Business</option>
-                  <option value="science-and-health">Science &amp; Health</option>
-                  <option value="beauty-and-fashion">Beauty &amp; Fashion</option>
-                  <option value="hospitality-and-travel">Hospitality &amp; Travel</option>
-                  <option value="home-and-wellness">Home &amp; Wellness</option>
-                  <option value="environmental">Environmental</option>
-                  <option value="other">Other</option>
-                </select>
-                <input
-                  id="industryOther"
-                  ref={industryOther => { this.industryOther = industryOther }}
-                  onBlur={e => this.saveData()}
-                  className="form-control mb-3"
-                  placeholder="Enter your industry"
-                  aria-label="Enter your industry"
-                  autoCapitalize="word"
-                  hidden={this.state.industry !== 'other'}
-                  required
-                />
+                <div className="form-group row">
+                  <div className="col">
+                    <select
+                      id="industry"
+                      ref={industry => { this.industry = industry }}
+                      onChange={e => this.saveData()}
+                      className={'form-control mb-3'}
+                      placeholder="Industry"
+                      aria-label="Industry"
+                      required
+                    >
+                      <option selected value="" className="text-muted">Industry</option>
+                      <option value="aerospace">Aerospace</option>
+                      <option value="business">Business</option>
+                      <option value="science-and-health">Science &amp; Health</option>
+                      <option value="beauty-and-fashion">Beauty &amp; Fashion</option>
+                      <option value="hospitality-and-travel">Hospitality &amp; Travel</option>
+                      <option value="home-and-wellness">Home &amp; Wellness</option>
+                      <option value="environmental">Environmental</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div className="col" hidden={this.state.industry !== 'other'}>
+                    <input
+                      id="industryOther"
+                      ref={industryOther => { this.industryOther = industryOther }}
+                      onBlur={e => this.saveData()}
+                      className="form-control mb-3"
+                      placeholder="Enter your industry"
+                      aria-label="Enter your industry"
+                      autoCapitalize="word"
+                      required
+                    />
+                  </div>
+                </div>
                 <input type="submit" className="btn btn-primary btn-block" value="Submit" />
               </fieldset>
             </form>
