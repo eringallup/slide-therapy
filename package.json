@@ -51,6 +51,7 @@
     "json-loader": "^0.5.7",
     "lodash": "^4.17.5",
     "minimist": "^1.2.0",
+    "mocha": "^5.1.1",
     "node-sass": "^4.7.2",
     "ppt-png": "^0.1.8",
     "sass-loader": "^6.0.7",
@@ -79,7 +80,8 @@
     "watch": "webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.dev.js",
     "build-preview": "NODE_ENV=preview webpack --config webpack.preview.js",
-    "build-prod": "NODE_ENV=production webpack --config webpack.prod.js"
+    "build-prod": "NODE_ENV=production webpack --config webpack.prod.js",
+    "tests": "mocha tests"
   },
   "repository": {
     "type": "git",

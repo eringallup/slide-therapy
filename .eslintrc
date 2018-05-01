@@ -15,7 +15,9 @@
     "analytics": true,
     "stAnalytics": true,
     "setPageTitle": true,
-    "YT": true
+    "YT": true,
+    "describe": true,
+    "it": true
   },
   "rules": {
     "no-console": 0,
