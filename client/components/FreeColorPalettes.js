@@ -33,7 +33,7 @@ export default class FreeColorPalettes extends React.Component {
               <div className="color-swatch mb-3 mb-md-4">
                 <img src="/images/free/swatch2.jpg" alt="" width="200" />
               </div>
-              <h2>Download&nbsp;Your Free&nbsp;Color&nbsp;Palettes</h2>
+              <h2>Free&nbsp;custom color&nbsp;palettes</h2>
               <a
                 download
                 href="https://d380dcsmppijhx.cloudfront.net/free/SlideTherapyColorPalettes.pptx"
@@ -47,7 +47,7 @@ export default class FreeColorPalettes extends React.Component {
       <div className="container">
         <div className="row py-5">
           <div className="col text-center">
-            <h3>Expert-Designed PowerPoint&nbsp;Templates <em>with built-in mentoring</em></h3>
+            <h3>Add Polish to your Presentation&apos;s <em>titles, charts and graphics</em></h3>
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@ export default class FreeColorPalettes extends React.Component {
         <div className="container pt-5">
           <div className="row">
             <div className="col text-center">
-              <h3>Communicate&nbsp;Clearly. Work&nbsp;Faster. <span className="d-none d-md-block" />Look&nbsp;Refined.</h3>
+              <h3>Want more help?</h3>
               <p className="lead mt-3 text-left text-lg-center">Slide Therapy is a series of master PowerPoint files for Mac and PC that include everything you need to make a stunning presentation:</p>
             </div>
           </div>
@@ -92,7 +92,7 @@ export default class FreeColorPalettes extends React.Component {
                   </ol>
                 </div>
                 <div className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
-                  backgroundImage: 'url(/images/free/laptop5.png)'
+                  backgroundImage: 'url(/images/home/laptop3.png)'
                 }} />
               </div>
             </div>

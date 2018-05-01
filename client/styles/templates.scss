@@ -209,10 +209,10 @@
 #view-free-color-palettes {
   .hero-image {
     background-image: url(/images/free/freecolorpalette2.jpg);
-    background-position: -114px -50px;
+    background-position: -114px center;
     background-size: auto 900px;
     @include media-breakpoint-up(xl) {
-      background-position: center -46px;
+      background-position: center center;
       background-size: cover;
     }
   }
