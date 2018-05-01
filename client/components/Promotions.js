@@ -5,7 +5,10 @@ import qs from 'qs'
 export default class Promotions extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    const isProd = process && process.env && process.env.NODE_ENV === 'production'
+    this.state = Object.assign({}, props, {
+      apiStage: isProd ? 'prod' : 'dev'
+    })
   }
   componentWillMount () {
     setPageTitle(this.state)
@@ -99,8 +102,8 @@ export default class Promotions extends React.Component {
       <div className="container">
         <div className="row" hidden={this.state.showPromotions}>
           <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
-            <h4>Promotions</h4>
-            <p className="lead">Enter your contact information and get access to a free stuff.</p>
+            <h4>Free Color Palettes</h4>
+            <p className="lead">Enter your contact information to download the free color palettes.</p>
             <form onSubmit={e => this.captureUser(e)}>
               <fieldset disabled={this.state.formDisabled}>
                 <input
