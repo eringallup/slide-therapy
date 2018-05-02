@@ -3,6 +3,11 @@ import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import dataStore from 'store'
 
+const ERROR_MESSAGES = {
+  requestTimedOut: 'Operation Timed Out',
+  badRequest: 'Bad Request'
+}
+
 export default class Buy extends React.Component {
   constructor (props) {
     super(props)
@@ -10,7 +15,6 @@ export default class Buy extends React.Component {
     this.state = Object.assign({}, {
       init: false,
       hasToken: false,
-      checkoutClosed: false,
       checkoutSuccess: false,
       apiStage: isProd ? 'prod' : 'dev'
     }, props)
@@ -34,7 +38,7 @@ export default class Buy extends React.Component {
       hasToken: false,
       checkoutClosed: false,
       checkoutSuccess: false,
-      token: undefined
+      token: false
     })
     if (typeof window !== 'undefined') {
       window.removeEventListener('popstate', this.stripeCheckout.close)
@@ -42,6 +46,10 @@ export default class Buy extends React.Component {
   }
   setStates () {
     let currentState = dataStore.getState()
+
+    if (currentState.type === 'save') {
+      return
+    }
 
     if (currentState.debug === 'thanks') {
       this.setupStripe(currentState)
@@ -68,11 +76,10 @@ export default class Buy extends React.Component {
     }
 
     this.setState({
-      checkoutClosed: currentState.checkoutClosed,
       hasToken: currentState.hasToken
     })
     this.setupStripe(currentState)
-    if (currentState.token) {
+    if (!this.state.error && currentState.token) {
       this.completePurchase(currentState.token)
     }
     if (currentState.checkoutClosed) {
@@ -158,17 +165,20 @@ export default class Buy extends React.Component {
     for (let i = 0; i < num; i++) {
       text += '•'
     }
-    this.loadingEllipsis.innerText = text
-    if (num >= 3) {
-      num = 1
-    } else {
-      num++
+    if (this.loadingEllipsis) {
+      this.loadingEllipsis.innerText = text
+      if (num >= 3) {
+        num = 1
+      } else {
+        num++
+      }
     }
     this.ellipsisTimeout = setTimeout(() => {
       this.startEllipsis(num)
     }, 300)
   }
   completePurchase (token) {
+    // console.log('completePurchase', token)
     this.showProcessing()
     stAnalytics.track('Completed Checkout Step', {
       step: 2
@@ -178,7 +188,6 @@ export default class Buy extends React.Component {
       step: 3
     })
     // this.saveEmail(token.email)
-    // console.info('completePurchase', token)
     const names = token.card && token.card.name && token.card.name.split(' ')
     const firstName = names.shift()
     const lastName = names.join(' ')
@@ -198,10 +207,33 @@ export default class Buy extends React.Component {
         'x-api-key': 'Vvd74BXYum3yeLmtB5heP4ySIVS44qAS9TwcJpKc'
       },
       body: JSON.stringify(jsonData)
-    }).then(response => response.json())
+    }).then(response => {
+      // console.log('response', response)
+      if (response.status < 400) {
+        return response.json()
+      } else if (response.status === 504) {
+        throw new Error(ERROR_MESSAGES.requestTimedOut)
+      } else if (response.status === 400) {
+        throw new Error(ERROR_MESSAGES.badRequest)
+      }
+      throw new Error(response.statusText || 'General Ecom Failure')
+    })
       .then(json => {
+        // console.log(json.id, json.ik)
+        if (!json || !json.body) {
+          this.handleEcommerceError('Bad response from Ecom')
+          return
+        }
+        if (json.body.errorMessage) {
+          this.handleEcommerceError(json.body.errorMessage)
+          return
+        }
         const orderData = json.body
         // console.log('orderData', orderData)
+        if (!orderData.oid) {
+          this.handleEcommerceError('Incomplete Order Data')
+          return
+        }
         if (this.ellipsisTimeout) {
           clearTimeout(this.ellipsisTimeout)
         }
@@ -216,23 +248,38 @@ export default class Buy extends React.Component {
           step: 3
         })
       })
-      .catch(error => {
-        console.error(error)
-        this.showModal({
-          processing: false,
-          error: error
-        }, {
-          type: 'update',
-          hasToken: false,
-          token: undefined
-        })
-        stAnalytics.track('Ecommerce Error', {
-          error: error
-        })
-      })
+      .catch(error => this.handleEcommerceError(error))
+  }
+  handleEcommerceError (error) {
+    // console.error(error)
+    let dataStoreUpdate = {
+      type: 'update'
+    }
+    if (!error || error.message !== ERROR_MESSAGES.requestTimedOut) {
+      dataStoreUpdate.hasToken = false
+      dataStoreUpdate.token = false
+    }
+    this.showModal({
+      processing: false,
+      error: error
+    }, dataStoreUpdate)
+    stAnalytics.track('Ecommerce Error', {
+      error: error
+    })
   }
   closeCheckout () {
-    stAnalytics.track('Order Cancelled', this.orderTrackingData)
+    if (!this.state.checkoutSuccess) {
+      stAnalytics.track('Order Cancelled', this.orderTrackingData)
+    }
+    if (typeof window !== 'undefined') {
+      if (window.history.length > 0) {
+        window.history.go(-1)
+      } else {
+        this.setState({
+          redirectTo: '/'
+        })
+      }
+    }
   }
   showModal (state, store) {
     this.setState(state)
@@ -266,8 +313,14 @@ export default class Buy extends React.Component {
   tryAgain (e) {
     e.preventDefault()
     this.clearError()
-    this.hideModal()
-    this.showCheckout()
+    const currentState = dataStore.getState()
+    if (currentState.hasToken && currentState.token) {
+      // the last request timed out, so just try the exact same request again.
+      this.completePurchase(currentState.token)
+    } else {
+      this.dismissModal()
+      this.showCheckout()
+    }
   }
   clearError () {
     this.setState({
@@ -332,8 +385,8 @@ export default class Buy extends React.Component {
         </div>
       </div>
     }
-    if (this.state.checkoutClosed) {
-      return <Redirect to="/" />
+    if (this.state.redirectTo) {
+      return <Redirect to={this.state.redirectTo} />
     }
     return ''
   }
