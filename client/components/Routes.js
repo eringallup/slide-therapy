@@ -7,7 +7,7 @@ import Buy from 'components/Buy'
 import Tips from 'components/Tips'
 import About from 'components/About'
 import Download from 'components/Download'
-import Promotions from 'components/Promotions'
+import Free from 'components/Free'
 import Privacy from 'components/Privacy'
 import Terms from 'components/Terms'
 import Footer from 'components/Footer'
@@ -27,8 +27,8 @@ export default class Routes extends React.Component {
         <Route path="/tips" component={Tips} context={this.state.context} />
         <Route path="/about" component={About} context={this.state.context} />
         <Route path="/download" component={Download} context={this.state.context} />
-        <Route path="/promotions" component={Promotions} context={this.state.context} />
-        <Route path="/free" component={Promotions} context={this.state.context} />
+        <Route path="/promotions" component={Free} context={this.state.context} />
+        <Route path="/free" component={Free} context={this.state.context} />
         <Route path="/privacy" component={Privacy} context={this.state.context} />
         <Route path="/terms" component={Terms} context={this.state.context} />
       </div>

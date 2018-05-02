@@ -32,11 +32,11 @@ async function customer (stripe, payload) {
     const existingCustomer = await getCustomerByEmail(stripe, payload)
     if (existingCustomer) {
       return stripe.customers.update(existingCustomer.id, {
-        metadata: {
+        metadata: Object.assign({
           first_name: payload.first_name,
           last_name: payload.last_name,
           industry: payload.industry
-        }
+        }, existingCustomer.metadata)
       })
     }
     return await createCustomer(stripe, payload)

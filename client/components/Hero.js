@@ -170,9 +170,10 @@ export default class Home extends React.Component {
       videoId: 'elNu8aNyQRQ',
       playerVars: {
         enablejsapi: 1,
-        modestbranding: 1,
+        modestbranding: 0,
         autoplay: 0,
         controls: 1,
+        rel: 0,
         fs: 1
       },
       events: {
