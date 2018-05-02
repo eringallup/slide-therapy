@@ -45,7 +45,7 @@ function zipFile (lambdaFunction, callback) {
     let zipCommand = [
       `cd ${LAMBDA_DIR}/${lambdaFunction}`,
       `zip -X -r ${zipFilePath} ./*`,
-      `aws lambda update-function-code --publish --function-name ${lambdaFunction} --zip-file fileb://${zipFilePath}`
+      `aws lambda update-function-code --no-publish --function-name ${lambdaFunction} --zip-file fileb://${zipFilePath}`
     ].join(' && ')
     console.log(zipCommand)
     // return callback()
