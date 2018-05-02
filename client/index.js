@@ -19,7 +19,10 @@ if (typeof document !== 'undefined') {
   window.setPageTitle = setPageTitle
   window.stAnalytics = {
     track: (name, properties) => handleAnalytics('track', name, properties),
-    page: (name, properties) => handleAnalytics('page', name, properties)
+    page: (name, properties) => {
+      addPath()
+      handleAnalytics('page', name, properties)
+    }
   }
   require('bootstrap')
   require('whatwg-fetch')
@@ -38,6 +41,20 @@ function init () {
   setupAnalytics(analyticsToTrack)
   setupYouTube()
   setupStripe(10)
+}
+
+function addPath () {
+  if (typeof location !== 'undefined') {
+    const currentState = dataStore.getState()
+    let paths = currentState.paths || []
+    if (paths[(paths.length - 1)] !== location.pathname) {
+      paths.push(location.pathname)
+    }
+    dataStore.dispatch({
+      type: 'update',
+      paths: paths
+    })
+  }
 }
 
 function handleAnalytics (type, name, properties) {
