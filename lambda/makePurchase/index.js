@@ -1,4 +1,5 @@
 const skus = require('./skus.json')
+const crypto = require('crypto')
 const _ = require('lodash')
 const AWS = require('aws-sdk')
 
@@ -12,19 +13,27 @@ exports.handler = (event, context, callback) => {
     env: event.env
   }
 
+  const idempotencyKey = crypto.createHmac('sha256', 'slidetherapysecret')
+    .update(JSON.stringify(payload))
+    .digest('hex')
+  payload.idempotencyKey = idempotencyKey
+
   const stripeKeyType = payload.env === 'dev' ? 'stripe_key_test' : 'stripe_key_prod'
   const stripeKey = process.env[stripeKeyType]
   // console.log(payload.env, stripeKeyType, stripeKey)
   const stripe = require('stripe')(stripeKey)
 
   makePurchase(stripe, payload).then(body => {
-    callback(null, {
-      statusCode: 200,
-      body: body
+    let errorMessage = null
+    if (body.statusCode >= 400) {
+      errorMessage = new Error('Stripe Error')
+    }
+    callback(errorMessage, {
+      statusCode: body.statusCode || 200,
+      body: body,
+      ik: payload.idempotencyKey
     })
-  }).catch(error => {
-    callback(error)
-  })
+  }).catch(error => callback(error))
 }
 
 async function makePurchase (stripe, payload) {
@@ -63,11 +72,14 @@ async function snsPublish (paidOrder, customer, payload) {
 async function payOrder (stripe, stripeOrder, customer, payload) {
   return stripe.orders.pay(stripeOrder.id, {
     customer: customer.id
+  }, {
+    idempotency_key: `${payload.idempotencyKey}-payOrder`
   })
 }
 
 async function createOrder (stripe, customer, payload) {
   const skuData = skus[payload.sku]
+  const idempotencyKey = `${payload.idempotencyKey}-createOrder`
   return stripe.orders.create({
     currency: 'usd',
     customer: customer.id,
@@ -82,8 +94,11 @@ async function createOrder (stripe, customer, payload) {
     metadata: {
       downloads: 0,
       slug: skuData.slug,
+      idempotencyKey: idempotencyKey,
       env: payload.env
     }
+  }, {
+    idempotency_key: idempotencyKey
   })
 }
 
@@ -98,6 +113,8 @@ async function getOrCreateCustomer (stripe, payload) {
     if (existingCustomer) {
       return stripe.customers.update(existingCustomer.id, {
         source: payload.token
+      }, {
+        idempotency_key: `${payload.idempotencyKey}-updateCustomer`
       })
     }
 
@@ -108,6 +125,8 @@ async function getOrCreateCustomer (stripe, payload) {
         first_name: payload.firstName,
         last_name: payload.lastName
       }
+    }, {
+      idempotency_key: `${payload.idempotencyKey}-createCustomer`
     })
   })
 }
