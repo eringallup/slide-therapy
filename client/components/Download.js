@@ -49,7 +49,7 @@ export default class Download extends React.Component {
             fetched: true,
             downloadUrl: downloadUrl
           })
-          console.log(downloadUrl)
+          // console.log(downloadUrl)
           if (typeof downloadUrl === 'string' && downloadUrl.length > 5 && autoDownload === true) {
             document.location.href = downloadUrl
           }
