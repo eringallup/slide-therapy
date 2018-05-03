@@ -139,10 +139,10 @@ export default class Free extends React.Component {
             </div>
           </div>
           <div className="row d-flex align-items-center">
-            <div className="col-12 col-md-4 offset-md-1 text-center">
+            <div className="col-12 col-md-4 offset-md-2 text-center">
               {leftSide}
             </div>
-            <div className="col-12 mt-5 mt-md-0 col-md-6 offset-md-1">
+            <div className="col-12 mt-5 mt-md-0 col-md-5">
               <img src="/images/free/color-palettes1.jpg" alt="" className="img-fluid" />
             </div>
           </div>
