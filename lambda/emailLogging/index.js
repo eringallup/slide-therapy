@@ -74,7 +74,7 @@ exports.handler = (event, context, callback) => {
       properties: properties,
       context: {
         ip: '127.0.0.1',
-        user_agent: 'some user-agent'
+        user_agent: 'emailLogging'
       }
     }
     // console.log('trackJson', trackJson)
