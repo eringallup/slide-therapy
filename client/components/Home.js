@@ -1,6 +1,7 @@
 import React from 'react'
 import Hero from 'components/Hero'
 import Templates from 'components/Templates'
+import dataStore from 'store'
 
 export default class Home extends React.Component {
   constructor (props) {
@@ -12,6 +13,15 @@ export default class Home extends React.Component {
   }
   componentDidMount () {
     stAnalytics.page('Home')
+    try {
+      const slug = this.state.match.params.slug
+      dataStore.dispatch({
+        type: 'startCheckout',
+        startCheckout: slug
+      })
+    } catch (e) {
+      // do nothing.
+    }
   }
   render () {
     // console.info('render', this.state.stripeCheckout)

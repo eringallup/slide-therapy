@@ -1,4 +1,5 @@
 import React from 'react'
+import Buy from 'components/Buy'
 import { Link } from 'react-router-dom'
 import skus from 'skus.json'
 import dataStore from 'store'
@@ -95,6 +96,13 @@ export default class Templates extends React.Component {
       slide: $('#slide-preview .carousel-item-prev').index('#slide-preview .carousel-item')
     })
   }
+  openCheckout (e, deck) {
+    e.preventDefault()
+    dataStore.dispatch({
+      type: 'startCheckout',
+      startCheckout: deck
+    })
+  }
   render () {
     // console.info('render', this.state.stripeCheckout)
     const templates = [skus[1], skus[2], skus[3]].map(item => {
@@ -176,6 +184,7 @@ export default class Templates extends React.Component {
           </span>
           <Link
             className={'buy btn btn-lg btn-wide btn-primary' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
+            onClick={e => this.openCheckout(e, item.slug)}
             to={`/buy/${item.slug}`}
           >Buy</Link>
           <div
@@ -210,6 +219,7 @@ export default class Templates extends React.Component {
         <div>
           <Link
             to="/buy/all-audiences"
+            onClick={e => this.openCheckout(e, 'all-audiences')}
             className={'buy btn btn-lg btn-wide btn-light' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
           >Buy</Link>
         </div>
@@ -218,6 +228,7 @@ export default class Templates extends React.Component {
         <h3>Multi-User Licenses</h3>
         please email us at <a href="mailto:hello@slidetherapy.com">hello@slidetherapy.com</a>
       </div>
+      <Buy />
     </React.Fragment>
   }
 }

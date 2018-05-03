@@ -151,8 +151,7 @@ function setupStripe (attempt) {
     token: token => {
       // console.log('token', token)
       dataStore.dispatch({
-        type: 'update',
-        hasToken: true,
+        type: 'completePurchase',
         token: token
       })
     },
@@ -163,7 +162,7 @@ function setupStripe (attempt) {
       let currentState = dataStore.getState()
       if (!currentState.token) {
         dataStore.dispatch({
-          type: 'update',
+          type: 'checkoutClosed',
           checkoutClosed: true
         })
       }
