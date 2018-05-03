@@ -71,7 +71,11 @@ exports.handler = (event, context, callback) => {
       userId: recipient,
       event: `Email ${message.eventType}`,
       timestamp: new Date(timestampDate),
-      properties: properties
+      properties: properties,
+      context: {
+        ip: '127.0.0.1',
+        user_agent: 'some user-agent'
+      }
     }
     // console.log('trackJson', trackJson)
     analytics.track(trackJson, (error, batch) => {
