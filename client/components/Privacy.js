@@ -18,7 +18,7 @@ export default class Privacy extends React.Component {
         <div className="row">
           <div className="col col-md-10 offset-md-1 col-lg-8 offset-lg-2 my-4 bg-white py-4 px-5">
             <h2 className="h4">Slide Therapy Privacy Policy</h2>
-            <p><cite style={{fontStyle: 'normal'}}>Effective: April 19, 2018</cite></p>
+            <p><cite style={{fontStyle: 'normal'}}>Effective: May 24, 2018</cite></p>
             <p>This privacy policy has been compiled to better serve those who are concerned with how their &apos;Personally Identifiable Information&apos; (PII) is being used online. PII, as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.</p>
             <h3>What personal information do we collect from the people that visit our website?</h3>
             <p>When ordering on our site, as appropriate, you may be asked to enter your name, email address, mailing address, credit card information or other details to help you with your experience.</p>
@@ -38,7 +38,7 @@ export default class Privacy extends React.Component {
             <p>Your personal information is contained behind secured networks and is only accessible by a limited number of persons who have special access rights to such systems, and are required to keep the information confidential. In addition, all sensitive/credit information you supply is encrypted via Secure Socket Layer (SSL) technology.</p>
             <p>We implement a variety of security measures when a user places an order, enters, submits, or accesses their information to maintain the safety of your personal information.</p>
             <p>All transactions are processed through a gateway provider and are not stored or processed on our servers.</p>
-            <h3>Do we use &apos;cookies&apos;?<a name="cookies">&nbsp;</a></h3>
+            <h3>Do we use &apos;cookies&apos;?<a name="cookies" /></h3>
             <p>Yes. Cookies are small files that a site or its service provider transfers to your computer&apos;s hard drive through your Web browser (if you allow) that enables the site&apos;s or service provider&apos;s systems to recognize your browser and capture and remember certain information. For instance, we use cookies to help us remember and process the items in your shopping cart. They are also used to help us understand your preferences based on previous or current site activity, which enables us to provide you with improved services. We also use cookies to help us compile aggregate data about site traffic and site interaction so that we can offer better site experiences and tools in the future.</p>
             <h3>We use cookies to:</h3>
             <ul>
@@ -54,8 +54,7 @@ export default class Privacy extends React.Component {
             <p>We do not sell, trade, or otherwise transfer to outside parties your Personally Identifiable Information unless we provide users with advance notice. This does not include website hosting partners and other parties who assist us in operating our website, conducting our business, or serving our users, so long as those parties agree to keep this information confidential. We may also release information when it&apos;s release is appropriate to comply with the law, enforce our site policies, or protect ours or others&apos; rights, property or safety.</p>
             <p>However, non-personally identifiable visitor information may be provided to other parties for marketing, advertising, or other uses.</p>
             <h3>Third-Party Behavioral Tracking</h3>
-            <p>We use Google Analytics&apos; 3rd-party audience data such as age, gender, and interests to better understand the behavior of our customers and work with companies that collect information about your online activities to provide advertising targeted to suit your interests and preferences. These companies also use automated technologies to collect information when you click on our ads, which helps track and manage the effectiveness of our marketing efforts.</p>
-            <p>You may opt out of the automated collection of information by third-party ad networks for the purpose of delivering advertisements tailored to your interests, by visiting the consumer opt-out page for the Self-Regulatory Principles for Online Behavioral Advertising at <a target="_blank" rel="noopener noreferrer" className="break-word" href="http://www.aboutads.info/choices/">http://www.aboutads.info/choices/</a> and edit or opt-out your Google Display Netowrk ads&apos; preferences at <a target="_blank" rel="noopener noreferrer" className="break-word" href="http://www.google.com/ads/preferences/">http://www.google.com/ads/preferences/</a>.</p>
+            <p>We do not use third-party behavioral tracking. You may opt out of the automated collection of information by third-party ad networks for the purpose of delivering advertisements tailored to your interests, by visiting the consumer opt-out page for the Self-Regulatory Principles for Online Behavioral Advertising at <a target="_blank" rel="noopener noreferrer" className="break-word" href="http://www.aboutads.info/choices/">http://www.aboutads.info/choices/</a> and edit or opt-out your Google Display Netowrk ads&apos; preferences at <a target="_blank" rel="noopener noreferrer" className="break-word" href="http://www.google.com/ads/preferences/">http://www.google.com/ads/preferences/</a>.</p>
             <h3>Third-party links</h3>
             <p>We do not include or offer third-party products or services on our website.</p>
             <h3>Google AdWords</h3>
@@ -64,7 +63,6 @@ export default class Privacy extends React.Component {
             <ul>
               <li>Remarketing with Google Analytics</li>
               <li>Google Display Network Impression Reporting</li>
-              <li>Google Analytics Demographics and Interest Reporting</li>
               <li>Integrated services that require Google Analytics to collect data for advertising purposes, including the collection of data via advertising cookies and identifiers.</li>
             </ul>
             <p>Google&apos;s advertising requirements can be summed up by Google&apos;s Advertising Principles. They are put in place to provide a positive experience for users. <a target="_blank" rel="noopener noreferrer" className="break-word" href="https://support.google.com/adwordspolicy/answer/1316548?hl=en">https://support.google.com/adwordspolicy/answer/1316548?hl=en</a></p>
@@ -91,11 +89,11 @@ export default class Privacy extends React.Component {
             <h3>In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur:</h3>
             <p>We will notify you via email</p>
             <ul>
-              <li>Within 7 business days</li>
+              <li>Within 72 hours</li>
             </ul>
             <p>We will notify the users via in-site notification</p>
             <ul>
-              <li>Within 7 business days</li>
+              <li>Within 72 hours</li>
             </ul>
             <p>We also agree to the Individual Redress Principle which requires that individuals have the right to legally pursue enforceable rights against data collectors and processors who fail to adhere to the law. This principle requires not only that individuals have enforceable rights against data users, but also that individuals have recourse to courts or government agencies to investigate and/or prosecute non-compliance by data processors.</p>
           </div>
