@@ -31,6 +31,11 @@ export default class Privacy extends React.Component {
               <li>To ask for ratings and reviews of our products</li>
               <li>To follow up after correspondence (live chat, email)</li>
             </ul>
+            <h3>Choices You Have Regarding Personal Data</h3>
+            <p>If you otherwise wish to ask for access, correction, or deletion of any of your information held by us, or a change in the way we use your information, please contact us at <a href="mailto:support@slidetherapy.com">support@slidetherapy.com</a>. We may decline requests that are unreasonable, prohibited by law, or are not required to be honored by applicable law.</p>
+            <h3>How Personal Data May Be Transferred to the United States</h3>
+            <p>We operate from data centers in multiple locations globally, including in the United States. Any data you submit on this site may result in the transfer, use, processing, or storage of Personal Data in the United States or any other country where we operate or maintain facilities or service centers, including jurisdictions that may not have data privacy laws that provide protections equivalent to those provided in your home country. We takes steps designed to ensure that the Personal Data is processed according to applicable law wherever the data is located.</p>
+            <p>By providing your information to us, you agree to that transfer, storage, and processing of your Personal Data in the United States.</p>
             <h3>How do we protect your information?</h3>
             <p>Wherever we collect sensitive information (such as credit card data), that information is encrypted and transmitted to us in a secure way. You can verify this by looking for a lock icon in the address bar and looking for &quot;https&quot; at the beginning of the address of the Web page.</p>
             <p>Our website is scanned on a regular basis for security holes and known vulnerabilities in order to make your visit to our site as safe as possible.</p>
