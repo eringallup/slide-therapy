@@ -166,16 +166,6 @@ export default class Home extends React.Component {
 
     // https://developers.google.com/youtube/iframe_api_reference
     this.player = new YT.Player('video-player', {
-      width: '100%',
-      videoId: 'elNu8aNyQRQ',
-      playerVars: {
-        enablejsapi: 1,
-        modestbranding: 0,
-        autoplay: 0,
-        controls: 1,
-        rel: 0,
-        fs: 1
-      },
       events: {
         onReady: e => {
           stAnalytics.track('Video Ready')
@@ -325,7 +315,14 @@ export default class Home extends React.Component {
                 maxWidth: '100%',
                 fill: '#DEDEDE'
               }} /></svg>
-            <div id="video-player" />
+            <iframe id="video-player"
+              width="640"
+              height="360"
+              src="https://www.youtube-nocookie.com/embed/elNu8aNyQRQ?showinfo=0&enablejsapi=1&modestbranding=0&autoplay=0&controls=1&rel=0&fs=1"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            />
           </div>
         </div>
       </div>

@@ -44,10 +44,13 @@
     }
   }
   #video-player {
+    width: 100%;
+    max-width: 100%;
     @include media-breakpoint-up(sm) {
       position: absolute;
       top: 0;
       left: 0;
+      height: 100%;
     }
   }
   .close-video-player {
