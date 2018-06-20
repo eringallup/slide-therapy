@@ -56,7 +56,7 @@ export default class FreeColorPalettes extends React.Component {
           <div className="row">
             <div className="col text-center">
               <h3>Want more help?</h3>
-              <p className="lead mt-3 text-left text-lg-center">Slide Therapy is a series of master PowerPoint files for Mac and PC that include everything you need to make a stunning presentation:</p>
+              <p className="lead mt-3 text-left text-lg-center">Slide Therapy is a series of master presentation files for Mac and PC that include everything you need to make a stunning presentation:</p>
             </div>
           </div>
           <div className="row pt-3 px-5">

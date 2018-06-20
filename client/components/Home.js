@@ -30,7 +30,7 @@ export default class Home extends React.Component {
       <div className="container">
         <div className="row py-5">
           <div className="col text-center">
-            <h3>Expert-Designed PowerPoint&nbsp;Templates <em>with built-in mentoring</em></h3>
+            <h3>Expert-Designed Presentation&nbsp;Templates <em>with built-in mentoring</em></h3>
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@ export default class Home extends React.Component {
           <div className="row">
             <div className="col text-center">
               <h3>Communicate&nbsp;Clearly. Work&nbsp;Faster. <span className="d-none d-md-block" />Look&nbsp;Refined.</h3>
-              <p className="lead mt-3 text-left text-lg-center">Slide Therapy is a series of master PowerPoint files for Mac and PC that include everything you need to make a stunning presentation:</p>
+              <p className="lead mt-3 text-left text-lg-center">Slide Therapy is a series of master presentation files for Mac and PC that include everything you need to make a stunning presentation:</p>
             </div>
           </div>
           <div className="row pt-3 px-5">

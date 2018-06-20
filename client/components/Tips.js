@@ -79,7 +79,7 @@ const tips = [{
   image: '/images/tips/tip6b.png'
 }, {
   title: 'Don\'t use the automatic bullets.',
-  body: 'PowerPoint\'s automatic bullets are clunky and hard to control. To mark a list of items, use a hyphen.\n\nConceptually, bullets are problematic because they are often used to outline the speaker\'s script, which makes for dull visuals and encourages the audience to read ahead rather than listen.',
+  body: 'Automatic bullets are clunky and hard to control. To mark a list of items, use a hyphen.\n\nConceptually, bullets are problematic because they are often used to outline the speaker\'s script, which makes for dull visuals and encourages the audience to read ahead rather than listen.',
   image: '/images/tips/tip7b.png'
 }, {
   title: 'Do trim text where you can.',
@@ -87,7 +87,7 @@ const tips = [{
   image: '/images/tips/tip8b.png'
 }, {
   title: 'Do create a custom color palette.',
-  body: 'As mentioned in Tip #2, PowerPoint\'s standard and theme colors are difficult to work with. Creating your own palette is easy and using it throughout your presentation will make the design cohesive.\n\nEach Slide Therapy Template file has a worksheet which guides you through the process of creating your own custom harmonious color palette.',
+  body: 'As mentioned in Tip #2, standard and theme colors are difficult to work with. Creating your own palette is easy and using it throughout your presentation will make the design cohesive.\n\nEach Slide Therapy Template file has a worksheet which guides you through the process of creating your own custom harmonious color palette.',
   image: '/images/tips/tip9b.png',
   maxImageWidth: 230
 }, {

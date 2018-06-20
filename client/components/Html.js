@@ -18,7 +18,7 @@ export default class Html extends React.Component {
     const docTitle = page.title || 'Slide Therapy'
     const ogImage = page.ogImage || `${this.state.context.domain}/images/home/topimage1.jpg`
     const ogType = page.ogType || 'website'
-    const ogDescription = page.ogDescription !== undefined ? page.ogDescription : 'Expert-Designed PowerPoint Templates with built-in mentoring'
+    const ogDescription = page.ogDescription !== undefined ? page.ogDescription : 'Expert-Designed Presentation Templates with built-in mentoring'
     const ogUrl = this.state.context.domain + this.state.context.path
     let canonicalUrl = ogUrl
     if (page.canonicalUrl) {
