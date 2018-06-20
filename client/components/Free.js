@@ -1,5 +1,6 @@
 import React from 'react'
 import Templates from 'components/Templates'
+import Formats from 'components/Formats'
 import qs from 'qs'
 
 export default class Free extends React.Component {
@@ -215,6 +216,7 @@ export default class Free extends React.Component {
             </div>
           </div>
         </div>
+        <Formats />
         <Templates />
       </div>
     </section>

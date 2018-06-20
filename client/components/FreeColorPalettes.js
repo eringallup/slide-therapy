@@ -1,5 +1,6 @@
 import React from 'react'
 import Templates from 'components/Templates'
+import Formats from 'components/Formats'
 
 export default class FreeColorPalettes extends React.Component {
   constructor (props) {
@@ -98,6 +99,7 @@ export default class FreeColorPalettes extends React.Component {
             </div>
           </div>
         </div>
+        <Formats />
         <Templates />
       </div>
     </section>
