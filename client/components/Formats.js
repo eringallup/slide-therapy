@@ -6,7 +6,7 @@ export default class Formats extends React.Component {
     this.state = props
   }
   render () {
-    return <div className="container text-center mt-4" >
+    return <div className="container text-center mt-4">
       <div className="row">
         <div className="col">
           <h3 className="mb-4">Formats Included</h3>

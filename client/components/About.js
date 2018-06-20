@@ -23,8 +23,8 @@ export default class About extends React.Component {
           </div>
           <div className="col-md-6 offset-md-1">
             <h3>About Slide Therapy</h3>
-            <p>Slide Therapy is a series of master presentation decks that make it quick and easy to pull together a glossy, well-designed presentation for large, small and solitary audiences.</p>
-            <p>This system uses a presentation file to contain both a series of slide templates and a book of tips and tricks.</p>
+            <p>Slide Therapy is a series of master powerpoint decks that make it quick and easy to pull together a glossy, well-designed presentation for large, small and solitary audiences.</p>
+            <p>This system uses a PowerPoint file to contain both a series of slide templates and a book of tips and tricks.</p>
             <p>Created by a tech designer, these templates and tricks allow people of any field to communicate clearly, look polished, and spend less time making their presentation.</p>
 
             <h3>About Us</h3>
