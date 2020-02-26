@@ -127,6 +127,33 @@ h4, .h4 {
   @extend .d-block;
 }
 
+.quotes {
+  background-color: $white;
+  blockquote {
+    display: block;
+    position: relative;
+  }
+  .carousel {
+    min-height: 31rem;
+    @include media-breakpoint-up(sm) {
+      min-height: 23rem;
+    }
+    @include media-breakpoint-up(lg) {
+      min-height: 17rem;
+    }
+  }
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 5%;
+  }
+  .carousel-control-prev {
+    justify-content: left;
+  }
+  .carousel-control-next {
+    justify-content: right;
+  }
+}
+
 #app {
   min-height: 100vh;
 }

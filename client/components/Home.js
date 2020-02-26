@@ -2,6 +2,7 @@ import React from 'react'
 import Hero from 'components/Hero'
 import Templates from 'components/Templates'
 import Formats from 'components/Formats'
+import Quotes from 'components/Quotes'
 import dataStore from 'store'
 
 export default class Home extends React.Component {
@@ -83,6 +84,7 @@ export default class Home extends React.Component {
           </div>
         </div>
         <Formats />
+        <Quotes />
         <Templates />
       </div>
     </section>
