@@ -41,8 +41,8 @@ function zipFile (lambdaFunction, callback) {
     if (cpError) {
       return callback(cpError)
     }
-    let zipFilePath = path.join('/tmp', lambdaFunction + '.zip')
-    let zipCommand = [
+    const zipFilePath = path.join('/tmp', lambdaFunction + '.zip')
+    const zipCommand = [
       `cd ${LAMBDA_DIR}/${lambdaFunction}`,
       `zip -X -r ${zipFilePath} ./*`,
       `aws lambda update-function-code --no-publish --function-name ${lambdaFunction} --zip-file fileb://${zipFilePath}`
