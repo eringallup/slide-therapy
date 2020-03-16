@@ -50,7 +50,7 @@
     "jsdom": "^11.6.2",
     "json-loader": "^0.5.7",
     "lodash": "^4.17.13",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "mocha": "^5.1.1",
     "node-sass": "^4.7.2",
     "ppt-png": "^0.1.8",
