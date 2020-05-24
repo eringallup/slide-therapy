@@ -11,7 +11,8 @@ export default class Home extends React.Component {
     this.state = props
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
   }
 
@@ -79,9 +80,11 @@ export default class Home extends React.Component {
                     <li>Adding Maps</li>
                   </ol>
                 </div>
-                <div className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
-                  backgroundImage: 'url(/images/home/laptop3.png)'
-                }} />
+                <div
+                  className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
+                    backgroundImage: 'url(/images/home/laptop3.png)'
+                  }}
+                />
               </div>
             </div>
           </div>

@@ -7,7 +7,8 @@ export default class Tips extends React.Component {
     this.state = props
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
   }
 
@@ -16,7 +17,7 @@ export default class Tips extends React.Component {
   }
 
   render () {
-    let tipsHtml = tips.map((tip, index) => {
+    const tipsHtml = tips.map((tip, index) => {
       let imgClass = ''
       let imgStyle = {}
       if (tip.maxImageWidth) {
@@ -40,9 +41,11 @@ export default class Tips extends React.Component {
         <div className="tip-content pb-3 pb-md-0 col-md-6">
           <span className="h3">Pro Tip #{index + 1}</span>
           <h3 className="h4 mt-2" itemProp="headline">{tip.title}</h3>
-          <div itemProp="articleBody" dangerouslySetInnerHTML={{
-            __html: tip.body.replace(/\n/g, '<br />')
-          }} />
+          <div
+            itemProp="articleBody" dangerouslySetInnerHTML={{
+              __html: tip.body.replace(/\n/g, '<br />')
+            }}
+          />
         </div>
       </div>
     })

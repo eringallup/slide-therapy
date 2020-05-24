@@ -14,7 +14,8 @@ export default class Templates extends React.Component {
     }
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
   }
 
@@ -27,7 +28,7 @@ export default class Templates extends React.Component {
   }
 
   setStates () {
-    let currentState = dataStore.getState()
+    const currentState = dataStore.getState()
     if (!this.state.stripeCheckout && currentState.stripeCheckout) {
       this.setState({
         stripeCheckout: currentState.stripeCheckout
@@ -119,9 +120,9 @@ export default class Templates extends React.Component {
   render () {
     // console.info('render', this.state.stripeCheckout)
     const templates = [skus[1], skus[2], skus[3]].map(item => {
-      let preview = []
+      const preview = []
       if (this.state.preview && this.state.preview.sku === item.sku) {
-        let slides = []
+        const slides = []
         for (let i = 1; i <= item.previewSlideCount; i++) {
           slides.push(<div
             key={`slide-${i}`}
@@ -199,11 +200,13 @@ export default class Templates extends React.Component {
             className={'buy btn btn-lg btn-wide btn-primary' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
             onClick={e => this.openCheckout(e, item.slug)}
             to={`/buy/${item.slug}`}
-          >Buy</Link>
+          >Buy
+          </Link>
           <div
             className="clickable st-uppercase mt-3"
             onClick={e => this.showPreview(e, item)}
-          >Preview</div>
+          >Preview
+          </div>
         </div>
       </div>
     })
@@ -235,7 +238,8 @@ export default class Templates extends React.Component {
             to="/buy/all-audiences"
             onClick={e => this.openCheckout(e, 'all-audiences')}
             className={'buy btn btn-lg btn-wide btn-light' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
-          >Buy</Link>
+          >Buy
+          </Link>
         </div>
       </div>
       <div id="enterprise" className="text-center p-4">

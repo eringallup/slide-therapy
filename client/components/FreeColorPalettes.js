@@ -8,7 +8,8 @@ export default class FreeColorPalettes extends React.Component {
     this.state = props
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
   }
 

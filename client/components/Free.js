@@ -12,7 +12,8 @@ export default class Free extends React.Component {
     })
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
     let showPromotions = false
     let pathname = this.state.staticContext && this.state.staticContext.path
@@ -84,7 +85,7 @@ export default class Free extends React.Component {
   }
 
   http (url, postData) {
-    let config = {
+    const config = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -132,14 +133,17 @@ export default class Free extends React.Component {
           href="https://d380dcsmppijhx.cloudfront.net/free/SlideTherapyColorPalettes.pptx"
           onClick={e => this.trackDownload(e, 'Color Palettes')}
           className="btn btn-primary"
-        >Download Now</a>
+        >Download Now
+        </a>
       </>
     }
     return <section id="view-free">
-      <div className="top-layer" style={{
-        background: 'url(/images/free/topimage5-blur.jpg) center no-repeat',
-        backgroundSize: 'cover'
-      }}>
+      <div
+        className="top-layer" style={{
+          background: 'url(/images/free/topimage5-blur.jpg) center no-repeat',
+          backgroundSize: 'cover'
+        }}
+      >
         <div className="container">
           <div className="row mb-4">
             <div className="col text-center">
@@ -217,9 +221,11 @@ export default class Free extends React.Component {
                     <li>Adding Maps</li>
                   </ol>
                 </div>
-                <div className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
-                  backgroundImage: 'url(/images/home/laptop3.png)'
-                }} />
+                <div
+                  className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
+                    backgroundImage: 'url(/images/home/laptop3.png)'
+                  }}
+                />
               </div>
             </div>
           </div>

@@ -11,7 +11,8 @@ export default class Promotions extends React.Component {
     })
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
     let showPromotions = false
     let pathname = this.state.staticContext && this.state.staticContext.path
@@ -90,7 +91,7 @@ export default class Promotions extends React.Component {
   }
 
   http (url, postData) {
-    let config = {
+    const config = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -155,7 +156,7 @@ export default class Promotions extends React.Component {
                       id="industry"
                       ref={industry => { this.industry = industry }}
                       onChange={e => this.saveData()}
-                      className={'form-control mb-3'}
+                      className="form-control mb-3"
                       placeholder="Industry"
                       aria-label="Industry"
                       required

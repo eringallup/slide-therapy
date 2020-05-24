@@ -33,7 +33,8 @@ export default class Buy extends React.Component {
     })
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     this.resetVars()
     this.setStates()
   }

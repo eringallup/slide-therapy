@@ -11,10 +11,11 @@ export default class Home extends React.Component {
     this.detach = []
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
     if (typeof window !== 'undefined') {
-      let _onKeydown = this.onKeydown.bind(this)
+      const _onKeydown = this.onKeydown.bind(this)
       if (window.addEventListener) {
         window.addEventListener('keydown', _onKeydown)
         this.detach.push(() => {
@@ -37,8 +38,8 @@ export default class Home extends React.Component {
   }
 
   setStates () {
-    let currentState = dataStore.getState()
-    let newState = {
+    const currentState = dataStore.getState()
+    const newState = {
       backgroundImage: currentState.backgroundImage
     }
     if (!this.state.youTubeReady && currentState.youTubeReady) {
@@ -70,7 +71,7 @@ export default class Home extends React.Component {
   }
 
   getImage () {
-    let currentState = dataStore.getState()
+    const currentState = dataStore.getState()
     if (!this.state.backgroundImage && !currentState.backgroundImage) {
       const backgroundImages = [{
         url: '/images/home/topimage1.jpg',
@@ -109,7 +110,7 @@ export default class Home extends React.Component {
   }
 
   fullscreenConfig () {
-    let element = document.body
+    const element = document.body
     if (element.requestFullScreen) {
       return {
         request: element.requestFullScreen,
@@ -312,13 +313,15 @@ export default class Home extends React.Component {
             <div
               className="btn-start-video btn btn-primary"
               onClick={e => this.startVideo()}
-            ><svg width="12" height="12" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" fill="white"><path d="M1576 927l-1328 738q-23 13-39.5 3t-16.5-36v-1472q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z" /></svg> See How</div>
+            ><svg width="12" height="12" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" fill="white"><path d="M1576 927l-1328 738q-23 13-39.5 3t-16.5-36v-1472q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z" /></svg> See How
+            </div>
           </div>
         </div>
         <div id="video-player-layer" className="position-absolute fill-parent justify-content-center align-items-center d-flex" hidden={!this.state.showVideo}>
           <span className="close-video-player clickable" onClick={e => this.closeVideo()}>&times;</span>
           <div id="video-player-cx" className="position-relative">
-            <svg xmlns="http://www.w3.org/2000/svg"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               width="1600"
               height="900"
               style={{
@@ -327,13 +330,20 @@ export default class Home extends React.Component {
                 maxWidth: '100%',
                 background: '#dedede'
               }}
-            ><rect width="1600" height="900" style={{
-                width: 'auto',
-                height: 'auto',
-                maxWidth: '100%',
-                fill: '#DEDEDE'
-              }} /></svg>
-            <iframe id="video-player"
+            >
+              <rect
+                width="1600"
+                height="900"
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '100%',
+                  fill: '#DEDEDE'
+                }}
+              />
+            </svg>
+            <iframe
+              id="video-player"
               width="640"
               height="360"
               src="https://www.youtube-nocookie.com/embed/elNu8aNyQRQ?showinfo=0&enablejsapi=1&modestbranding=0&autoplay=0&controls=1&rel=0&fs=1"
