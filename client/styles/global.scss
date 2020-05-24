@@ -134,7 +134,7 @@ h4, .h4 {
     position: relative;
   }
   .carousel {
-    min-height: 31rem;
+    min-height: 32rem;
     @include media-breakpoint-up(sm) {
       min-height: 23rem;
     }
@@ -143,10 +143,9 @@ h4, .h4 {
     }
   }
   .carousel-indicators {
-    bottom: -20px;
+    bottom: -30px;
     li {
-      border-width: 0;
-      background-color: $gray-300;
+      background-color: $gray-500;
     }
   }
   .carousel-control-prev,
