@@ -159,6 +159,7 @@
       @extend .text-center;
       top: 0;
       right: 0;
+      z-index: $z-sky;
       width: 25px;
       @extend .font-weight-light;
       font-size: $font-size-base * 1.5;
