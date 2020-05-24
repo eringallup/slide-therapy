@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable react/jsx-fragments */
 import React from 'react'
 import Templates from 'components/Templates'
 import Formats from 'components/Formats'
@@ -11,7 +13,9 @@ export default class Free extends React.Component {
       apiStage: isProd ? 'prod' : 'dev'
     })
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
     let showPromotions = false
     let pathname = this.state.staticContext && this.state.staticContext.path
@@ -28,6 +32,7 @@ export default class Free extends React.Component {
       showPromotions: showPromotions
     })
   }
+
   componentDidMount () {
     if (!this.state.showPromotions && window.Vault) {
       stAnalytics.page('Promotions')
@@ -38,17 +43,20 @@ export default class Free extends React.Component {
       }
     }
   }
+
   saveData () {
     if (window.Vault) {
       Vault.set('promotionsData', this.getData())
     }
     this.setState(this.getData())
   }
+
   getData () {
     return {
       email: this.email.value
     }
   }
+
   captureUser (e) {
     this.setState({
       formDisabled: true
@@ -77,8 +85,9 @@ export default class Free extends React.Component {
         })
       })
   }
+
   http (url, postData) {
-    let config = {
+    const config = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -88,11 +97,13 @@ export default class Free extends React.Component {
     }
     return fetch(url, config).then(response => response.json())
   }
+
   trackDownload (e, type) {
     stAnalytics.track('Free Download', {
       type: type
     })
   }
+
   render () {
     let leftSide = <React.Fragment>
       <form className="m-0" onSubmit={e => this.captureUser(e)}>
@@ -124,14 +135,17 @@ export default class Free extends React.Component {
           href="https://d380dcsmppijhx.cloudfront.net/free/SlideTherapyColorPalettes.pptx"
           onClick={e => this.trackDownload(e, 'Color Palettes')}
           className="btn btn-primary"
-        >Download Now</a>
+        >Download Now
+        </a>
       </React.Fragment>
     }
     return <section id="view-free">
-      <div className="top-layer" style={{
-        background: 'url(/images/free/topimage5-blur.jpg) center no-repeat',
-        backgroundSize: 'cover'
-      }}>
+      <div
+        className="top-layer" style={{
+          background: 'url(/images/free/topimage5-blur.jpg) center no-repeat',
+          backgroundSize: 'cover'
+        }}
+      >
         <div className="container">
           <div className="row mb-4">
             <div className="col text-center">
@@ -209,9 +223,11 @@ export default class Free extends React.Component {
                     <li>Adding Maps</li>
                   </ol>
                 </div>
-                <div className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
-                  backgroundImage: 'url(/images/home/laptop3.png)'
-                }} />
+                <div
+                  className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
+                    backgroundImage: 'url(/images/home/laptop3.png)'
+                  }}
+                />
               </div>
             </div>
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import qs from 'qs'
 import dataStore from 'store'
@@ -7,13 +8,15 @@ import dataStore from 'store'
 export default class Home extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
     this.detach = []
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
     if (typeof window !== 'undefined') {
-      let _onKeydown = this.onKeydown.bind(this)
+      const _onKeydown = this.onKeydown.bind(this)
       if (window.addEventListener) {
         window.addEventListener('keydown', _onKeydown)
         this.detach.push(() => {
@@ -22,19 +25,22 @@ export default class Home extends React.Component {
       }
     }
   }
+
   componentDidMount () {
     this.setStates()
     this.getImage()
   }
+
   componentWillUnmount () {
     if (this._onSlide) {
       this.detach.forEach(fn => fn())
     }
     this.unsubscribe()
   }
+
   setStates () {
-    let currentState = dataStore.getState()
-    let newState = {
+    const currentState = dataStore.getState()
+    const newState = {
       backgroundImage: currentState.backgroundImage
     }
     if (!this.state.youTubeReady && currentState.youTubeReady) {
@@ -45,6 +51,7 @@ export default class Home extends React.Component {
     }
     this.setState(newState)
   }
+
   setBackgroundImage (state) {
     // console.log('setBackgroundImage', state.backgroundImage)
     if (typeof window !== 'undefined' && state && state.backgroundImage) {
@@ -53,6 +60,7 @@ export default class Home extends React.Component {
       this.bgImagePreload.src = state.backgroundImage.url
     }
   }
+
   onBackgroundImageReady () {
     // console.log('onBackgroundImageReady', this.bgImagePreload)
     if (this.bgImagePreload) {
@@ -62,8 +70,9 @@ export default class Home extends React.Component {
       this.bgImagePreload.removeEventListener('load', this.onBackgroundImageReady)
     }
   }
+
   getImage () {
-    let currentState = dataStore.getState()
+    const currentState = dataStore.getState()
     if (!this.state.backgroundImage && !currentState.backgroundImage) {
       const backgroundImages = [{
         url: '/images/home/topimage1.jpg',
@@ -100,8 +109,9 @@ export default class Home extends React.Component {
       }
     }
   }
+
   fullscreenConfig () {
-    let element = document.body
+    const element = document.body
     if (element.requestFullScreen) {
       return {
         request: element.requestFullScreen,
@@ -135,6 +145,7 @@ export default class Home extends React.Component {
       }
     }
   }
+
   exitFullscreen () {
     if (typeof document === 'undefined') {
       return
@@ -154,6 +165,7 @@ export default class Home extends React.Component {
       }
     })
   }
+
   loadVideo () {
     if (this.player || typeof document === 'undefined') {
       return
@@ -200,6 +212,7 @@ export default class Home extends React.Component {
       }
     })
   }
+
   trackScrub (e) {
     // console.log(e.data, YT.PlayerState)
     switch (e.data) {
@@ -222,6 +235,7 @@ export default class Home extends React.Component {
       break
     }
   }
+
   getVideoStats () {
     this.currentVideoTime = this.player.getCurrentTime().toFixed(0)
     this.percentageWatched = ((this.currentVideoTime / this.player.getDuration()) * 100).toFixed(0)
@@ -233,11 +247,13 @@ export default class Home extends React.Component {
       'Percentage Watched': this.percentageWatched * 1
     }
   }
+
   onKeydown (e) {
     if (e && e.keyCode === 27) { // escape key
       this.closeVideo()
     }
   }
+
   startVideo () {
     // console.info('startVideo')
     // https://developers.google.com/youtube/player_parameters#Parameters
@@ -261,6 +277,7 @@ export default class Home extends React.Component {
       })
     }
   }
+
   closeVideo () {
     if (this.player && this.state.showVideo) {
       this.player.stopVideo()
@@ -270,6 +287,7 @@ export default class Home extends React.Component {
       stAnalytics.track('Close Video', this.getVideoStats())
     }
   }
+
   homepageHero () {
     let heroImage = {}
     let imageCredit = ''
@@ -296,13 +314,15 @@ export default class Home extends React.Component {
             <div
               className="btn-start-video btn btn-primary"
               onClick={e => this.startVideo()}
-            ><svg width="12" height="12" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" fill="white"><path d="M1576 927l-1328 738q-23 13-39.5 3t-16.5-36v-1472q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z" /></svg> See How</div>
+            ><svg width="12" height="12" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" fill="white"><path d="M1576 927l-1328 738q-23 13-39.5 3t-16.5-36v-1472q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z" /></svg> See How
+            </div>
           </div>
         </div>
         <div id="video-player-layer" className="position-absolute fill-parent justify-content-center align-items-center d-flex" hidden={!this.state.showVideo}>
           <span className="close-video-player clickable" onClick={e => this.closeVideo()}>&times;</span>
           <div id="video-player-cx" className="position-relative">
-            <svg xmlns="http://www.w3.org/2000/svg"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               width="1600"
               height="900"
               style={{
@@ -311,13 +331,20 @@ export default class Home extends React.Component {
                 maxWidth: '100%',
                 background: '#dedede'
               }}
-            ><rect width="1600" height="900" style={{
-                width: 'auto',
-                height: 'auto',
-                maxWidth: '100%',
-                fill: '#DEDEDE'
-              }} /></svg>
-            <iframe id="video-player"
+            >
+              <rect
+                width="1600"
+                height="900"
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '100%',
+                  fill: '#DEDEDE'
+                }}
+              />
+            </svg>
+            <iframe
+              id="video-player"
               width="640"
               height="360"
               src="https://www.youtube-nocookie.com/embed/elNu8aNyQRQ?showinfo=0&enablejsapi=1&modestbranding=0&autoplay=0&controls=1&rel=0&fs=1"
@@ -330,6 +357,7 @@ export default class Home extends React.Component {
       </div>
     </div>
   }
+
   render () {
     return this.homepageHero()
   }

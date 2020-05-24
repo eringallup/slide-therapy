@@ -1,16 +1,21 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 
 export default class Privacy extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('Privacy')
   }
+
   render () {
     // https://termsfeed.com/blog/privacy-policy-google-analytics/
     return <div id="privacy" className="bg-light">
@@ -18,7 +23,7 @@ export default class Privacy extends React.Component {
         <div className="row">
           <div className="col col-md-10 offset-md-1 col-lg-8 offset-lg-2 my-4 bg-white py-4 px-5">
             <h2 className="h4">Slide Therapy Privacy Policy</h2>
-            <p><cite style={{fontStyle: 'normal'}}>Effective: May 24, 2018</cite></p>
+            <p><cite style={{ fontStyle: 'normal' }}>Effective: May 24, 2018</cite></p>
             <p>This privacy policy has been compiled to better serve those who are concerned with how their &apos;Personally Identifiable Information&apos; (PII) is being used online. PII, as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.</p>
             <h3>What personal information do we collect from the people that visit our website?</h3>
             <p>When ordering on our site, as appropriate, you may be asked to enter your name, email address, mailing address, credit card information or other details to help you with your experience.</p>

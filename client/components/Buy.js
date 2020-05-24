@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import skus from 'skus.json'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
@@ -16,6 +17,7 @@ export default class Buy extends React.Component {
       apiStage: isProd ? 'prod' : 'dev'
     }, props)
   }
+
   resetVars () {
     // console.info('resetVars')
     this.setState({
@@ -31,16 +33,20 @@ export default class Buy extends React.Component {
       token: false
     })
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     this.resetVars()
     this.setStates()
   }
+
   componentDidMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
     stAnalytics.track('Viewed Checkout Step', {
       step: 1
     })
   }
+
   componentWillUnmount () {
     if (this.ellipsisTimeout) {
       clearTimeout(this.ellipsisTimeout)
@@ -48,6 +54,7 @@ export default class Buy extends React.Component {
     this.unsubscribe()
     this.resetVars()
   }
+
   setStates () {
     const currentState = dataStore.getState()
 
@@ -69,6 +76,7 @@ export default class Buy extends React.Component {
       this.completePurchase(currentState.token)
     }
   }
+
   setDeck (slug) {
     // console.log('setDeck', slug)
     let sku
@@ -88,6 +96,7 @@ export default class Buy extends React.Component {
       }
     }
   }
+
   saveEmail (email) {
     if (window && window.Vault) {
       Vault.set('slideTherapyEmail', email, {
@@ -95,6 +104,7 @@ export default class Buy extends React.Component {
       })
     }
   }
+
   getEmail () {
     let email = ''
     if (window && window.Vault) {
@@ -102,6 +112,7 @@ export default class Buy extends React.Component {
     }
     return email
   }
+
   showCheckout () {
     const currentState = dataStore.getState()
     if (!currentState.stripeCheckout) {
@@ -140,11 +151,13 @@ export default class Buy extends React.Component {
       step: 2
     })
   }
+
   getRevenue (amount) {
     const fee = (amount * 0.029) + 0.30
     const revenue = (amount - fee).toFixed(2) * 1
     return revenue
   }
+
   startEllipsis (num) {
     let text = ''
     for (let i = 0; i < num; i++) {
@@ -162,6 +175,7 @@ export default class Buy extends React.Component {
       this.startEllipsis(num)
     }, 300)
   }
+
   completePurchase (token) {
     this.showProcessing()
     // console.log('completePurchase', token, this.state)
@@ -235,6 +249,7 @@ export default class Buy extends React.Component {
       })
       .catch(error => this.handleEcommerceError(error))
   }
+
   handleEcommerceError (error) {
     // console.error(error)
     let dataStoreUpdate = {
@@ -251,6 +266,7 @@ export default class Buy extends React.Component {
       error: error
     })
   }
+
   closeCheckout () {
     // console.info('closeCheckout')
     if (!this.state.checkoutSuccess) {
@@ -266,6 +282,7 @@ export default class Buy extends React.Component {
       }
     }
   }
+
   showModal (state, store) {
     this.setState(state)
     if (store) {
@@ -278,25 +295,30 @@ export default class Buy extends React.Component {
       }).modal('show')
     }
   }
+
   hideModal () {
     if (typeof $ !== 'undefined') {
       $('.buy-modal').modal('hide').modal('dispose')
     }
   }
+
   dismissModal () {
     this.clearError()
     this.hideModal()
   }
+
   doneWithPurchase (e) {
     e.preventDefault()
     this.closeCheckout()
   }
+
   showProcessing () {
     this.showModal({
       processing: true
     })
     setTimeout(() => this.startEllipsis(3))
   }
+
   tryAgain (e) {
     e.preventDefault()
     this.clearError()
@@ -309,11 +331,13 @@ export default class Buy extends React.Component {
       this.showCheckout()
     }
   }
+
   clearError () {
     this.setState({
       error: false
     })
   }
+
   render () {
     if (this.state.redirectTo) {
       this.hideModal()

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import Hero from 'components/Hero'
 import Templates from 'components/Templates'
@@ -8,11 +9,14 @@ import dataStore from 'store'
 export default class Home extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('Home')
     try {
@@ -25,6 +29,7 @@ export default class Home extends React.Component {
       // do nothing.
     }
   }
+
   render () {
     // console.info('render', this.state.stripeCheckout)
     return <section id="view-home">
@@ -76,9 +81,11 @@ export default class Home extends React.Component {
                     <li>Adding Maps</li>
                   </ol>
                 </div>
-                <div className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
-                  backgroundImage: 'url(/images/home/laptop3.png)'
-                }} />
+                <div
+                  className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
+                    backgroundImage: 'url(/images/home/laptop3.png)'
+                  }}
+                />
               </div>
             </div>
           </div>

@@ -1,16 +1,21 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 
 export default class Terms extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('Terms')
   }
+
   render () {
     // https://support.ecwid.com/hc/en-us/articles/207100249-English-Terms-and-Conditions-templates
     const companyName = 'The None Percent'
@@ -21,8 +26,8 @@ export default class Terms extends React.Component {
         <div className="row">
           <div className="col col-md-10 offset-md-1 col-lg-8 offset-lg-2 my-4 bg-white py-4 px-5">
             <h2 className="h4">{productName} Terms of Use</h2>
-            <p><cite style={{fontStyle: 'normal'}}>February 7, 2018</cite></p>
-            <p>Welcome to our online store! {companyName} provides its services to you subject to the following conditions. If you visit or shop within this website, you accept these conditions. Please read them carefully. ​</p>
+            <p><cite style={{ fontStyle: 'normal' }}>February 7, 2018</cite></p>
+            <p>Welcome to our online store! {companyName} provides its services to you subject to the following conditions. If you visit or shop within this website, you accept these conditions. Please read them carefully.</p>
             <h3>PRIVACY</h3>
             <p>Please review our Privacy Notice, which also governs your visit to our website, to understand our practices.</p>
             <h3>ELECTRONIC COMMUNICATIONS</h3>

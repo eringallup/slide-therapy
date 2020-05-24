@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import FreeColorPalettes from 'components/FreeColorPalettes'
 import qs from 'qs'
@@ -10,7 +11,9 @@ export default class Promotions extends React.Component {
       apiStage: isProd ? 'prod' : 'dev'
     })
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
     let showPromotions = false
     let pathname = this.state.staticContext && this.state.staticContext.path
@@ -27,6 +30,7 @@ export default class Promotions extends React.Component {
       showPromotions: showPromotions
     })
   }
+
   componentDidMount () {
     if (!this.state.showPromotions && window.Vault) {
       stAnalytics.page('Promotions')
@@ -41,12 +45,14 @@ export default class Promotions extends React.Component {
       }
     }
   }
+
   saveData () {
     if (window.Vault) {
       Vault.set('promotionsData', this.getData())
     }
     this.setState(this.getData())
   }
+
   getData () {
     return {
       email: this.email.value,
@@ -56,6 +62,7 @@ export default class Promotions extends React.Component {
       industryOther: this.industryOther.value
     }
   }
+
   captureUser (e) {
     this.setState({
       formDisabled: true
@@ -83,8 +90,9 @@ export default class Promotions extends React.Component {
         })
       })
   }
+
   http (url, postData) {
-    let config = {
+    const config = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -94,6 +102,7 @@ export default class Promotions extends React.Component {
     }
     return fetch(url, config).then(response => response.json())
   }
+
   render () {
     if (this.state.showPromotions) {
       return <FreeColorPalettes />
@@ -148,7 +157,7 @@ export default class Promotions extends React.Component {
                       id="industry"
                       ref={industry => { this.industry = industry }}
                       onChange={e => this.saveData()}
-                      className={'form-control mb-3'}
+                      className="form-control mb-3"
                       placeholder="Industry"
                       aria-label="Industry"
                       required

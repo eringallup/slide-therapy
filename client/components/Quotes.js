@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 
 export default class Quotes extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
   }
 
   render () {

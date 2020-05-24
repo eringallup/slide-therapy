@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-fragments */
+/* eslint-disable react/jsx-closing-bracket-location */
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import Buy from 'components/Buy'
 import { Link } from 'react-router-dom'
@@ -7,29 +10,35 @@ import dataStore from 'store'
 export default class Templates extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
     this.detach = []
     if (typeof document !== 'undefined') {
       this.setupCarousels()
     }
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
   }
+
   componentDidMount () {
     this.setStates()
   }
+
   componentWillUnmount () {
     this.unsubscribe()
   }
+
   setStates () {
-    let currentState = dataStore.getState()
+    const currentState = dataStore.getState()
     if (!this.state.stripeCheckout && currentState.stripeCheckout) {
       this.setState({
         stripeCheckout: currentState.stripeCheckout
       })
     }
   }
+
   showPreview (e, deck) {
     e.preventDefault()
     if (this.state.preview && this.state.preview.slug === deck.slug) {
@@ -42,6 +51,7 @@ export default class Templates extends React.Component {
       deck: deck.title
     })
   }
+
   onSlide (e) {
     // console.log('onSlide')
     if (e.relatedTarget) {
@@ -54,6 +64,7 @@ export default class Templates extends React.Component {
       }
     }
   }
+
   loadLazyImage ($slide) {
     const $img = $($slide).find('img')
     if ($img) {
@@ -64,6 +75,7 @@ export default class Templates extends React.Component {
       }
     }
   }
+
   closePreview (e, deck) {
     e.preventDefault()
     this.setState({
@@ -73,6 +85,7 @@ export default class Templates extends React.Component {
       deck: deck.title
     })
   }
+
   setupCarousels () {
     this._onSlide = this.onSlide.bind(this)
     $(document).on('slide.bs.carousel', '#slide-preview', this._onSlide)
@@ -80,6 +93,7 @@ export default class Templates extends React.Component {
       $(document).off('slide.bs.carousel', '#slide-preview', this._onSlide)
     })
   }
+
   nextSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('next')
@@ -88,6 +102,7 @@ export default class Templates extends React.Component {
       slide: $('#slide-preview .carousel-item-next').index('#slide-preview .carousel-item')
     })
   }
+
   prevSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('prev')
@@ -96,6 +111,7 @@ export default class Templates extends React.Component {
       slide: $('#slide-preview .carousel-item-prev').index('#slide-preview .carousel-item')
     })
   }
+
   openCheckout (e, deck) {
     e.preventDefault()
     dataStore.dispatch({
@@ -103,12 +119,13 @@ export default class Templates extends React.Component {
       startCheckout: deck
     })
   }
+
   render () {
     // console.info('render', this.state.stripeCheckout)
     const templates = [skus[1], skus[2], skus[3]].map(item => {
-      let preview = []
+      const preview = []
       if (this.state.preview && this.state.preview.sku === item.sku) {
-        let slides = []
+        const slides = []
         for (let i = 1; i <= item.previewSlideCount; i++) {
           slides.push(<div
             key={`slide-${i}`}
@@ -186,14 +203,17 @@ export default class Templates extends React.Component {
             className={'buy btn btn-lg btn-wide btn-primary' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
             onClick={e => this.openCheckout(e, item.slug)}
             to={`/buy/${item.slug}`}
-          >Buy</Link>
+          >Buy
+          </Link>
           <div
             className="clickable st-uppercase mt-3"
             onClick={e => this.showPreview(e, item)}
-          >Preview</div>
+          >Preview
+          </div>
         </div>
       </div>
     })
+
     return <React.Fragment>
       <div className="bg-light container">{templates}</div>
       <div
@@ -221,7 +241,8 @@ export default class Templates extends React.Component {
             to="/buy/all-audiences"
             onClick={e => this.openCheckout(e, 'all-audiences')}
             className={'buy btn btn-lg btn-wide btn-light' + (this.state.stripeCheckout ? '' : ' btn-disabled')}
-          >Buy</Link>
+          >Buy
+          </Link>
         </div>
       </div>
       <div id="enterprise" className="text-center p-4">

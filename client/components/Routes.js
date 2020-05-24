@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-fragments */
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
@@ -14,8 +16,9 @@ import Footer from 'components/Footer'
 export default class Routes extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
   }
+
   render () {
     return <React.Fragment>
       <Header />

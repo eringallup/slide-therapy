@@ -1,19 +1,25 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 
 export default class About extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
   }
-  componentWillMount () {
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('About')
   }
+
   billion (num) {
     return num * 1000000000
   }
+
   render () {
     return <section id="view-about" className="py-5">
       <div className="container">

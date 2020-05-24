@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import qs from 'qs'
@@ -10,6 +11,7 @@ export default class Header extends React.Component {
       showDownload: false
     })
   }
+
   componentDidMount () {
     if (typeof location !== 'undefined') {
       const queryParams = qs.parse(location.search.substring(1))
@@ -21,22 +23,28 @@ export default class Header extends React.Component {
       }
     }
   }
+
   homeActive (match, location) {
     if (!match) {
       return false
     }
     return (match.isExact || location.pathname === '/templates' || location.pathname === '/start')
   }
+
   downloadActive (match, location) {
     return location.pathname === '/download'
   }
+
   render () {
     return <header className="container">
       <div className="row">
         <div className="col-md-5 pt-3 py-md-3">
-          <h1 className="m-0 text-center text-md-left" style={{
-            minHeight: '39px'
-          }}><Link to="/"><img className="img-fluid" src="/images/slide-therapy-logo.png" alt="Slide Therapy" width="222" height="39" /></Link></h1>
+          <h1
+            className="m-0 text-center text-md-left" style={{
+              minHeight: '39px'
+            }}
+          ><Link to="/"><img className="img-fluid" src="/images/slide-therapy-logo.png" alt="Slide Therapy" width="222" height="39" /></Link>
+          </h1>
         </div>
         <div className="col-md-7 d-flex justify-content-center justify-content-md-end">
           <nav className={`main-nav nav align-items-center justify-content-center ${this.state.showDownload ? ' has-download' : ''}`}>
@@ -46,26 +54,30 @@ export default class Header extends React.Component {
               activeClassName="active"
               isActive={this.downloadActive}
               className={`nav-link d-none ${this.state.showDownload ? ' d-sm-inline-block' : ''}`}
-            >Download</NavLink>
+            >Download
+            </NavLink>
             <NavLink
               to="/"
               isActive={this.homeActive}
               suppressHydrationWarning
               activeClassName="active"
               className="nav-link"
-            >Templates</NavLink>
+            >Templates
+            </NavLink>
             <NavLink
               to="/tips"
               suppressHydrationWarning
               activeClassName="active"
               className="nav-link"
-            >Tips</NavLink>
+            >Tips
+            </NavLink>
             <NavLink
               to="/about"
               suppressHydrationWarning
               activeClassName="active"
               className="nav-link"
-            >About</NavLink>
+            >About
+            </NavLink>
           </nav>
         </div>
       </div>
