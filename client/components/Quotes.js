@@ -5,14 +5,19 @@ export default class Quotes extends React.Component {
     super(props)
     this.state = props
   }
+
   render () {
     return <div className="quotes mt-5">
       <div className="bg-lite container py-5">
         <div className="row mx-auto">
-          <div className="col">
-            <h4 className="text-center mb-4">Quotes</h4>
+          <div className="col-12 col-lg-8 offset-lg-2">
+            <h4 className="text-center mb-4">Testimonials</h4>
 
-            <div id="quotesCarousel" className="carousel slide" data-ride="carousel">
+            <div id="quotesCarousel" className="carousel slide" data-ride="false">
+              <ol className="carousel-indicators">
+                <li data-target="#quotesCarousel" data-slide-to="0" className="active" />
+                <li data-target="#quotesCarousel" data-slide-to="1" />
+              </ol>
               <div className="carousel-inner">
                 <div className="carousel-item active">
                   <blockquote>
@@ -23,7 +28,8 @@ export default class Quotes extends React.Component {
                     Anyone who&apos;s a PM or marketing manager should use this product to make their presentations great.
                     <cite className="d-block pt-3">
                       – Lesley G.<br />
-                      San Francisco
+                      Product Leader<br />
+                      San Francisco, USA
                     </cite>
                   </blockquote>
                 </div>
@@ -35,7 +41,7 @@ export default class Quotes extends React.Component {
                     <br /><br />
                     <cite className="d-block pt-3">
                       – Marius J.<br />
-                      Engineering Leader
+                      Engineering Leader<br />
                       Oslo, Norway
                     </cite>
                   </blockquote>

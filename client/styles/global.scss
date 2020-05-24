@@ -138,8 +138,15 @@ h4, .h4 {
     @include media-breakpoint-up(sm) {
       min-height: 23rem;
     }
-    @include media-breakpoint-up(lg) {
-      min-height: 17rem;
+    @include media-breakpoint-up(xl) {
+      min-height: 20rem;
+    }
+  }
+  .carousel-indicators {
+    bottom: -20px;
+    li {
+      border-width: 0;
+      background-color: $gray-300;
     }
   }
   .carousel-control-prev,
