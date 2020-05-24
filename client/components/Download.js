@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import qs from 'qs'
 // import skus from '../../skus.json'
@@ -17,8 +18,8 @@ export default class Download extends React.Component {
   }
 
   componentDidMount () {
-    let queryParams = qs.parse(location.search.substring(1))
-    let trackConfig = {}
+    const queryParams = qs.parse(location.search.substring(1))
+    const trackConfig = {}
     if (queryParams.o && queryParams.e) {
       this.ownedDeck(queryParams.o, queryParams.e)
       trackConfig.type = 'order_id'
@@ -33,7 +34,7 @@ export default class Download extends React.Component {
     const url = `https://0423df6x19.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}?o=${oid}&e=${email}`
     this.http(url)
       .then(json => {
-        let downloadUrl = json && json.body
+        const downloadUrl = json && json.body
         if (typeof document !== 'undefined') {
           this.setState({
             fetched: true,
@@ -48,7 +49,7 @@ export default class Download extends React.Component {
     const url = `https://0423df6x19.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}?t=${token}`
     this.http(url)
       .then(json => {
-        let downloadUrl = json && json.body
+        const downloadUrl = json && json.body
         if (typeof document !== 'undefined') {
           this.setState({
             fetched: true,

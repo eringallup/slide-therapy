@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable react/jsx-fragments */
 import React from 'react'
 import Templates from 'components/Templates'
 import Formats from 'components/Formats'
@@ -103,7 +105,7 @@ export default class Free extends React.Component {
   }
 
   render () {
-    let leftSide = <>
+    let leftSide = <React.Fragment>
       <form className="m-0" onSubmit={e => this.captureUser(e)}>
         <fieldset disabled={this.state.formDisabled}>
           <input
@@ -123,9 +125,9 @@ export default class Free extends React.Component {
           />
         </fieldset>
       </form>
-    </>
+    </React.Fragment>
     if (this.state.showPromotions) {
-      leftSide = <>
+      leftSide = <React.Fragment>
         <h3 className="h4">Thank You!</h3>
         {/* <p className="lead">Your download should start momentarily</p> */}
         <a
@@ -135,7 +137,7 @@ export default class Free extends React.Component {
           className="btn btn-primary"
         >Download Now
         </a>
-      </>
+      </React.Fragment>
     }
     return <section id="view-free">
       <div

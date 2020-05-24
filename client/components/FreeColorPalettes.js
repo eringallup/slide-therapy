@@ -6,7 +6,7 @@ import Formats from 'components/Formats'
 export default class FreeColorPalettes extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
   }
 
   // eslint-disable-next-line camelcase

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import skus from 'skus.json'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'

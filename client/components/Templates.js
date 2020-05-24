@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-fragments */
 /* eslint-disable react/jsx-closing-bracket-location */
 /* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
@@ -9,7 +10,7 @@ import dataStore from 'store'
 export default class Templates extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
     this.detach = []
     if (typeof document !== 'undefined') {
       this.setupCarousels()
@@ -213,7 +214,7 @@ export default class Templates extends React.Component {
       </div>
     })
 
-    return <>
+    return <React.Fragment>
       <div className="bg-light container">{templates}</div>
       <div
         id="templates"
@@ -249,6 +250,6 @@ export default class Templates extends React.Component {
         please email us at <a href="mailto:hello@slidetherapy.com">hello@slidetherapy.com</a>
       </div>
       <Buy />
-    </>
+    </React.Fragment>
   }
 }

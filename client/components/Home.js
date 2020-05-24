@@ -9,7 +9,7 @@ import dataStore from 'store'
 export default class Home extends React.Component {
   constructor (props) {
     super(props)
-    this.state = props
+    this.state = { ...props }
   }
 
   // eslint-disable-next-line camelcase
