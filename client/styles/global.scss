@@ -133,8 +133,8 @@ h4, .h4 {
     display: block;
     position: relative;
   }
-  .carousel {
-    min-height: 32rem;
+  #quotesCarousel.carousel {
+    min-height: 33rem;
     @include media-breakpoint-up(sm) {
       min-height: 26rem;
     }
