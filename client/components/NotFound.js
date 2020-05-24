@@ -5,12 +5,15 @@ export default class NotFound extends React.Component {
     super(props)
     this.state = props
   }
+
   componentWillMount () {
     setPageTitle(null, 'Slide Therapy: Page Not Found')
   }
+
   componentDidMount () {
     stAnalytics.page('Not Found')
   }
+
   render () {
     return <div className="container">
       <div className="row">

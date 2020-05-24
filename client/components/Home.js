@@ -10,9 +10,11 @@ export default class Home extends React.Component {
     super(props)
     this.state = props
   }
+
   componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('Home')
     try {
@@ -25,6 +27,7 @@ export default class Home extends React.Component {
       // do nothing.
     }
   }
+
   render () {
     // console.info('render', this.state.stripeCheckout)
     return <section id="view-home">

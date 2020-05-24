@@ -6,12 +6,15 @@ export default class Tips extends React.Component {
     super(props)
     this.state = props
   }
+
   componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('Tips')
   }
+
   render () {
     let tipsHtml = tips.map((tip, index) => {
       let imgClass = ''

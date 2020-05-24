@@ -13,15 +13,19 @@ export default class Templates extends React.Component {
       this.setupCarousels()
     }
   }
+
   componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
   }
+
   componentDidMount () {
     this.setStates()
   }
+
   componentWillUnmount () {
     this.unsubscribe()
   }
+
   setStates () {
     let currentState = dataStore.getState()
     if (!this.state.stripeCheckout && currentState.stripeCheckout) {
@@ -30,6 +34,7 @@ export default class Templates extends React.Component {
       })
     }
   }
+
   showPreview (e, deck) {
     e.preventDefault()
     if (this.state.preview && this.state.preview.slug === deck.slug) {
@@ -42,6 +47,7 @@ export default class Templates extends React.Component {
       deck: deck.title
     })
   }
+
   onSlide (e) {
     // console.log('onSlide')
     if (e.relatedTarget) {
@@ -54,6 +60,7 @@ export default class Templates extends React.Component {
       }
     }
   }
+
   loadLazyImage ($slide) {
     const $img = $($slide).find('img')
     if ($img) {
@@ -64,6 +71,7 @@ export default class Templates extends React.Component {
       }
     }
   }
+
   closePreview (e, deck) {
     e.preventDefault()
     this.setState({
@@ -73,6 +81,7 @@ export default class Templates extends React.Component {
       deck: deck.title
     })
   }
+
   setupCarousels () {
     this._onSlide = this.onSlide.bind(this)
     $(document).on('slide.bs.carousel', '#slide-preview', this._onSlide)
@@ -80,6 +89,7 @@ export default class Templates extends React.Component {
       $(document).off('slide.bs.carousel', '#slide-preview', this._onSlide)
     })
   }
+
   nextSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('next')
@@ -88,6 +98,7 @@ export default class Templates extends React.Component {
       slide: $('#slide-preview .carousel-item-next').index('#slide-preview .carousel-item')
     })
   }
+
   prevSlide (e, deck) {
     e.preventDefault()
     $('#slide-preview').carousel('prev')
@@ -96,6 +107,7 @@ export default class Templates extends React.Component {
       slide: $('#slide-preview .carousel-item-prev').index('#slide-preview .carousel-item')
     })
   }
+
   openCheckout (e, deck) {
     e.preventDefault()
     dataStore.dispatch({
@@ -103,6 +115,7 @@ export default class Templates extends React.Component {
       startCheckout: deck
     })
   }
+
   render () {
     // console.info('render', this.state.stripeCheckout)
     const templates = [skus[1], skus[2], skus[3]].map(item => {
@@ -194,7 +207,8 @@ export default class Templates extends React.Component {
         </div>
       </div>
     })
-    return <React.Fragment>
+
+    return <>
       <div className="bg-light container">{templates}</div>
       <div
         id="templates"
@@ -229,6 +243,6 @@ export default class Templates extends React.Component {
         please email us at <a href="mailto:hello@slidetherapy.com">hello@slidetherapy.com</a>
       </div>
       <Buy />
-    </React.Fragment>
+    </>
   }
 }

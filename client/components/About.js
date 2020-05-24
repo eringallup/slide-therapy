@@ -5,15 +5,19 @@ export default class About extends React.Component {
     super(props)
     this.state = props
   }
+
   componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('About')
   }
+
   billion (num) {
     return num * 1000000000
   }
+
   render () {
     return <section id="view-about" className="py-5">
       <div className="container">

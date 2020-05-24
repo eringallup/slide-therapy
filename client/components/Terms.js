@@ -5,12 +5,15 @@ export default class Terms extends React.Component {
     super(props)
     this.state = props
   }
+
   componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('Terms')
   }
+
   render () {
     // https://support.ecwid.com/hc/en-us/articles/207100249-English-Terms-and-Conditions-templates
     const companyName = 'The None Percent'

@@ -10,9 +10,11 @@ export default class Download extends React.Component {
       apiStage: isProd ? 'prod' : 'dev'
     })
   }
+
   componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     let queryParams = qs.parse(location.search.substring(1))
     let trackConfig = {}
@@ -25,6 +27,7 @@ export default class Download extends React.Component {
     }
     stAnalytics.page('Download', trackConfig)
   }
+
   ownedDeck (oid, email) {
     const url = `https://0423df6x19.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}?o=${oid}&e=${email}`
     this.http(url)
@@ -39,6 +42,7 @@ export default class Download extends React.Component {
       })
       .catch(console.error)
   }
+
   withToken (token, autoDownload) {
     const url = `https://0423df6x19.execute-api.us-west-2.amazonaws.com/${this.state.apiStage}?t=${token}`
     this.http(url)
@@ -57,6 +61,7 @@ export default class Download extends React.Component {
       })
       .catch(console.error)
   }
+
   http (url) {
     return fetch(url, {
       method: 'PATCH',
@@ -66,6 +71,7 @@ export default class Download extends React.Component {
       }
     }).then(response => response.json())
   }
+
   render () {
     let downloadHtml = ''
     if (this.state.downloadUrl && this.state.downloadUrl.length > 0) {

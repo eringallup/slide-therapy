@@ -5,12 +5,15 @@ export default class Privacy extends React.Component {
     super(props)
     this.state = props
   }
+
   componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('Privacy')
   }
+
   render () {
     // https://termsfeed.com/blog/privacy-policy-google-analytics/
     return <div id="privacy" className="bg-light">

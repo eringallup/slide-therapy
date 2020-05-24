@@ -10,6 +10,7 @@ export default class Promotions extends React.Component {
       apiStage: isProd ? 'prod' : 'dev'
     })
   }
+
   componentWillMount () {
     setPageTitle(this.state)
     let showPromotions = false
@@ -27,6 +28,7 @@ export default class Promotions extends React.Component {
       showPromotions: showPromotions
     })
   }
+
   componentDidMount () {
     if (!this.state.showPromotions && window.Vault) {
       stAnalytics.page('Promotions')
@@ -41,12 +43,14 @@ export default class Promotions extends React.Component {
       }
     }
   }
+
   saveData () {
     if (window.Vault) {
       Vault.set('promotionsData', this.getData())
     }
     this.setState(this.getData())
   }
+
   getData () {
     return {
       email: this.email.value,
@@ -56,6 +60,7 @@ export default class Promotions extends React.Component {
       industryOther: this.industryOther.value
     }
   }
+
   captureUser (e) {
     this.setState({
       formDisabled: true
@@ -83,6 +88,7 @@ export default class Promotions extends React.Component {
         })
       })
   }
+
   http (url, postData) {
     let config = {
       method: 'POST',
@@ -94,6 +100,7 @@ export default class Promotions extends React.Component {
     }
     return fetch(url, config).then(response => response.json())
   }
+
   render () {
     if (this.state.showPromotions) {
       return <FreeColorPalettes />

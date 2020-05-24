@@ -16,8 +16,9 @@ export default class Routes extends React.Component {
     super(props)
     this.state = props
   }
+
   render () {
-    return <React.Fragment>
+    return <>
       <Header />
       <div id="content">
         <Route exact path="/" component={Home} context={this.state.context} />
@@ -32,7 +33,7 @@ export default class Routes extends React.Component {
         <Route path="/terms" component={Terms} context={this.state.context} />
       </div>
       <Footer />
-    </React.Fragment>
+    </>
   }
 }
 

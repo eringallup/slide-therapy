@@ -10,6 +10,7 @@ export default class Header extends React.Component {
       showDownload: false
     })
   }
+
   componentDidMount () {
     if (typeof location !== 'undefined') {
       const queryParams = qs.parse(location.search.substring(1))
@@ -21,15 +22,18 @@ export default class Header extends React.Component {
       }
     }
   }
+
   homeActive (match, location) {
     if (!match) {
       return false
     }
     return (match.isExact || location.pathname === '/templates' || location.pathname === '/start')
   }
+
   downloadActive (match, location) {
     return location.pathname === '/download'
   }
+
   render () {
     return <header className="container">
       <div className="row">

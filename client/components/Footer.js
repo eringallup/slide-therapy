@@ -5,6 +5,7 @@ export default class Footer extends React.Component {
     super(props)
     this.state = props
   }
+
   render () {
     return <footer className="d-block">
       <div className="container">

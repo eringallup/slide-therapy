@@ -10,6 +10,7 @@ export default class Home extends React.Component {
     this.state = props
     this.detach = []
   }
+
   componentWillMount () {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
     if (typeof window !== 'undefined') {
@@ -22,16 +23,19 @@ export default class Home extends React.Component {
       }
     }
   }
+
   componentDidMount () {
     this.setStates()
     this.getImage()
   }
+
   componentWillUnmount () {
     if (this._onSlide) {
       this.detach.forEach(fn => fn())
     }
     this.unsubscribe()
   }
+
   setStates () {
     let currentState = dataStore.getState()
     let newState = {
@@ -45,6 +49,7 @@ export default class Home extends React.Component {
     }
     this.setState(newState)
   }
+
   setBackgroundImage (state) {
     // console.log('setBackgroundImage', state.backgroundImage)
     if (typeof window !== 'undefined' && state && state.backgroundImage) {
@@ -53,6 +58,7 @@ export default class Home extends React.Component {
       this.bgImagePreload.src = state.backgroundImage.url
     }
   }
+
   onBackgroundImageReady () {
     // console.log('onBackgroundImageReady', this.bgImagePreload)
     if (this.bgImagePreload) {
@@ -62,6 +68,7 @@ export default class Home extends React.Component {
       this.bgImagePreload.removeEventListener('load', this.onBackgroundImageReady)
     }
   }
+
   getImage () {
     let currentState = dataStore.getState()
     if (!this.state.backgroundImage && !currentState.backgroundImage) {
@@ -100,6 +107,7 @@ export default class Home extends React.Component {
       }
     }
   }
+
   fullscreenConfig () {
     let element = document.body
     if (element.requestFullScreen) {
@@ -135,6 +143,7 @@ export default class Home extends React.Component {
       }
     }
   }
+
   exitFullscreen () {
     if (typeof document === 'undefined') {
       return
@@ -154,6 +163,7 @@ export default class Home extends React.Component {
       }
     })
   }
+
   loadVideo () {
     if (this.player || typeof document === 'undefined') {
       return
@@ -200,6 +210,7 @@ export default class Home extends React.Component {
       }
     })
   }
+
   trackScrub (e) {
     // console.log(e.data, YT.PlayerState)
     switch (e.data) {
@@ -222,6 +233,7 @@ export default class Home extends React.Component {
       break
     }
   }
+
   getVideoStats () {
     this.currentVideoTime = this.player.getCurrentTime().toFixed(0)
     this.percentageWatched = ((this.currentVideoTime / this.player.getDuration()) * 100).toFixed(0)
@@ -233,11 +245,13 @@ export default class Home extends React.Component {
       'Percentage Watched': this.percentageWatched * 1
     }
   }
+
   onKeydown (e) {
     if (e && e.keyCode === 27) { // escape key
       this.closeVideo()
     }
   }
+
   startVideo () {
     // console.info('startVideo')
     // https://developers.google.com/youtube/player_parameters#Parameters
@@ -261,6 +275,7 @@ export default class Home extends React.Component {
       })
     }
   }
+
   closeVideo () {
     if (this.player && this.state.showVideo) {
       this.player.stopVideo()
@@ -270,6 +285,7 @@ export default class Home extends React.Component {
       stAnalytics.track('Close Video', this.getVideoStats())
     }
   }
+
   homepageHero () {
     let heroImage = {}
     let imageCredit = ''
@@ -330,6 +346,7 @@ export default class Home extends React.Component {
       </div>
     </div>
   }
+
   render () {
     return this.homepageHero()
   }

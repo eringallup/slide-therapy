@@ -7,17 +7,21 @@ export default class FreeColorPalettes extends React.Component {
     super(props)
     this.state = props
   }
+
   componentWillMount () {
     setPageTitle(this.state)
   }
+
   componentDidMount () {
     stAnalytics.page('Free Color Palettes')
   }
+
   trackDownload (e, type) {
     stAnalytics.track('Free Download', {
       type: type
     })
   }
+
   render () {
     return <section id="view-free-color-palettes">
       <div className="hero-layer d-flex align-items-center">

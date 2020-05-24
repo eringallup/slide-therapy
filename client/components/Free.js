@@ -11,6 +11,7 @@ export default class Free extends React.Component {
       apiStage: isProd ? 'prod' : 'dev'
     })
   }
+
   componentWillMount () {
     setPageTitle(this.state)
     let showPromotions = false
@@ -28,6 +29,7 @@ export default class Free extends React.Component {
       showPromotions: showPromotions
     })
   }
+
   componentDidMount () {
     if (!this.state.showPromotions && window.Vault) {
       stAnalytics.page('Promotions')
@@ -38,17 +40,20 @@ export default class Free extends React.Component {
       }
     }
   }
+
   saveData () {
     if (window.Vault) {
       Vault.set('promotionsData', this.getData())
     }
     this.setState(this.getData())
   }
+
   getData () {
     return {
       email: this.email.value
     }
   }
+
   captureUser (e) {
     this.setState({
       formDisabled: true
@@ -77,6 +82,7 @@ export default class Free extends React.Component {
         })
       })
   }
+
   http (url, postData) {
     let config = {
       method: 'POST',
@@ -88,13 +94,15 @@ export default class Free extends React.Component {
     }
     return fetch(url, config).then(response => response.json())
   }
+
   trackDownload (e, type) {
     stAnalytics.track('Free Download', {
       type: type
     })
   }
+
   render () {
-    let leftSide = <React.Fragment>
+    let leftSide = <>
       <form className="m-0" onSubmit={e => this.captureUser(e)}>
         <fieldset disabled={this.state.formDisabled}>
           <input
@@ -114,9 +122,9 @@ export default class Free extends React.Component {
           />
         </fieldset>
       </form>
-    </React.Fragment>
+    </>
     if (this.state.showPromotions) {
-      leftSide = <React.Fragment>
+      leftSide = <>
         <h3 className="h4">Thank You!</h3>
         {/* <p className="lead">Your download should start momentarily</p> */}
         <a
@@ -125,7 +133,7 @@ export default class Free extends React.Component {
           onClick={e => this.trackDownload(e, 'Color Palettes')}
           className="btn btn-primary"
         >Download Now</a>
-      </React.Fragment>
+      </>
     }
     return <section id="view-free">
       <div className="top-layer" style={{

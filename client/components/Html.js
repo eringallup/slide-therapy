@@ -13,6 +13,7 @@ export default class Html extends React.Component {
       env: env || 'dev'
     }, props)
   }
+
   render () {
     const page = this.state.context.page || {}
     const docTitle = page.title || 'Slide Therapy'
