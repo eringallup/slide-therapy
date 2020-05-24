@@ -2,7 +2,7 @@ const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlCriticalPlugin = require('html-critical-webpack-plugin')
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const clientDir = path.resolve(__dirname, 'client')
 const outputDir = path.resolve(clientDir, 'dist')
@@ -20,7 +20,7 @@ if (isPreview) {
   domain = 'https://slidetherapy.com'
 }
 
-let plugins = [
+const plugins = [
   new CleanWebpackPlugin([outputDir], {
     exclude: processImages ? [] : ['images']
   }),
@@ -113,7 +113,7 @@ module.exports = {
         // 'style-loader',
         'css-loader',
         'sass-loader'
-      ],
+      ]
     }, {
       test: /\.jsx?$/,
       exclude: /node_modules/,

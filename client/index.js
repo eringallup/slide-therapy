@@ -11,7 +11,7 @@ import dataStore from 'store'
 
 const isProd = process && process.env && process.env.NODE_ENV === 'production'
 const segmentKey = isProd ? 'tplTpmOXufbHiEvqFxEvRhNRL7XQs6bE' : 'NmYeVJ3VplWfQs5243b4cD9BvcqmF6nF'
-let analyticsToTrack = []
+const analyticsToTrack = []
 
 if (typeof document !== 'undefined') {
   window.Vault = require('vault.js')
@@ -46,7 +46,7 @@ function init () {
 function addPath () {
   if (typeof location !== 'undefined') {
     const currentState = dataStore.getState()
-    let paths = currentState.paths || []
+    const paths = currentState.paths || []
     if (paths[(paths.length - 1)] !== location.pathname) {
       paths.push(location.pathname)
     }
@@ -89,7 +89,7 @@ function setupYouTube () {
     })
   }
   setTimeout(() => {
-    let tag = document.createElement('script')
+    const tag = document.createElement('script')
     tag.src = 'https://www.youtube.com/iframe_api'
     const firstScriptTag = document.getElementsByTagName('script')[0]
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
@@ -145,7 +145,7 @@ function setupStripe (attempt) {
     }, attempt)
     return
   }
-  let stripeCheckout = StripeCheckout.configure({
+  const stripeCheckout = StripeCheckout.configure({
     key: isProd ? 'pk_live_VCaltCKPpZ5maCPQ79s0p7Xk' : 'pk_test_CK71Laidqlso9O9sZDktqW6a',
     locale: 'auto',
     token: token => {
@@ -159,7 +159,7 @@ function setupStripe (attempt) {
       if (error) {
         console.log('closed', error)
       }
-      let currentState = dataStore.getState()
+      const currentState = dataStore.getState()
       if (!currentState.token) {
         dataStore.dispatch({
           type: 'checkoutClosed',
