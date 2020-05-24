@@ -136,10 +136,7 @@ h4, .h4 {
   .carousel {
     min-height: 32rem;
     @include media-breakpoint-up(sm) {
-      min-height: 23rem;
-    }
-    @include media-breakpoint-up(xl) {
-      min-height: 20rem;
+      min-height: 26rem;
     }
   }
   .carousel-indicators {
