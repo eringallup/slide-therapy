@@ -3,7 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 // const CriticalPlugin = require('webpack-plugin-critical').CriticalPlugin
 const HtmlCriticalPlugin = require('html-critical-webpack-plugin')
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const clientDir = path.resolve(__dirname, 'client')
 const outputDir = path.resolve(clientDir, 'dist')
@@ -28,6 +28,7 @@ let plugins = [
   new StaticSiteGeneratorPlugin({
     crawl: true,
     globals: {
+      window: {},
       StripeCheckout: {
         configure: () => {}
       }
@@ -45,7 +46,7 @@ let plugins = [
       isProd: isProd
     }
   }),
-  new ExtractTextPlugin('styles-[contenthash].css')
+  new MiniCssExtractPlugin('styles-[contenthash].css')
 ]
 
 if (isPreview || isProd) {
@@ -79,6 +80,7 @@ if (processImages) {
 }
 
 module.exports = {
+  mode: (isProd || isPreview) ? 'production' : 'development',
   entry: [
     'whatwg-fetch',
     './client/index.js'
@@ -101,29 +103,25 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.s?(c|a)ss$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: [{
-          loader: 'css-loader',
+      test: /\.(sa|sc|c)ss$/,
+      use: [
+        {
+          loader: MiniCssExtractPlugin.loader,
           options: {
-            minimize: false
+            hmr: !isProd && !isPreview
           }
-        }, {
-          loader: 'sass-loader'
-        }]
-      })
+        },
+        // 'style-loader',
+        'css-loader',
+        'sass-loader'
+      ],
     }, {
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'babel-loader',
       query: {
-        presets: ['es2015', 'react']
+        presets: ['react']
       }
-    }],
-    loaders: [{
-      test: /\.json$/,
-      loader: 'json'
     }]
   }
 }

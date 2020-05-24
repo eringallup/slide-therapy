@@ -14,10 +14,12 @@ export default class Home extends React.Component {
     this.unsubscribe = dataStore.subscribe(() => this.setStates())
     if (typeof window !== 'undefined') {
       let _onKeydown = this.onKeydown.bind(this)
-      window.addEventListener('keydown', _onKeydown)
-      this.detach.push(() => {
-        window.removeEventListener('keydown', _onKeydown)
-      })
+      if (window.addEventListener) {
+        window.addEventListener('keydown', _onKeydown)
+        this.detach.push(() => {
+          window.removeEventListener('keydown', _onKeydown)
+        })
+      }
     }
   }
   componentDidMount () {

@@ -10,6 +10,12 @@ const { JSDOM } = jsdom
 const baseUrl = 'https://slidetherapy.com'
 const EMAIL_DIR = path.resolve(__dirname, 'email')
 
+if (process.env.NODE_ENV === 'production') {
+  console.log('---------- LIVE ----------')
+} else {
+  console.log('---------- TEST ----------')
+}
+
 fs.readdir(EMAIL_DIR, 'utf8', (dirError, files) => {
   if (dirError) {
     return _exit(dirError)
@@ -38,25 +44,42 @@ function sendTemplate (template, callback) {
           HtmlPart: htmlEmail
         }
       }
-      const TEMP_FILE = path.join('/tmp', 'email', templateData.name + '.json')
-      console.log(TEMP_FILE)
-      fse.outputJson(TEMP_FILE, json, writeError => {
-        if (writeError) {
-          return callback(writeError)
-        }
-        const sesCommand = `aws ses update-template --cli-input-json file://${TEMP_FILE}`
-        console.log(sesCommand)
-        exec(sesCommand, (error, stdout, stderr) => {
-          if (error) {
-            return callback(error)
+      writeHtmlFile(templateData, htmlEmail).then(() => {
+        writeJsonFile(templateData, json).then(() => {
+          if (process.env.NODE_ENV !== 'production') {
+            return callback()
           }
-          if (stderr) {
-            return callback(stderr)
-          }
-          callback()
-        })
-      })
+          sendTemplateToSes(templateData, callback)
+        }).catch(callback)
+      }).catch(callback)
     })
+  })
+}
+
+async function writeHtmlFile (templateData, htmlEmail) {
+  const htmlFile = path.join('/tmp', 'email', templateData.name + '.html')
+  console.log(htmlFile)
+  await fse.outputFile(htmlFile, htmlEmail)
+}
+
+async function writeJsonFile (templateData, json) {
+  const jsonFile = path.join('/tmp', 'email', templateData.name + '.json')
+  console.log(jsonFile)
+  await fse.outputJson(jsonFile, json)
+}
+
+function sendTemplateToSes (templateData, callback) {
+  const jsonFile = path.join('/tmp', 'email', templateData.name + '.json')
+  const sesCommand = `aws ses update-template --cli-input-json file://${jsonFile}`
+  console.log(sesCommand)
+  exec(sesCommand, (error, stdout, stderr) => {
+    if (error) {
+      return callback(error)
+    }
+    if (stderr) {
+      return callback(stderr)
+    }
+    callback()
   })
 }
 
