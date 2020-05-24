@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import Templates from 'components/Templates'
 import Formats from 'components/Formats'
@@ -97,9 +98,11 @@ export default class FreeColorPalettes extends React.Component {
                     <li>Adding Maps</li>
                   </ol>
                 </div>
-                <div className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
-                  backgroundImage: 'url(/images/home/laptop3.png)'
-                }} />
+                <div
+                  className="start-image ml-5 d-none d-md-block align-self-stretch" style={{
+                    backgroundImage: 'url(/images/home/laptop3.png)'
+                  }}
+                />
               </div>
             </div>
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import FreeColorPalettes from 'components/FreeColorPalettes'
 import qs from 'qs'

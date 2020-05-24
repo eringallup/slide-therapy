@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-closing-bracket-location */
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import Buy from 'components/Buy'
 import { Link } from 'react-router-dom'

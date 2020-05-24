@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import qs from 'qs'

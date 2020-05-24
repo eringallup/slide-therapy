@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react'
 import Hero from 'components/Hero'
 import Templates from 'components/Templates'
