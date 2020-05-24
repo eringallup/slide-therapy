@@ -1,6 +1,5 @@
 const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-// const CriticalPlugin = require('webpack-plugin-critical').CriticalPlugin
 const HtmlCriticalPlugin = require('html-critical-webpack-plugin')
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
