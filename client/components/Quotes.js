@@ -10,7 +10,7 @@ export default class Quotes extends React.Component {
     return <div className="quotes mt-5">
       <div className="bg-lite container py-5">
         <div className="row mx-auto">
-          <div className="col-12 col-lg-8 offset-lg-2">
+          <div className="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
             <h4 className="text-center mb-4">Testimonials</h4>
 
             <div id="quotesCarousel" className="carousel slide" data-ride="false" data-touch="true">
