@@ -44,7 +44,7 @@
     "fs-extra": "^8.1.0",
     "html-critical-webpack-plugin": "^2.1.0",
     "inline-css": "^2.6.3",
-    "jsdom": "^16.2.0",
+    "jsdom": "^16.2.2",
     "lodash": "^4.17.15",
     "minimist": "^1.2.3",
     "mocha": "^7.1.0",
@@ -57,8 +57,7 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
-    "webpack-merge": "^4.2.2",
-    "webpack-plugin-critical": "^1.0.0"
+    "webpack-merge": "^4.2.2"
   },
   "scripts": {
     "lambda": "AWS_PROFILE=slide-therapy node ./lambda.js --upload",
