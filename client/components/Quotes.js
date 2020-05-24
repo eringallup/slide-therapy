@@ -13,7 +13,7 @@ export default class Quotes extends React.Component {
           <div className="col-12 col-lg-8 offset-lg-2">
             <h4 className="text-center mb-4">Testimonials</h4>
 
-            <div id="quotesCarousel" className="carousel slide" data-ride="false">
+            <div id="quotesCarousel" className="carousel slide" data-ride="false" data-touch="true">
               <ol className="carousel-indicators">
                 <li data-target="#quotesCarousel" data-slide-to="0" className="active" />
                 <li data-target="#quotesCarousel" data-slide-to="1" />
