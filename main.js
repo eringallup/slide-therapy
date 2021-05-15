@@ -4,6 +4,18 @@ const heroImages = [
   '/i/home/topimage5.jpg'
 ];
 
+const lastSlide = {
+  large: 31,
+  small: 27,
+  solitary: 28
+};
+
+const loaded = {
+  large: 1,
+  small: 1,
+  solitary: 1
+};
+
 let videoPlayer;
 
 function main() {
@@ -11,7 +23,8 @@ function main() {
   addScripts();
   attachEvents();
   pickHeroImage();
-  setupCarousel();
+  setupSwiper('.quotes .swiper-container');
+  setupPreviews();
 }
 
 function pickHeroImage() {
@@ -127,35 +140,101 @@ function closeVideo() {
   }
 }
 
-// https://swiperjs.com/get-started
-function setupCarousel() {
-  if (!window.Swiper) {
-    setTimeout(() => {
-      setupCarousel();
-    }, 100);
+function onCloseClick(description, preview, swiper) {
+  hidePreview(description, preview);
+  // this.removeEventListener('click');
+}
+
+function onPreviewClick() {
+  const deck = this.getAttribute('data-deck');
+  const preview = this.querySelector('.preview');
+  const description = this.querySelector('.description');
+  const slides = this.querySelector('.swiper-wrapper');
+  togglePreview(description, preview);
+  const closer = this.querySelector('.close-preview');
+  const _swiper = this.querySelector('.swiper-container');
+  if (!_swiper.swiper) {
+    lazyLoadSlides(deck, slides);
+    setupSwiper(_swiper, () => lazyLoadSlides(deck, slides));
+    closer.addEventListener('click', onCloseClick.bind(closer, description, preview));
+  }
+}
+
+function setupPreviews() {
+  document.querySelectorAll('.preview-link').forEach(item => {
+    item.addEventListener('click', onPreviewClick.bind(item.parentNode.parentNode));
+  });
+}
+
+function lazyLoadSlides(deck, slides) {
+  if (loaded[deck] >= lastSlide[deck]) {
     return;
   }
-  const swiper = new Swiper('.swiper-container', {
-    // Optional parameters
+  const from = loaded[deck] + 1;
+  console.log('lazyLoadSlides', loaded[deck], lastSlide[deck], from);
+  const to = from + 1;
+  if (to > lastSlide[deck]) {
+    to = lastSlide[deck];
+  }
+  loaded[deck] = to;
+  for (let i = from; i <= to; i++) {
+    const div = document.createElement('div');
+    div.classList.add('swiper-slide');
+    const img = new Image();
+    img.src=`/i/previews/${deck}/preview-${i}.png`;
+    img.classList.add('img-fluid');
+    img.alt='';
+    img.onload = () => {
+      div.appendChild(img);
+      slides.appendChild(div);
+    }
+  }
+}
+
+function togglePreview(desc, prev) {
+  if (prev.style.display !== 'block') {
+    showPreview(desc, prev);
+  } else {
+    hidePreview(desc, prev);
+  }
+}
+
+function showPreview(desc, prev) {
+  desc.style.display = 'none';
+  prev.style.display = 'block';
+}
+
+function hidePreview(desc, prev) {
+  desc.style.display = 'block';
+  prev.style.display = 'none';
+}
+
+// https://swiperjs.com/get-started
+function setupSwiper(selector, onSlideChange) {
+  if (!window.Swiper) {
+    setTimeout(() => setupSwiper(selector), 100);
+    return;
+  }
+  let swiper = new Swiper(selector, {
     direction: 'horizontal',
     loop: true,
-  
-    // If we need pagination
     pagination: {
       el: '.swiper-pagination',
     },
-  
-    // Navigation arrows
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
     },
-  
-    // And if we need scrollbar
     scrollbar: {
       el: '.swiper-scrollbar',
     },
-  });  
+    preloadImages: false,
+    lazy: true,
+    lazy: {
+      loadPrevNext: true,
+    },  
+  });
+  swiper.on('slideChange', onSlideChange);
 }
 
 main();
