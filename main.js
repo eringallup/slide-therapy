@@ -140,23 +140,20 @@ function closeVideo() {
   }
 }
 
-function onCloseClick(description, preview, swiper) {
-  hidePreview(description, preview);
-  // this.removeEventListener('click');
+function onCloseClick(deck) {
+  togglePreview(deck);
 }
 
 function onPreviewClick() {
   const deck = this.getAttribute('data-deck');
-  const preview = this.querySelector('.preview');
-  const description = this.querySelector('.description');
   const slides = this.querySelector('.swiper-wrapper');
-  togglePreview(description, preview);
+  togglePreview(this);
   const closer = this.querySelector('.close-preview');
   const _swiper = this.querySelector('.swiper-container');
+  lazyLoadSlides(deck, slides);
   if (!_swiper.swiper) {
-    lazyLoadSlides(deck, slides);
     setupSwiper(_swiper, () => lazyLoadSlides(deck, slides));
-    closer.addEventListener('click', onCloseClick.bind(closer, description, preview));
+    closer.addEventListener('click', onCloseClick.bind(closer, this));
   }
 }
 
@@ -167,46 +164,27 @@ function setupPreviews() {
 }
 
 function lazyLoadSlides(deck, slides) {
-  if (loaded[deck] >= lastSlide[deck]) {
-    return;
-  }
-  const from = loaded[deck] + 1;
-  console.log('lazyLoadSlides', loaded[deck], lastSlide[deck], from);
-  const to = from + 1;
-  if (to > lastSlide[deck]) {
-    to = lastSlide[deck];
-  }
-  loaded[deck] = to;
-  for (let i = from; i <= to; i++) {
+  for (let i = 2; i <= lastSlide[deck]; i++) {
+    const imgSrc = `/i/previews/${deck}/preview-${i}.png`;
     const div = document.createElement('div');
     div.classList.add('swiper-slide');
     const img = new Image();
-    img.src=`/i/previews/${deck}/preview-${i}.png`;
+    img.alt = '';
+    img.setAttribute('data-src', imgSrc);
+    img.classList.add('swiper-lazy');
     img.classList.add('img-fluid');
-    img.alt='';
-    img.onload = () => {
-      div.appendChild(img);
-      slides.appendChild(div);
-    }
+    // img.src = imgSrc;
+    div.appendChild(img);
+    slides.appendChild(div);
   }
 }
 
-function togglePreview(desc, prev) {
-  if (prev.style.display !== 'block') {
-    showPreview(desc, prev);
+function togglePreview(deck) {
+  if (deck.classList.contains('previewing')) {
+    deck.classList.remove('previewing');
   } else {
-    hidePreview(desc, prev);
+    deck.classList.add('previewing');
   }
-}
-
-function showPreview(desc, prev) {
-  desc.style.display = 'none';
-  prev.style.display = 'block';
-}
-
-function hidePreview(desc, prev) {
-  desc.style.display = 'block';
-  prev.style.display = 'none';
 }
 
 // https://swiperjs.com/get-started
@@ -215,6 +193,7 @@ function setupSwiper(selector, onSlideChange) {
     setTimeout(() => setupSwiper(selector), 100);
     return;
   }
+  document.body.classList.add('has-swiper');
   let swiper = new Swiper(selector, {
     direction: 'horizontal',
     loop: true,
