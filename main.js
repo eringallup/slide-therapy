@@ -106,7 +106,7 @@ function attachEvents() {
     });
   }
 
-  document.addEventListener('keydown', function onKeyDown(e) {
+  window.addEventListener('keydown', function onKeyDown(e) {
     if (e.keyCode === 27) {
       if (videoLayerOpen()) {
         closeVideo();
