@@ -48,7 +48,7 @@
     "lodash": "^4.17.19",
     "minimist": "^1.2.3",
     "mocha": "^7.2.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "sass-loader": "^8.0.2",
     "standard": "^14.3.1",
     "static-site-generator-webpack-plugin": "^3.4.2",
