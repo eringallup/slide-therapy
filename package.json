@@ -44,7 +44,7 @@
     "fs-extra": "^8.1.0",
     "html-critical-webpack-plugin": "^2.1.0",
     "inline-css": "^2.6.3",
-    "jsdom": "^16.2.2",
+    "jsdom": "^16.5.0",
     "lodash": "^4.17.19",
     "minimist": "^1.2.3",
     "mocha": "^7.2.0",
