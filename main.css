@@ -375,8 +375,8 @@ header > * {
   visibility: visible;
 }
 .deck .btn-wide {
-  padding-left: 4rem;
-  padding-right: 4rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
 }
 .deck .preview {
   position: relative;
