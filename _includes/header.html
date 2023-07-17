@@ -1,0 +1,10 @@
+<header class="container">
+  <div>
+    <a class="logo" href="/"><img src="/i/slide-therapy-logo.png" alt="Slide Therapy"></a>
+  </div>
+  <nav>
+    <a {% if page.slug == "templates" %}class="active"{% endif %} href="/">Templates</a>
+    <a {% if page.slug == "tips" %}class="active"{% endif %} href="/tips">Tips</a>
+    <a {% if page.slug == "about" %}class="active"{% endif %} href="/about">About</a>
+  </nav>
+</header>
