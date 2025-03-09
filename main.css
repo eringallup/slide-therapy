@@ -563,7 +563,6 @@ header > * {
 .swiper-button-next {
   display: none;
   color: transparent;
-  background: url(/i/home/arrow-left.svg);
   background-repeat: no-repeat !important;
   margin: 0;
   padding: 0;
@@ -576,9 +575,6 @@ header > * {
     display: block;
   }
 }
-.swiper-button-next {
-  background: url(/i/home/arrow-right.svg);
-}
 .swiper-pagination-bullet {
   width: 20px;
   height: 2px;
@@ -588,7 +584,6 @@ header > * {
 
 #free .top-layer {
   display: grid;
-  background: url(/i/free/topimage5-blur.jpg) center no-repeat;
   background-size: cover;
   padding: var(--spacing-m) var(--spacing-l);
   color: var(--color-lightest);

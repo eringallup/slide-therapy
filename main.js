@@ -1,9 +1,3 @@
-const heroImages = [
-  '/i/home/topimage1.jpg',
-  '/i/home/topimage4.jpg',
-  '/i/home/topimage5.jpg'
-];
-
 const lastSlide = {
   large: 31,
   small: 27,
@@ -23,8 +17,8 @@ function main() {
   addScripts();
   attachEvents();
   pickHeroImage();
-  setupSwiper('.quotes .swiper-container', 'quotes');
-  setupPreviews();
+  // setupSwiper('.quotes .swiper-container', 'quotes');
+  // setupPreviews();
 }
 
 function pickHeroImage() {
